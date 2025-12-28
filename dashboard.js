@@ -5,6 +5,7 @@
 // State
 let tabGroups = [];
 let currentView = 'all';
+let currentTagFilter = null;
 let settings = { darkMode: true, language: 'en' };
 
 // DOM Elements
@@ -34,6 +35,9 @@ const elements = {
     settingLanguage: document.getElementById('settingLanguage'),
     clearAllDataBtn: document.getElementById('clearAllDataBtn'),
 
+    // Tag Filter
+    tagFilterContainer: document.getElementById('tagFilterContainer'),
+
     // Search
     dashboardSearch: document.getElementById('dashboardSearch'),
 
@@ -54,6 +58,7 @@ async function init() {
     await loadTabGroups();
     applyTheme();
     applyLanguage();
+    renderTagFilter();
     renderGroups();
     updateStats();
     setupEventListeners();
@@ -169,13 +174,61 @@ function setupEventListeners() {
         settings.language = e.target.value;
         saveSettings();
         applyLanguage();
-        renderGroups(); // Re-render with new language
+        renderTagFilter();
+        renderGroups();
     });
 
     elements.clearAllDataBtn.addEventListener('click', clearAllData);
 
     // Search
     elements.dashboardSearch.addEventListener('input', handleSearch);
+}
+
+// Tag Filter
+function renderTagFilter() {
+    if (!elements.tagFilterContainer) return;
+
+    const predefinedTags = getPredefinedTags();
+    const usedTags = getUsedTags();
+
+    elements.tagFilterContainer.innerHTML = `
+        <button class="tag-filter-btn ${!currentTagFilter ? 'active' : ''}" data-tag="">
+            ${t('allGroups')}
+        </button>
+        ${predefinedTags.map(tag => {
+        const count = usedTags[tag] || 0;
+        if (count === 0) return '';
+        return `
+                <button class="tag-filter-btn ${currentTagFilter === tag ? 'active' : ''}" 
+                        data-tag="${tag}" 
+                        style="--tag-color: ${getTagColor(tag)}">
+                    <span class="tag-dot" style="background: ${getTagColor(tag)}"></span>
+                    ${t(tag)} (${count})
+                </button>
+            `;
+    }).join('')}
+    `;
+
+    // Add event listeners
+    elements.tagFilterContainer.querySelectorAll('.tag-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            currentTagFilter = btn.dataset.tag || null;
+            renderTagFilter();
+            renderGroups();
+        });
+    });
+}
+
+function getUsedTags() {
+    const tags = {};
+    tabGroups.forEach(group => {
+        if (group.tags && Array.isArray(group.tags)) {
+            group.tags.forEach(tag => {
+                tags[tag] = (tags[tag] || 0) + 1;
+            });
+        }
+    });
+    return tags;
 }
 
 // Settings Modal
@@ -195,6 +248,7 @@ async function clearAllData() {
     tabGroups = [];
     await saveTabGroups();
     closeSettingsModal();
+    renderTagFilter();
     renderGroups();
     updateStats();
     showToast(t('allDataCleared'));
@@ -235,6 +289,7 @@ async function saveAllTabs() {
             id: generateId(),
             createdAt: new Date().toISOString(),
             favorite: false,
+            tags: [],
             tabs: filteredTabs.map(tab => ({
                 id: generateId(),
                 title: tab.title || t('untitled'),
@@ -252,6 +307,7 @@ async function saveAllTabs() {
             await chrome.tabs.remove(tabIds);
         }
 
+        renderTagFilter();
         renderGroups();
         updateStats();
         showToast(`${filteredTabs.length} ${t('tabsSaved')}`);
@@ -272,6 +328,11 @@ function renderGroups(searchQuery = '') {
         groups = groups.filter(g => new Date(g.createdAt).getTime() > oneDayAgo);
     } else if (currentView === 'favorites') {
         groups = groups.filter(g => g.favorite);
+    }
+
+    // Filter by tag
+    if (currentTagFilter) {
+        groups = groups.filter(g => g.tags && g.tags.includes(currentTagFilter));
     }
 
     // Filter by search
@@ -316,6 +377,18 @@ function createGroupCard(group) {
     const date = new Date(group.createdAt);
     const formattedDate = formatDate(date);
 
+    // Generate tags HTML
+    const tagsHTML = (group.tags && group.tags.length > 0)
+        ? `<div class="group-tags">
+            ${group.tags.map(tag => `
+                <span class="group-tag" style="background: ${getTagColor(tag)}20; color: ${getTagColor(tag)}; border-color: ${getTagColor(tag)}40">
+                    ${t(tag)}
+                    <button class="tag-remove" data-tag="${tag}" title="${t('delete')}">×</button>
+                </span>
+            `).join('')}
+           </div>`
+        : '';
+
     card.innerHTML = `
     <div class="group-card-header">
       <div class="group-card-info">
@@ -323,9 +396,16 @@ function createGroupCard(group) {
         <div class="group-card-details">
           <h3>${formattedDate}</h3>
           <span>${group.tabs.length} ${t('tabsCount')}</span>
+          ${tagsHTML}
         </div>
       </div>
       <div class="group-card-actions">
+        <button class="card-action-btn add-tag" title="${t('addTag')}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+            <line x1="7" y1="7" x2="7.01" y2="7"/>
+          </svg>
+        </button>
         <button class="card-action-btn favorite ${group.favorite ? 'active' : ''}" title="${t('favorite')}">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="${group.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
             <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
@@ -346,15 +426,60 @@ function createGroupCard(group) {
         </button>
       </div>
     </div>
+    <div class="tag-dropdown" style="display: none;">
+      <div class="tag-dropdown-content">
+        ${getPredefinedTags().map(tag => `
+          <button class="tag-option ${group.tags && group.tags.includes(tag) ? 'selected' : ''}" data-tag="${tag}">
+            <span class="tag-dot" style="background: ${getTagColor(tag)}"></span>
+            ${t(tag)}
+            ${group.tags && group.tags.includes(tag) ? '<span class="tag-check">✓</span>' : ''}
+          </button>
+        `).join('')}
+      </div>
+    </div>
     <div class="group-card-tabs">
       ${group.tabs.map(tab => createTabItemHTML(tab)).join('')}
     </div>
   `;
 
     // Event listeners
+    const addTagBtn = card.querySelector('.add-tag');
+    const tagDropdown = card.querySelector('.tag-dropdown');
     const favoriteBtn = card.querySelector('.favorite');
     const restoreBtn = card.querySelector('.restore-all');
     const deleteBtn = card.querySelector('.delete-group');
+
+    // Tag dropdown toggle
+    addTagBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isVisible = tagDropdown.style.display === 'block';
+        // Close all other dropdowns
+        document.querySelectorAll('.tag-dropdown').forEach(dd => dd.style.display = 'none');
+        tagDropdown.style.display = isVisible ? 'none' : 'block';
+    });
+
+    // Tag selection
+    card.querySelectorAll('.tag-option').forEach(option => {
+        option.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const tag = option.dataset.tag;
+            await toggleTag(group.id, tag);
+        });
+    });
+
+    // Tag remove
+    card.querySelectorAll('.tag-remove').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const tag = btn.dataset.tag;
+            await removeTag(group.id, tag);
+        });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', () => {
+        tagDropdown.style.display = 'none';
+    });
 
     favoriteBtn.addEventListener('click', () => toggleFavorite(group.id));
     restoreBtn.addEventListener('click', () => restoreGroup(group.id));
@@ -414,6 +539,38 @@ function createTabItemHTML(tab) {
   `;
 }
 
+// Tag Actions
+async function toggleTag(groupId, tag) {
+    const group = tabGroups.find(g => g.id === groupId);
+    if (!group) return;
+
+    if (!group.tags) group.tags = [];
+
+    const tagIndex = group.tags.indexOf(tag);
+    if (tagIndex === -1) {
+        group.tags.push(tag);
+        showToast(t('tagAdded'));
+    } else {
+        group.tags.splice(tagIndex, 1);
+        showToast(t('tagRemoved'));
+    }
+
+    await saveTabGroups();
+    renderTagFilter();
+    renderGroups();
+}
+
+async function removeTag(groupId, tag) {
+    const group = tabGroups.find(g => g.id === groupId);
+    if (!group || !group.tags) return;
+
+    group.tags = group.tags.filter(t => t !== tag);
+    await saveTabGroups();
+    renderTagFilter();
+    renderGroups();
+    showToast(t('tagRemoved'));
+}
+
 // Actions
 async function openTab(url) {
     await chrome.tabs.create({ url });
@@ -440,6 +597,7 @@ async function restoreGroup(groupId) {
     tabGroups = tabGroups.filter(g => g.id !== groupId);
     await saveTabGroups();
 
+    renderTagFilter();
     renderGroups();
     updateStats();
     showToast(`${group.tabs.length} ${t('tabsOpened')}`);
@@ -449,6 +607,7 @@ async function deleteGroup(groupId) {
     tabGroups = tabGroups.filter(g => g.id !== groupId);
     await saveTabGroups();
 
+    renderTagFilter();
     renderGroups();
     updateStats();
     showToast(t('groupDeleted'));
@@ -465,6 +624,7 @@ async function deleteTab(groupId, tabId) {
     }
 
     await saveTabGroups();
+    renderTagFilter();
     renderGroups();
     updateStats();
 }
@@ -478,7 +638,7 @@ function handleSearch(e) {
 // Export/Import
 function exportData() {
     const data = {
-        version: '1.0',
+        version: '1.1',
         exportedAt: new Date().toISOString(),
         groups: tabGroups
     };
@@ -510,6 +670,7 @@ async function importData(e) {
         tabGroups = [...data.groups, ...tabGroups];
         await saveTabGroups();
 
+        renderTagFilter();
         renderGroups();
         updateStats();
         showToast(`${data.groups.length} ${t('groupsImported')}`);

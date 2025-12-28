@@ -194,6 +194,7 @@ async function saveAllTabs() {
             id: generateId(),
             createdAt: new Date().toISOString(),
             favorite: false,
+            tags: [],
             tabs: filteredTabs.map(tab => ({
                 id: generateId(),
                 title: tab.title || t('untitled'),
@@ -253,13 +254,22 @@ function createGroupElement(group) {
     const date = new Date(group.createdAt);
     const formattedDate = formatDate(date);
 
+    // Generate tags HTML
+    const tagsHTML = (group.tags && group.tags.length > 0)
+        ? `<div class="group-tags-mini">
+            ${group.tags.map(tag => `
+                <span class="group-tag-mini" style="background: ${getTagColor(tag)}"></span>
+            `).join('')}
+           </div>`
+        : '';
+
     div.innerHTML = `
     <div class="group-header">
       <div class="group-info">
         <div class="group-icon">${group.tabs.length}</div>
         <div class="group-details">
           <span class="group-title">${formattedDate}</span>
-          <span class="group-meta">${group.tabs.length} ${t('tabsCount')}</span>
+          <span class="group-meta">${group.tabs.length} ${t('tabsCount')}${tagsHTML}</span>
         </div>
       </div>
       <div class="group-actions">

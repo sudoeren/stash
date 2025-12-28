@@ -48,6 +48,8 @@ const translations = {
         importFailed: 'Import failed',
         noTabsToSave: 'No tabs to save',
         errorOccurred: 'An error occurred',
+        tagAdded: 'Tag added',
+        tagRemoved: 'Tag removed',
 
         // Confirmations
         confirmClearAll: 'Are you sure you want to delete all saved tabs?',
@@ -58,6 +60,8 @@ const translations = {
         deleteGroup: 'Delete Group',
         deleteTab: 'Delete Tab',
         fullscreen: 'Fullscreen',
+        addTag: 'Add Tag',
+        editTags: 'Edit Tags',
 
         // Time
         justNow: 'Just now',
@@ -66,7 +70,22 @@ const translations = {
         daysAgo: 'days ago',
 
         // Misc
-        untitled: 'Untitled'
+        untitled: 'Untitled',
+
+        // Tags
+        tags: 'Tags',
+        newTag: 'New tag...',
+        work: 'Work',
+        research: 'Research',
+        entertainment: 'Entertainment',
+        shopping: 'Shopping',
+        social: 'Social',
+        news: 'News',
+        learning: 'Learning',
+        other: 'Other',
+        filterByTag: 'Filter by tag',
+        allGroups: 'All Groups',
+        noTags: 'No tags'
     },
 
     tr: {
@@ -114,6 +133,8 @@ const translations = {
         importFailed: 'İçe aktarma başarısız',
         noTabsToSave: 'Kaydedilecek sekme yok',
         errorOccurred: 'Hata oluştu',
+        tagAdded: 'Etiket eklendi',
+        tagRemoved: 'Etiket kaldırıldı',
 
         // Confirmations
         confirmClearAll: 'Tüm sekmeleri silmek istediğinize emin misiniz?',
@@ -124,16 +145,45 @@ const translations = {
         deleteGroup: 'Grubu Sil',
         deleteTab: 'Sekmeyi Sil',
         fullscreen: 'Tam Ekran',
+        addTag: 'Etiket Ekle',
+        editTags: 'Etiketleri Düzenle',
 
         // Time
-        justNow: 'Just now',
-        minutesAgo: 'min ago',
-        hoursAgo: 'hours ago',
-        daysAgo: 'days ago',
+        justNow: 'Az önce',
+        minutesAgo: 'dk önce',
+        hoursAgo: 'saat önce',
+        daysAgo: 'gün önce',
 
         // Misc
-        untitled: 'Untitled'
+        untitled: 'Başlıksız',
+
+        // Tags
+        tags: 'Etiketler',
+        newTag: 'Yeni etiket...',
+        work: 'İş',
+        research: 'Araştırma',
+        entertainment: 'Eğlence',
+        shopping: 'Alışveriş',
+        social: 'Sosyal',
+        news: 'Haberler',
+        learning: 'Öğrenme',
+        other: 'Diğer',
+        filterByTag: 'Etikete göre filtrele',
+        allGroups: 'Tüm Gruplar',
+        noTags: 'Etiket yok'
     }
+};
+
+// Predefined tag colors
+const tagColors = {
+    work: '#3b82f6',      // Blue
+    research: '#8b5cf6',  // Purple
+    entertainment: '#ec4899', // Pink
+    shopping: '#f59e0b',  // Amber
+    social: '#10b981',    // Emerald
+    news: '#6366f1',      // Indigo
+    learning: '#14b8a6',  // Teal
+    other: '#6b7280'      // Gray
 };
 
 // Current language (default: English)
@@ -163,7 +213,17 @@ function getAvailableLanguages() {
     return Object.keys(translations);
 }
 
+// Get tag color
+function getTagColor(tagKey) {
+    return tagColors[tagKey] || tagColors.other;
+}
+
+// Get all predefined tags
+function getPredefinedTags() {
+    return Object.keys(tagColors);
+}
+
 // Export for use in other files
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { translations, t, setLanguage, getLanguage, getAvailableLanguages };
+    module.exports = { translations, tagColors, t, setLanguage, getLanguage, getAvailableLanguages, getTagColor, getPredefinedTags };
 }

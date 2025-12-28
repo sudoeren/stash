@@ -828,6 +828,169 @@ body {
 }
 
 /* ==========================================
+   TAG FILTER BAR
+   ========================================== */
+
+.tag-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px var(--padding-xl);
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tag-filter-bar::-webkit-scrollbar {
+    height: 4px;
+}
+
+.tag-filter-bar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.tag-filter-bar::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: var(--radius-full);
+}
+
+.tag-filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-full);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+}
+
+.tag-filter-btn:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+    border-color: var(--border-hover);
+}
+
+.tag-filter-btn.active {
+    background: var(--text-primary);
+    border-color: var(--text-primary);
+    color: var(--bg-primary);
+}
+
+.tag-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* ==========================================
+   GROUP TAGS
+   ========================================== */
+
+.group-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.group-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    font-weight: 500;
+    border: 1px solid;
+    transition: all var(--transition);
+}
+
+.group-tag .tag-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity var(--transition);
+}
+
+.group-tag .tag-remove:hover {
+    opacity: 1;
+}
+
+/* ==========================================
+   TAG DROPDOWN
+   ========================================== */
+
+.tag-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 100;
+    margin-top: 4px;
+}
+
+.tag-dropdown-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 6px;
+    min-width: 160px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.tag-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all var(--transition);
+    text-align: left;
+}
+
+.tag-option:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.tag-option.selected {
+    color: var(--text-primary);
+}
+
+.tag-option .tag-check {
+    margin-left: auto;
+    color: #10b981;
+    font-weight: 600;
+}
+
+/* Group card header needs relative for dropdown */
+.group-card-header {
+    position: relative;
+}
+
+/* ==========================================
    RESPONSIVE
    ========================================== */
 
