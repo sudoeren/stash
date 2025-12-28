@@ -88,7 +88,19 @@ const translations = {
         noTags: 'No tags',
 
         // Drag and Drop
-        dragToReorder: 'Drag to reorder'
+        dragToReorder: 'Drag to reorder',
+
+        // View Subtitles
+        dashboardSubtitle: 'Dashboard',
+        recentSubtitle: 'Latest Stashes',
+        favoritesSubtitle: 'Your Collection',
+        tabsStashed: 'Tabs Stashed',
+
+        // Empty States Extended
+        noFavoritesYet: 'No Favorites Yet',
+        noFavoritesDescription: 'Mark items as favorite to see them here.',
+        noMatchesFound: 'No matches found',
+        tryDifferentSearch: 'Try a different search term'
     },
 
     tr: {
@@ -176,7 +188,19 @@ const translations = {
         noTags: 'Etiket yok',
 
         // Drag and Drop
-        dragToReorder: 'Sıralamak için sürükle'
+        dragToReorder: 'Sıralamak için sürükle',
+
+        // View Subtitles
+        dashboardSubtitle: 'Panel',
+        recentSubtitle: 'Son Eklenenler',
+        favoritesSubtitle: 'Koleksiyonunuz',
+        tabsStashed: 'Sekme Saklandı',
+
+        // Empty States Extended
+        noFavoritesYet: 'Henüz Favori Yok',
+        noFavoritesDescription: 'Burada görmek için öğeleri favori olarak işaretleyin.',
+        noMatchesFound: 'Eşleşme bulunamadı',
+        tryDifferentSearch: 'Farklı bir arama terimi deneyin'
     }
 };
 

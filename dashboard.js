@@ -11,7 +11,8 @@ let settings = { darkMode: true, language: 'en' };
 // DOM Elements
 const elements = {
     // Navigation
-    navItems: document.querySelectorAll('.nav-item'),
+    navItems: document.querySelectorAll('.dock-item[data-view]'),
+    brand: document.querySelector('.brand'),
     viewTitle: document.getElementById('viewTitle'),
     headerTabCount: document.getElementById('headerTabCount'),
 
@@ -136,6 +137,15 @@ function setupEventListeners() {
             renderGroups();
         });
     });
+
+    // Brand Click (Home)
+    if (elements.brand) {
+        elements.brand.style.cursor = 'pointer';
+        elements.brand.addEventListener('click', () => {
+            const allBtn = document.querySelector('.dock-item[data-view="all"]');
+            if (allBtn) allBtn.click();
+        });
+    }
 
     // Save all tabs
     elements.dashboardSaveAll.addEventListener('click', saveAllTabs);
@@ -366,6 +376,13 @@ function renderGroups(searchQuery = '') {
         groups = groups.filter(g => g.tags && g.tags.includes(currentTagFilter));
     }
 
+    // Update header count if in 'all' view with no filters, specific logic could be added here
+    if (currentView === 'all' && !searchQuery && !currentTagFilter) {
+        const totalTabs = tabGroups.reduce((sum, g) => sum + g.tabs.length, 0);
+        const subtitleEl = document.getElementById('headerTabCount');
+        if (subtitleEl) subtitleEl.textContent = `${totalTabs} ${t('tabsStashed')}`;
+    }
+
     // Clear Container
     container.innerHTML = '';
 
@@ -387,8 +404,8 @@ function renderGroups(searchQuery = '') {
 
         // Special "Sweet" Animation for Favorites
         if (currentView === 'favorites') {
-            emptyTitle = "No Favorites Yet";
-            emptyDesc = "Mark items as favorite to see them here.";
+            emptyTitle = t('noFavoritesYet');
+            emptyDesc = t('noFavoritesDescription');
             emptyIcon = `
                 <div class="graphic-circle" style="border-color: var(--danger); opacity: 0.3;"></div>
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.5" style="animation: heartbeat 1.5s ease-in-out infinite;">
@@ -406,8 +423,8 @@ function renderGroups(searchQuery = '') {
                 </style>
              `;
         } else if (searchQuery) {
-            emptyTitle = "No matches found";
-            emptyDesc = "Try a different search term";
+            emptyTitle = t('noMatchesFound');
+            emptyDesc = t('tryDifferentSearch');
         }
 
         emptyWrapper.innerHTML = `

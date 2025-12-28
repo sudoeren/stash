@@ -201,6 +201,12 @@ body {
     display: flex;
     align-items: center;
     gap: 16px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.brand:hover {
+    opacity: 0.8;
 }
 
 .brand-icon {
@@ -213,6 +219,7 @@ body {
     align-items: center;
     justify-content: center;
     box-shadow: var(--shadow-card);
+    flex-shrink: 0;
 }
 
 /* User requested to remove "All Groups" text area, but now wants "App Icon + Page Name" */
