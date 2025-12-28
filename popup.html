@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="header-right">
-        <button class="icon-btn" id="openDashboard" title="Tam Ekran">
+        <button class="icon-btn" id="openDashboard" data-i18n-title="fullscreen">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="15,3 21,3 21,9" />
             <polyline points="9,21 3,21 3,15" />
@@ -32,7 +32,7 @@
             <line x1="3" y1="21" x2="10" y2="14" />
           </svg>
         </button>
-        <button class="icon-btn" id="settingsBtn" title="Ayarlar">
+        <button class="icon-btn" id="settingsBtn" data-i18n-title="settings">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="3" />
             <path
@@ -49,7 +49,7 @@
           <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
           <polyline points="17,21 17,13 7,13 7,21" />
         </svg>
-        <span>Tümünü Kaydet</span>
+        <span data-i18n="saveAll">Save All</span>
       </button>
       <div class="action-buttons">
         <button class="secondary-btn" id="exportBtn">
@@ -58,7 +58,7 @@
             <polyline points="17,8 12,3 7,8" />
             <line x1="12" y1="3" x2="12" y2="15" />
           </svg>
-          Dışa Aktar
+          <span data-i18n="export">Export</span>
         </button>
         <button class="secondary-btn" id="importBtn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -66,7 +66,7 @@
             <polyline points="7,10 12,15 17,10" />
             <line x1="12" y1="15" x2="12" y2="3" />
           </svg>
-          İçe Aktar
+          <span data-i18n="import">Import</span>
         </button>
         <input type="file" id="importFile" accept=".json" style="display: none;">
       </div>
@@ -76,11 +76,11 @@
     <div class="stats-bar">
       <div class="stat">
         <span class="stat-value" id="totalGroups">0</span>
-        <span class="stat-label">Grup</span>
+        <span class="stat-label" data-i18n="groups">Groups</span>
       </div>
       <div class="stat">
         <span class="stat-value" id="totalTabs">0</span>
-        <span class="stat-label">Sekme</span>
+        <span class="stat-label" data-i18n="tabs">Tabs</span>
       </div>
     </div>
 
@@ -90,7 +90,7 @@
         <circle cx="11" cy="11" r="8" />
         <path d="M21 21l-4.35-4.35" />
       </svg>
-      <input type="text" id="searchInput" placeholder="Sekmelerde ara...">
+      <input type="text" id="searchInput" data-i18n-placeholder="searchPlaceholder" placeholder="Search tabs...">
     </div>
 
     <!-- Groups -->
@@ -103,8 +103,8 @@
             <line x1="8" y1="13" x2="14" y2="13" stroke-linecap="round" />
           </svg>
         </div>
-        <h3>Henüz sekme yok</h3>
-        <p>Kaydetmek için butona tıklayın</p>
+        <h3 data-i18n="noTabsYet">No tabs yet</h3>
+        <p data-i18n="noTabsDescription">Click "Save All" to save your open tabs</p>
       </div>
     </div>
 
@@ -112,7 +112,7 @@
     <div class="modal" id="settingsModal">
       <div class="modal-content">
         <div class="modal-header">
-          <h3>Ayarlar</h3>
+          <h3 data-i18n="settings">Settings</h3>
           <button class="close-btn" id="closeSettings">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="18" y1="6" x2="6" y2="18" />
@@ -123,23 +123,32 @@
         <div class="modal-body">
           <div class="setting-item">
             <label class="setting-label">
-              <span>Kayıttan sonra kapat</span>
+              <span data-i18n="closeAfterSave">Close tabs after saving</span>
               <input type="checkbox" id="closeAfterSave" checked>
               <span class="toggle"></span>
             </label>
           </div>
           <div class="setting-item">
             <label class="setting-label">
-              <span>Pinli sekmeleri dahil et</span>
+              <span data-i18n="includePinned">Include pinned tabs</span>
               <input type="checkbox" id="includePinned">
               <span class="toggle"></span>
             </label>
           </div>
           <div class="setting-item">
             <label class="setting-label">
-              <span>Açık tema</span>
+              <span data-i18n="lightTheme">Light theme</span>
               <input type="checkbox" id="darkMode">
               <span class="toggle"></span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">
+              <span>Language</span>
+              <select id="languageSelect" class="language-select">
+                <option value="en">English</option>
+                <option value="tr">Türkçe</option>
+              </select>
             </label>
           </div>
           <div class="setting-item">
@@ -148,7 +157,7 @@
                 <polyline points="3,6 5,6 21,6" />
                 <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
               </svg>
-              Tümünü Sil
+              <span data-i18n="clearAllData">Clear All Data</span>
             </button>
           </div>
         </div>
@@ -161,6 +170,7 @@
     </div>
   </div>
 
+  <script src="i18n.js"></script>
   <script src="popup.js"></script>
 </body>
 

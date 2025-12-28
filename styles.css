@@ -650,6 +650,33 @@ body {
   color: white;
 }
 
+/* ===== LANGUAGE SELECT ===== */
+.language-select {
+  padding: 8px 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: all var(--transition);
+}
+
+.language-select:hover {
+  border-color: var(--border-light);
+}
+
+.language-select:focus {
+  border-color: var(--text-primary);
+}
+
+.language-select option {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
 /* ===== TOAST ===== */
 .toast {
   position: fixed;

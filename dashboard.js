@@ -5,7 +5,7 @@
 // State
 let tabGroups = [];
 let currentView = 'all';
-let settings = { darkMode: true };
+let settings = { darkMode: true, language: 'en' };
 
 // DOM Elements
 const elements = {
@@ -31,6 +31,7 @@ const elements = {
     closeSettingsModal: document.getElementById('closeSettingsModal'),
     settingCloseAfterSave: document.getElementById('settingCloseAfterSave'),
     settingIncludePinned: document.getElementById('settingIncludePinned'),
+    settingLanguage: document.getElementById('settingLanguage'),
     clearAllDataBtn: document.getElementById('clearAllDataBtn'),
 
     // Search
@@ -52,6 +53,7 @@ async function init() {
     await loadSettings();
     await loadTabGroups();
     applyTheme();
+    applyLanguage();
     renderGroups();
     updateStats();
     setupEventListeners();
@@ -62,6 +64,11 @@ async function loadSettings() {
     const stored = await chrome.storage.local.get('settings');
     if (stored.settings) {
         settings = { ...settings, ...stored.settings };
+    }
+
+    // Apply to UI
+    if (elements.settingLanguage) {
+        elements.settingLanguage.value = settings.language || 'en';
     }
 }
 
@@ -84,6 +91,32 @@ function applyTheme() {
     } else {
         document.body.classList.add('light-theme');
     }
+}
+
+function applyLanguage() {
+    const lang = settings.language || 'en';
+    setLanguage(lang);
+
+    // Update all elements with data-i18n attribute
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        el.textContent = t(key);
+    });
+
+    // Update placeholders
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        el.placeholder = t(key);
+    });
+
+    // Update titles
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        const key = el.getAttribute('data-i18n-title');
+        el.title = t(key);
+    });
+
+    // Update view title
+    updateViewTitle();
 }
 
 // Event Listeners
@@ -132,6 +165,13 @@ function setupEventListeners() {
         saveSettings();
     });
 
+    elements.settingLanguage.addEventListener('change', (e) => {
+        settings.language = e.target.value;
+        saveSettings();
+        applyLanguage();
+        renderGroups(); // Re-render with new language
+    });
+
     elements.clearAllDataBtn.addEventListener('click', clearAllData);
 
     // Search
@@ -142,6 +182,7 @@ function setupEventListeners() {
 function openSettingsModal() {
     elements.settingCloseAfterSave.checked = settings.closeAfterSave !== false;
     elements.settingIncludePinned.checked = settings.includePinned || false;
+    elements.settingLanguage.value = settings.language || 'en';
     elements.settingsModal.classList.add('active');
 }
 
@@ -150,22 +191,22 @@ function closeSettingsModal() {
 }
 
 async function clearAllData() {
-    if (!confirm('Tüm kaydedilmiş sekmeleri silmek istediğinize emin misiniz?')) return;
+    if (!confirm(t('confirmClearAll'))) return;
     tabGroups = [];
     await saveTabGroups();
     closeSettingsModal();
     renderGroups();
     updateStats();
-    showToast('Tüm veriler silindi');
+    showToast(t('allDataCleared'));
 }
 
 function updateViewTitle() {
     const titles = {
-        all: 'Tüm Sekmeler',
-        recent: 'Son Eklenenler',
-        favorites: 'Favoriler'
+        all: t('allTabs'),
+        recent: t('recent'),
+        favorites: t('favorites')
     };
-    elements.viewTitle.textContent = titles[currentView] || 'Tüm Sekmeler';
+    elements.viewTitle.textContent = titles[currentView] || t('allTabs');
 }
 
 // Save All Tabs
@@ -186,7 +227,7 @@ async function saveAllTabs() {
         });
 
         if (filteredTabs.length === 0) {
-            showToast('Kaydedilecek sekme bulunamadı');
+            showToast(t('noTabsToSave'));
             return;
         }
 
@@ -196,7 +237,7 @@ async function saveAllTabs() {
             favorite: false,
             tabs: filteredTabs.map(tab => ({
                 id: generateId(),
-                title: tab.title || 'Başlıksız',
+                title: tab.title || t('untitled'),
                 url: tab.url,
                 favicon: tab.favIconUrl || null
             }))
@@ -213,11 +254,11 @@ async function saveAllTabs() {
 
         renderGroups();
         updateStats();
-        showToast(`${filteredTabs.length} sekme kaydedildi`);
+        showToast(`${filteredTabs.length} ${t('tabsSaved')}`);
 
     } catch (error) {
         console.error('Error saving tabs:', error);
-        showToast('Sekmeler kaydedilirken hata oluştu');
+        showToast(t('errorOccurred'));
     }
 }
 
@@ -246,7 +287,7 @@ function renderGroups(searchQuery = '') {
 
     // Update header count
     const totalTabs = groups.reduce((sum, g) => sum + g.tabs.length, 0);
-    elements.headerTabCount.textContent = `${totalTabs} sekme`;
+    elements.headerTabCount.textContent = `${totalTabs} ${t('tabsCount')}`;
 
     // Clear content
     const existingCards = elements.contentArea.querySelectorAll('.group-card');
@@ -281,23 +322,23 @@ function createGroupCard(group) {
         <div class="group-card-icon">${group.tabs.length}</div>
         <div class="group-card-details">
           <h3>${formattedDate}</h3>
-          <span>${group.tabs.length} sekme</span>
+          <span>${group.tabs.length} ${t('tabsCount')}</span>
         </div>
       </div>
       <div class="group-card-actions">
-        <button class="card-action-btn favorite ${group.favorite ? 'active' : ''}" title="Favori">
+        <button class="card-action-btn favorite ${group.favorite ? 'active' : ''}" title="${t('favorite')}">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="${group.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
             <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
           </svg>
         </button>
-        <button class="card-action-btn restore-all" title="Tümünü Aç">
+        <button class="card-action-btn restore-all" title="${t('openAll')}">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="15,3 21,3 21,9"/>
             <path d="M21 3l-7 7"/>
             <path d="M21 14v5a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h5"/>
           </svg>
         </button>
-        <button class="card-action-btn danger delete-group" title="Grubu Sil">
+        <button class="card-action-btn danger delete-group" title="${t('deleteGroup')}">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="3,6 5,6 21,6"/>
             <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
@@ -363,7 +404,7 @@ function createTabItemHTML(tab) {
         <div class="card-tab-title">${escapeHtml(tab.title)}</div>
         <div class="card-tab-url">${domain}</div>
       </div>
-      <button class="card-tab-delete" title="Sekmeyi Sil">
+      <button class="card-tab-delete" title="${t('deleteTab')}">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"/>
           <line x1="6" y1="6" x2="18" y2="18"/>
@@ -401,7 +442,7 @@ async function restoreGroup(groupId) {
 
     renderGroups();
     updateStats();
-    showToast(`${group.tabs.length} sekme açıldı`);
+    showToast(`${group.tabs.length} ${t('tabsOpened')}`);
 }
 
 async function deleteGroup(groupId) {
@@ -410,7 +451,7 @@ async function deleteGroup(groupId) {
 
     renderGroups();
     updateStats();
-    showToast('Grup silindi');
+    showToast(t('groupDeleted'));
 }
 
 async function deleteTab(groupId, tabId) {
@@ -451,7 +492,7 @@ function exportData() {
     a.click();
 
     URL.revokeObjectURL(url);
-    showToast('Veriler dışa aktarıldı');
+    showToast(t('exported'));
 }
 
 async function importData(e) {
@@ -471,11 +512,11 @@ async function importData(e) {
 
         renderGroups();
         updateStats();
-        showToast(`${data.groups.length} grup içe aktarıldı`);
+        showToast(`${data.groups.length} ${t('groupsImported')}`);
 
     } catch (error) {
         console.error('Import error:', error);
-        showToast('İçe aktarma başarısız');
+        showToast(t('importFailed'));
     }
 
     e.target.value = '';
@@ -512,12 +553,12 @@ function formatDate(date) {
     const hours = Math.floor(diff / 3600000);
     const days = Math.floor(diff / 86400000);
 
-    if (minutes < 1) return 'Az önce';
-    if (minutes < 60) return `${minutes} dakika önce`;
-    if (hours < 24) return `${hours} saat önce`;
-    if (days < 7) return `${days} gün önce`;
+    if (minutes < 1) return t('justNow');
+    if (minutes < 60) return `${minutes} ${t('minutesAgo')}`;
+    if (hours < 24) return `${hours} ${t('hoursAgo')}`;
+    if (days < 7) return `${days} ${t('daysAgo')}`;
 
-    return date.toLocaleDateString('tr-TR', {
+    return date.toLocaleDateString(settings.language === 'tr' ? 'tr-TR' : 'en-US', {
         day: 'numeric',
         month: 'long',
         year: 'numeric'

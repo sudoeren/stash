@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stash - Sekmeleriniz</title>
+    <title>Stash - Your Tabs</title>
     <link rel="stylesheet" href="dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -36,32 +36,32 @@
                         <rect x="3" y="14" width="7" height="7" rx="2" />
                         <rect x="14" y="14" width="7" height="7" rx="2" />
                     </svg>
-                    <span>Tüm Sekmeler</span>
+                    <span data-i18n="allTabs">All Tabs</span>
                 </button>
                 <button class="nav-item" data-view="recent">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="10" />
                         <polyline points="12,6 12,12 16,14" />
                     </svg>
-                    <span>Son Eklenenler</span>
+                    <span data-i18n="recent">Recent</span>
                 </button>
                 <button class="nav-item" data-view="favorites">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polygon
                             points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
                     </svg>
-                    <span>Favoriler</span>
+                    <span data-i18n="favorites">Favorites</span>
                 </button>
             </nav>
 
             <div class="sidebar-stats">
                 <div class="stat-card">
                     <span class="stat-number" id="sidebarGroups">0</span>
-                    <span class="stat-text">Grup</span>
+                    <span class="stat-text" data-i18n="groups">Groups</span>
                 </div>
                 <div class="stat-card">
                     <span class="stat-number" id="sidebarTabs">0</span>
-                    <span class="stat-text">Sekme</span>
+                    <span class="stat-text" data-i18n="tabs">Tabs</span>
                 </div>
             </div>
 
@@ -72,7 +72,7 @@
                         <polyline points="17,8 12,3 7,8" />
                         <line x1="12" y1="3" x2="12" y2="15" />
                     </svg>
-                    Dışa Aktar
+                    <span data-i18n="export">Export</span>
                 </button>
                 <button class="sidebar-btn" id="dashboardImport">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -80,7 +80,7 @@
                         <polyline points="7,10 12,15 17,10" />
                         <line x1="12" y1="15" x2="12" y2="3" />
                     </svg>
-                    İçe Aktar
+                    <span data-i18n="import">Import</span>
                 </button>
                 <input type="file" id="dashboardImportFile" accept=".json" style="display: none;">
                 <button class="sidebar-btn theme-toggle" id="themeToggle">
@@ -100,7 +100,7 @@
                         <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
                     </svg>
-                    Tema
+                    <span data-i18n="theme">Theme</span>
                 </button>
                 <button class="sidebar-btn" id="dashboardSettings">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -108,7 +108,7 @@
                         <path
                             d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
                     </svg>
-                    Ayarlar
+                    <span data-i18n="settings">Settings</span>
                 </button>
             </div>
         </aside>
@@ -118,8 +118,8 @@
             <!-- Header -->
             <header class="main-header">
                 <div class="header-left">
-                    <h1 id="viewTitle">Tüm Sekmeler</h1>
-                    <span class="tab-count" id="headerTabCount">0 sekme</span>
+                    <h1 id="viewTitle" data-i18n="allTabs">All Tabs</h1>
+                    <span class="tab-count" id="headerTabCount">0 tabs</span>
                 </div>
                 <div class="header-right">
                     <div class="search-box">
@@ -128,7 +128,8 @@
                             <circle cx="11" cy="11" r="8" />
                             <path d="M21 21l-4.35-4.35" />
                         </svg>
-                        <input type="text" id="dashboardSearch" placeholder="Sekmelerde ara...">
+                        <input type="text" id="dashboardSearch" data-i18n-placeholder="searchPlaceholder"
+                            placeholder="Search tabs...">
                     </div>
                     <button class="header-btn primary" id="dashboardSaveAll">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -137,7 +138,7 @@
                             <polyline points="17,21 17,13 7,13 7,21" />
                             <polyline points="7,3 7,8 15,8" />
                         </svg>
-                        Tümünü Kaydet
+                        <span data-i18n="saveAll">Save All</span>
                     </button>
                 </div>
             </header>
@@ -154,8 +155,8 @@
                             <line x1="8" y1="13" x2="14" y2="13" stroke-linecap="round" />
                         </svg>
                     </div>
-                    <h2>Henüz sekme yok</h2>
-                    <p>Açık sekmelerinizi kaydetmek için "Tümünü Kaydet" butonuna tıklayın</p>
+                    <h2 data-i18n="noTabsYet">No tabs yet</h2>
+                    <p data-i18n="noTabsDescription">Click "Save All" to save your open tabs</p>
                 </div>
             </div>
         </main>
@@ -165,7 +166,7 @@
     <div class="modal" id="settingsModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Ayarlar</h3>
+                <h3 data-i18n="settings">Settings</h3>
                 <button class="close-btn" id="closeSettingsModal">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="18" y1="6" x2="6" y2="18" />
@@ -176,16 +177,25 @@
             <div class="modal-body">
                 <div class="setting-item">
                     <label class="setting-label">
-                        <span>Kayıttan sonra sekmeleri kapat</span>
+                        <span data-i18n="closeAfterSave">Close tabs after saving</span>
                         <input type="checkbox" id="settingCloseAfterSave" checked>
                         <span class="toggle"></span>
                     </label>
                 </div>
                 <div class="setting-item">
                     <label class="setting-label">
-                        <span>Pinlenmiş sekmeleri dahil et</span>
+                        <span data-i18n="includePinned">Include pinned tabs</span>
                         <input type="checkbox" id="settingIncludePinned">
                         <span class="toggle"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <span>Language</span>
+                        <select id="settingLanguage" class="language-select">
+                            <option value="en">English</option>
+                            <option value="tr">Türkçe</option>
+                        </select>
                     </label>
                 </div>
                 <div class="setting-item danger">
@@ -195,7 +205,7 @@
                             <polyline points="3,6 5,6 21,6" />
                             <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
                         </svg>
-                        Tüm Verileri Sil
+                        <span data-i18n="clearAllData">Clear All Data</span>
                     </button>
                 </div>
             </div>
@@ -207,6 +217,7 @@
         <span id="dashboardToastMessage"></span>
     </div>
 
+    <script src="i18n.js"></script>
     <script src="dashboard.js"></script>
 </body>
 
