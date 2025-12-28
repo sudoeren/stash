@@ -24,6 +24,14 @@ const elements = {
     dashboardImport: document.getElementById('dashboardImport'),
     dashboardImportFile: document.getElementById('dashboardImportFile'),
     themeToggle: document.getElementById('themeToggle'),
+    dashboardSettings: document.getElementById('dashboardSettings'),
+
+    // Settings Modal
+    settingsModal: document.getElementById('settingsModal'),
+    closeSettingsModal: document.getElementById('closeSettingsModal'),
+    settingCloseAfterSave: document.getElementById('settingCloseAfterSave'),
+    settingIncludePinned: document.getElementById('settingIncludePinned'),
+    clearAllDataBtn: document.getElementById('clearAllDataBtn'),
 
     // Search
     dashboardSearch: document.getElementById('dashboardSearch'),
@@ -106,8 +114,49 @@ function setupEventListeners() {
         applyTheme();
     });
 
+    // Settings modal
+    elements.dashboardSettings.addEventListener('click', openSettingsModal);
+    elements.closeSettingsModal.addEventListener('click', closeSettingsModal);
+    elements.settingsModal.addEventListener('click', (e) => {
+        if (e.target === elements.settingsModal) closeSettingsModal();
+    });
+
+    // Settings toggles
+    elements.settingCloseAfterSave.addEventListener('change', (e) => {
+        settings.closeAfterSave = e.target.checked;
+        saveSettings();
+    });
+
+    elements.settingIncludePinned.addEventListener('change', (e) => {
+        settings.includePinned = e.target.checked;
+        saveSettings();
+    });
+
+    elements.clearAllDataBtn.addEventListener('click', clearAllData);
+
     // Search
     elements.dashboardSearch.addEventListener('input', handleSearch);
+}
+
+// Settings Modal
+function openSettingsModal() {
+    elements.settingCloseAfterSave.checked = settings.closeAfterSave !== false;
+    elements.settingIncludePinned.checked = settings.includePinned || false;
+    elements.settingsModal.classList.add('active');
+}
+
+function closeSettingsModal() {
+    elements.settingsModal.classList.remove('active');
+}
+
+async function clearAllData() {
+    if (!confirm('Tüm kaydedilmiş sekmeleri silmek istediğinize emin misiniz?')) return;
+    tabGroups = [];
+    await saveTabGroups();
+    closeSettingsModal();
+    renderGroups();
+    updateStats();
+    showToast('Tüm veriler silindi');
 }
 
 function updateViewTitle() {

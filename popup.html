@@ -11,22 +11,21 @@
 
 <body>
   <div class="app">
-    <!-- Header - Oval Bento Card -->
+    <!-- Header -->
     <header class="header">
       <div class="header-left">
         <div class="logo">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="4" y="4" width="16" height="16" rx="4" stroke="currentColor" stroke-width="2" />
-            <line x1="8" y1="9" x2="16" y2="9" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            <line x1="8" y1="13" x2="14" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            <line x1="8" y1="17" x2="12" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect x="4" y="4" width="16" height="16" rx="3" />
+            <line x1="8" y1="9" x2="16" y2="9" stroke-linecap="round" />
+            <line x1="8" y1="13" x2="14" y2="13" stroke-linecap="round" />
           </svg>
           <span class="logo-text">Stash</span>
         </div>
       </div>
       <div class="header-right">
         <button class="icon-btn" id="openDashboard" title="Tam Ekran">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="15,3 21,3 21,9" />
             <polyline points="9,21 3,21 3,15" />
             <line x1="21" y1="3" x2="14" y2="10" />
@@ -34,7 +33,7 @@
           </svg>
         </button>
         <button class="icon-btn" id="settingsBtn" title="Ayarlar">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="3" />
             <path
               d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
@@ -43,36 +42,37 @@
       </div>
     </header>
 
-    <!-- Actions - Bento Grid Row -->
+    <!-- Actions -->
     <div class="actions-bar">
       <button class="primary-btn" id="saveAllTabs">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
           <polyline points="17,21 17,13 7,13 7,21" />
-          <polyline points="7,3 7,8 15,8" />
         </svg>
         <span>Tümünü Kaydet</span>
       </button>
       <div class="action-buttons">
-        <button class="secondary-btn" id="exportBtn" title="Dışa Aktar">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <button class="secondary-btn" id="exportBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
             <polyline points="17,8 12,3 7,8" />
             <line x1="12" y1="3" x2="12" y2="15" />
           </svg>
+          Dışa Aktar
         </button>
-        <button class="secondary-btn" id="importBtn" title="İçe Aktar">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <button class="secondary-btn" id="importBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
             <polyline points="7,10 12,15 17,10" />
             <line x1="12" y1="15" x2="12" y2="3" />
           </svg>
+          İçe Aktar
         </button>
         <input type="file" id="importFile" accept=".json" style="display: none;">
       </div>
     </div>
 
-    <!-- Stats - Bento Grid 2 Columns -->
+    <!-- Stats -->
     <div class="stats-bar">
       <div class="stat">
         <span class="stat-value" id="totalGroups">0</span>
@@ -84,20 +84,20 @@
       </div>
     </div>
 
-    <!-- Search - Bento Card -->
+    <!-- Search -->
     <div class="search-bar">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="11" cy="11" r="8" />
         <path d="M21 21l-4.35-4.35" />
       </svg>
-      <input type="text" id="searchInput" placeholder="Ara...">
+      <input type="text" id="searchInput" placeholder="Sekmelerde ara...">
     </div>
 
-    <!-- Tab Groups - Bento Cards -->
+    <!-- Groups -->
     <div class="groups-container" id="groupsContainer">
       <div class="empty-state" id="emptyState">
         <div class="empty-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <rect x="4" y="4" width="16" height="16" rx="3" />
             <line x1="8" y1="9" x2="16" y2="9" stroke-linecap="round" />
             <line x1="8" y1="13" x2="14" y2="13" stroke-linecap="round" />
@@ -114,7 +114,7 @@
         <div class="modal-header">
           <h3>Ayarlar</h3>
           <button class="close-btn" id="closeSettings">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
@@ -142,7 +142,7 @@
               <span class="toggle"></span>
             </label>
           </div>
-          <div class="setting-item danger">
+          <div class="setting-item">
             <button class="danger-btn" id="clearAllData">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="3,6 5,6 21,6" />

@@ -102,6 +102,14 @@
                     </svg>
                     Tema
                 </button>
+                <button class="sidebar-btn" id="dashboardSettings">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
+                    Ayarlar
+                </button>
             </div>
         </aside>
 
@@ -151,6 +159,47 @@
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Ayarlar</h3>
+                <button class="close-btn" id="closeSettingsModal">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <span>Kayıttan sonra sekmeleri kapat</span>
+                        <input type="checkbox" id="settingCloseAfterSave" checked>
+                        <span class="toggle"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <span>Pinlenmiş sekmeleri dahil et</span>
+                        <input type="checkbox" id="settingIncludePinned">
+                        <span class="toggle"></span>
+                    </label>
+                </div>
+                <div class="setting-item danger">
+                    <button class="danger-btn" id="clearAllDataBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="3,6 5,6 21,6" />
+                            <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+                        </svg>
+                        Tüm Verileri Sil
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Toast -->

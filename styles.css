@@ -1,70 +1,45 @@
 /* ==========================================
-   Stash - Popup Styles
-   Monochrome, Rounded, Bento Grid Design
+   Stash - Premium Popup Styles
+   Monochrome, Clean, Modern Design
    ========================================== */
 
 :root {
-  /* Monochrome Palette */
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #111111;
-  --bg-tertiary: #1a1a1a;
-  --bg-card: #141414;
-  --bg-hover: #1f1f1f;
-  --bg-active: #252525;
+  --bg-base: #0c0c0c;
+  --bg-card: #161616;
+  --bg-elevated: #1c1c1c;
+  --bg-hover: #242424;
 
   --text-primary: #ffffff;
-  --text-secondary: #888888;
-  --text-muted: #555555;
+  --text-secondary: #9a9a9a;
+  --text-muted: #5a5a5a;
 
-  --accent: #ffffff;
+  --border: #2a2a2a;
+  --border-light: #333333;
 
-  --border-color: #222222;
-  --border-hover: #333333;
-  --border-focus: #444444;
+  --danger: #ff4444;
 
-  --danger: #ff3b3b;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
 
-  /* Spacing */
-  --gap: 8px;
-  --padding-sm: 10px;
-  --padding-md: 14px;
-  --padding-lg: 18px;
-
-  /* Border Radius - EXTRA Rounded / Oval */
-  --radius-sm: 14px;
-  --radius-md: 18px;
-  --radius-lg: 22px;
-  --radius-xl: 28px;
-  --radius-full: 9999px;
-
-  /* Popup outer shell */
-  --app-radius: 24px;
-
-  /* Transitions */
-  --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 180ms ease;
 }
 
-/* Light Theme */
 .light-theme {
-  --bg-primary: #f5f5f5;
-  --bg-secondary: #ffffff;
-  --bg-tertiary: #ebebeb;
+  --bg-base: #f0f0f0;
   --bg-card: #ffffff;
-  --bg-hover: #e5e5e5;
-  --bg-active: #d5d5d5;
+  --bg-elevated: #f8f8f8;
+  --bg-hover: #ebebeb;
 
-  --text-primary: #0a0a0a;
+  --text-primary: #111111;
   --text-secondary: #666666;
   --text-muted: #999999;
 
-  --accent: #0a0a0a;
-
-  --border-color: #e0e0e0;
-  --border-hover: #d0d0d0;
-  --border-focus: #c0c0c0;
+  --border: #e0e0e0;
+  --border-light: #d5d5d5;
 }
 
-/* Reset */
 * {
   margin: 0;
   padding: 0;
@@ -72,45 +47,36 @@
 }
 
 body {
-  width: 380px;
-  height: 520px;
+  width: 340px;
+  min-height: 440px;
+  max-height: 540px;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: transparent;
+  background: var(--bg-base);
   color: var(--text-primary);
-  overflow: hidden;
 }
 
-/* App Container - OVAL Outer Shell */
 .app {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: var(--gap);
-  gap: var(--gap);
-  background: var(--bg-primary);
-  border-radius: var(--app-radius);
-  border: 1px solid var(--border-color);
-  overflow: hidden;
+  min-height: 440px;
+  max-height: 540px;
 }
 
-/* ==========================================
-   HEADER - Pill Shape
-   ========================================== */
-
+/* ===== HEADER ===== */
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: var(--padding-sm) var(--padding-md);
+  justify-content: space-between;
+  padding: 14px 16px;
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-full);
+  border-bottom: 1px solid var(--border);
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .logo {
@@ -120,20 +86,20 @@ body {
 }
 
 .logo svg {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
+  color: var(--text-primary);
 }
 
 .logo-text {
   font-size: 15px;
   font-weight: 700;
   letter-spacing: -0.3px;
-  color: var(--text-primary);
 }
 
 .header-right {
   display: flex;
-  gap: 4px;
+  gap: 6px;
 }
 
 .icon-btn {
@@ -142,9 +108,9 @@ body {
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   color: var(--text-secondary);
   cursor: pointer;
   transition: all var(--transition);
@@ -153,60 +119,59 @@ body {
 .icon-btn:hover {
   background: var(--bg-hover);
   color: var(--text-primary);
-  border-color: var(--border-hover);
+  border-color: var(--border-light);
 }
 
-/* ==========================================
-   ACTIONS - Rounded Cards
-   ========================================== */
-
+/* ===== MAIN ACTION ===== */
 .actions-bar {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: var(--gap);
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
 }
 
 .primary-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: var(--padding-md) var(--padding-lg);
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
   background: var(--text-primary);
   border: none;
-  border-radius: var(--radius-full);
-  color: var(--bg-primary);
+  border-radius: var(--radius-md);
+  color: var(--bg-base);
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: -0.2px;
   cursor: pointer;
   transition: all var(--transition);
 }
 
 .primary-btn:hover {
   opacity: 0.9;
-  transform: scale(0.98);
 }
 
 .primary-btn:active {
-  transform: scale(0.96);
+  transform: scale(0.98);
 }
 
 .action-buttons {
   display: flex;
-  gap: 6px;
+  gap: 8px;
+  margin-top: 10px;
 }
 
 .secondary-btn {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
+  gap: 6px;
+  padding: 10px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   color: var(--text-secondary);
+  font-size: 12px;
   cursor: pointer;
   transition: all var(--transition);
 }
@@ -214,64 +179,59 @@ body {
 .secondary-btn:hover {
   background: var(--bg-hover);
   color: var(--text-primary);
-  border-color: var(--border-hover);
 }
 
-/* ==========================================
-   STATS - 2 Oval Pills
-   ========================================== */
-
+/* ===== STATS ===== */
 .stats-bar {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--gap);
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--bg-base);
 }
 
 .stat {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: var(--padding-md);
+  padding: 14px;
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-xl);
-  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
 }
 
 .stat-value {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  line-height: 1;
   color: var(--text-primary);
 }
 
 .stat-label {
+  margin-top: 4px;
   font-size: 10px;
+  font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-top: 2px;
+  letter-spacing: 0.5px;
 }
 
-/* ==========================================
-   SEARCH - Pill Shape
-   ========================================== */
-
+/* ===== SEARCH ===== */
 .search-bar {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: var(--padding-sm) var(--padding-md);
+  gap: 8px;
+  margin: 0 16px;
+  padding: 10px 14px;
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   transition: all var(--transition);
 }
 
 .search-bar:focus-within {
-  border-color: var(--border-focus);
-  background: var(--bg-tertiary);
+  border-color: var(--border-light);
+  background: var(--bg-elevated);
 }
 
 .search-bar svg {
@@ -285,7 +245,6 @@ body {
   border: none;
   color: var(--text-primary);
   font-size: 13px;
-  font-weight: 500;
   outline: none;
 }
 
@@ -293,17 +252,11 @@ body {
   color: var(--text-muted);
 }
 
-/* ==========================================
-   GROUPS CONTAINER
-   ========================================== */
-
+/* ===== GROUPS CONTAINER ===== */
 .groups-container {
   flex: 1;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap);
-  padding-right: 4px;
+  padding: 12px 16px 16px;
 }
 
 .groups-container::-webkit-scrollbar {
@@ -315,42 +268,37 @@ body {
 }
 
 .groups-container::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: var(--radius-full);
+  background: var(--border);
+  border-radius: 4px;
 }
 
-.groups-container::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
-}
-
-/* Empty State */
+/* ===== EMPTY STATE ===== */
 .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: var(--padding-lg);
+  min-height: 160px;
   text-align: center;
 }
 
 .empty-icon {
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-xl);
-  margin-bottom: var(--padding-md);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   color: var(--text-muted);
+  margin-bottom: 12px;
 }
 
 .empty-state h3 {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
@@ -359,27 +307,25 @@ body {
   color: var(--text-muted);
 }
 
-/* ==========================================
-   TAB GROUP - Rounded Card
-   ========================================== */
-
+/* ===== TAB GROUP ===== */
 .tab-group {
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: 10px;
   overflow: hidden;
   transition: all var(--transition);
 }
 
 .tab-group:hover {
-  border-color: var(--border-hover);
+  border-color: var(--border-light);
 }
 
 .group-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--padding-sm) var(--padding-md);
+  padding: 12px;
   cursor: pointer;
   transition: background var(--transition);
 }
@@ -401,26 +347,25 @@ body {
   align-items: center;
   justify-content: center;
   background: var(--text-primary);
-  border-radius: var(--radius-md);
-  color: var(--bg-primary);
-  font-size: 13px;
+  border-radius: var(--radius-sm);
+  color: var(--bg-base);
+  font-size: 14px;
   font-weight: 700;
 }
 
 .group-details {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
 }
 
 .group-title {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--text-primary);
 }
 
 .group-meta {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-muted);
 }
 
@@ -441,8 +386,8 @@ body {
   justify-content: center;
   width: 28px;
   height: 28px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text-secondary);
   cursor: pointer;
@@ -452,7 +397,7 @@ body {
 .group-action-btn:hover {
   background: var(--text-primary);
   border-color: var(--text-primary);
-  color: var(--bg-primary);
+  color: var(--bg-base);
 }
 
 .group-action-btn.danger:hover {
@@ -461,9 +406,9 @@ body {
   color: white;
 }
 
-/* Tab List */
+/* ===== TAB LIST ===== */
 .tab-list {
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--border);
 }
 
 .tab-list.collapsed {
@@ -474,8 +419,8 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px var(--padding-md);
-  border-bottom: 1px solid var(--border-color);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
   cursor: pointer;
   transition: background var(--transition);
 }
@@ -502,9 +447,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-tertiary);
+  background: var(--bg-elevated);
   border-radius: 4px;
-  flex-shrink: 0;
 }
 
 .tab-favicon-placeholder svg {
@@ -519,16 +463,15 @@ body {
 }
 
 .tab-title {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
-  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .tab-url {
-  font-size: 9px;
+  font-size: 10px;
   color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
@@ -536,14 +479,14 @@ body {
 }
 
 .tab-delete {
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
   background: transparent;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: 4px;
   color: var(--text-muted);
   cursor: pointer;
   opacity: 0;
@@ -559,25 +502,18 @@ body {
   color: white;
 }
 
-/* ==========================================
-   MODAL - Rounded
-   ========================================== */
-
+/* ===== MODAL ===== */
 .modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(8px);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   visibility: hidden;
   transition: all var(--transition);
-  z-index: 1000;
+  z-index: 100;
 }
 
 .modal.active {
@@ -586,10 +522,9 @@ body {
 }
 
 .modal-content {
-  width: calc(100% - 24px);
-  max-width: 340px;
+  width: calc(100% - 32px);
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   transform: scale(0.95);
   transition: transform var(--transition);
@@ -603,8 +538,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--padding-md) var(--padding-lg);
-  border-bottom: 1px solid var(--border-color);
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
 }
 
 .modal-header h3 {
@@ -613,17 +548,16 @@ body {
 }
 
 .close-btn {
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   color: var(--text-secondary);
   cursor: pointer;
-  transition: all var(--transition);
 }
 
 .close-btn:hover {
@@ -633,19 +567,17 @@ body {
 }
 
 .modal-body {
-  padding: var(--padding-lg);
+  padding: 16px;
 }
 
-/* Settings */
 .setting-item {
-  margin-bottom: var(--padding-md);
+  margin-bottom: 14px;
 }
 
 .setting-item:last-child {
-  margin-bottom: 0;
-  margin-top: var(--padding-lg);
-  padding-top: var(--padding-lg);
-  border-top: 1px solid var(--border-color);
+  margin: 16px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
 }
 
 .setting-label {
@@ -656,9 +588,8 @@ body {
 }
 
 .setting-label span:first-child {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
-  color: var(--text-primary);
 }
 
 .setting-label input {
@@ -667,11 +598,11 @@ body {
 
 .toggle {
   position: relative;
-  width: 44px;
-  height: 26px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-full);
+  width: 42px;
+  height: 24px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
   transition: all var(--transition);
 }
 
@@ -680,8 +611,8 @@ body {
   position: absolute;
   top: 3px;
   left: 3px;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   background: var(--text-muted);
   border-radius: 50%;
   transition: all var(--transition);
@@ -694,7 +625,7 @@ body {
 
 .setting-label input:checked+.toggle::after {
   left: 21px;
-  background: var(--bg-primary);
+  background: var(--bg-base);
 }
 
 .danger-btn {
@@ -703,10 +634,10 @@ body {
   justify-content: center;
   gap: 6px;
   width: 100%;
-  padding: var(--padding-sm);
+  padding: 10px;
   background: transparent;
   border: 1px solid var(--danger);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   color: var(--danger);
   font-size: 12px;
   font-weight: 500;
@@ -719,18 +650,18 @@ body {
   color: white;
 }
 
-/* Toast - Pill */
+/* ===== TOAST ===== */
 .toast {
   position: fixed;
-  bottom: 12px;
+  bottom: 16px;
   left: 50%;
-  transform: translateX(-50%) translateY(100px);
+  transform: translateX(-50%) translateY(60px);
   background: var(--text-primary);
-  border-radius: var(--radius-full);
-  padding: var(--padding-sm) var(--padding-lg);
+  border-radius: var(--radius-md);
+  padding: 10px 20px;
   opacity: 0;
   transition: all var(--transition);
-  z-index: 1001;
+  z-index: 200;
 }
 
 .toast.active {
@@ -741,10 +672,14 @@ body {
 .toast span {
   font-size: 12px;
   font-weight: 500;
-  color: var(--bg-primary);
+  color: var(--bg-base);
 }
 
-/* Animations */
+/* Animation */
+.tab-group {
+  animation: fadeIn 200ms ease;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -755,8 +690,4 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.tab-group {
-  animation: fadeIn 200ms ease;
 }
