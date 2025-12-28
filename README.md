@@ -4,7 +4,7 @@
 
 # Stash
 
-**Sekmelerini kaydet. Aklını özgür bırak.**
+**Save your tabs. Free your mind.**
 
 [![Version](https://img.shields.io/badge/version-1.0.0-0969da?style=for-the-badge&labelColor=1a1a2e)](https://github.com/sudoeren/stash)
 [![Manifest](https://img.shields.io/badge/manifest-v3-00b894?style=for-the-badge&labelColor=1a1a2e)](https://developer.chrome.com/docs/extensions/mv3/)
@@ -12,7 +12,7 @@
 
 <br>
 
-*Onlarca sekmeyle boğuşmak yerine, hepsini kaydet ve ihtiyaç duyduğunda geri yükle.*
+*Stop drowning in tabs. Save them all and restore when you need them.*
 
 <br>
 
@@ -22,32 +22,32 @@
 
 <br>
 
-## ✨ Özellikler
+## ✨ Features
 
 <table>
 <tr>
 <td width="50%">
 
-### ⚡ Tek Tıkla Kaydet
-Tüm açık sekmeleri anında kaydedin
+### ⚡ One-Click Save
+Save all open tabs instantly
 
-### 📂 Akıllı Gruplama
-Otomatik tarih ve saat bazlı gruplandırma
+### 📂 Smart Grouping
+Automatic date and time-based organization
 
-### 🔍 Hızlı Arama
-Kayıtlı sekmeler arasında anlık arama
+### 🔍 Quick Search
+Instant search across saved tabs
 
 </td>
 <td width="50%">
 
-### ⭐ Favoriler
-Önemli grupları favorilere ekleyin
+### ⭐ Favorites
+Mark important groups as favorites
 
-### 🌓 Tema Desteği
-Açık ve karanlık tema seçenekleri
+### 🌓 Theme Support
+Light and dark theme options
 
-### 💾 Yedekleme
-JSON formatında içe/dışa aktarma
+### 💾 Backup
+Import/export in JSON format
 
 </td>
 </tr>
@@ -59,13 +59,13 @@ JSON formatında içe/dışa aktarma
 
 <br>
 
-## 🚀 Kurulum
+## 🚀 Installation
 
 ```
-1. chrome://extensions adresine git
-2. Geliştirici modu'nu aç (sağ üst köşe)
-3. Paketlenmemiş öğe yükle → Bu klasörü seç
-4. Tamamdır! 🎉
+1. Go to chrome://extensions
+2. Enable Developer mode (top right)
+3. Click Load unpacked → Select this folder
+4. Done! 🎉
 ```
 
 <br>
@@ -74,21 +74,21 @@ JSON formatında içe/dışa aktarma
 
 <br>
 
-## 📖 Kullanım
+## 📖 Usage
 
 <table>
 <tr>
 <td align="center" width="33%">
 <h3>🖱️ Popup</h3>
-<p>Araç çubuğundaki ikona tıkla<br><strong>Tümünü Kaydet</strong></p>
+<p>Click the icon in toolbar<br><strong>Save All</strong></p>
 </td>
 <td align="center" width="33%">
-<h3>⌨️ Klavye</h3>
-<p>Tek tuşla kaydet<br><code>Alt + Shift + S</code></p>
+<h3>⌨️ Keyboard</h3>
+<p>Save with one key<br><code>Alt + Shift + S</code></p>
 </td>
 <td align="center" width="33%">
-<h3>🖱️ Sağ Tık</h3>
-<p>Herhangi bir sayfada<br><strong>Stash menüsünü</strong> kullan</p>
+<h3>🖱️ Right Click</h3>
+<p>On any page use the<br><strong>Stash menu</strong></p>
 </td>
 </tr>
 </table>
@@ -99,7 +99,7 @@ JSON formatında içe/dışa aktarma
 
 <br>
 
-## 🛠️ Teknolojiler
+## 🛠️ Tech Stack
 
 <p align="center">
 <img src="https://img.shields.io/badge/Chrome_Extension-Manifest_V3-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Chrome">
@@ -114,7 +114,7 @@ JSON formatında içe/dışa aktarma
 
 <div align="center">
 
-## 👨‍💻 Geliştirici
+## 👨‍💻 Developer
 
 **Eren Çakar**
 
@@ -126,7 +126,7 @@ JSON formatında içe/dışa aktarma
 
 <br>
 
-### 📄 Lisans
+### 📄 License
 
 MIT © 2025 Eren Çakar
 
@@ -138,7 +138,7 @@ MIT © 2025 Eren Çakar
 
 <sub>
 
-**Sekmelerini düzenli tut, kafanı rahat tut.** ✨
+**Keep your tabs organized, keep your mind clear.** ✨
 
 </sub>
 
