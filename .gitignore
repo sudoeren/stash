@@ -30,6 +30,7 @@ Desktop.ini
 .project
 .settings/
 .classpath
+docs
 
 # Yerel Değişkenler / Gizli Dosyalar
 .env
