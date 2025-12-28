@@ -1,145 +1,60 @@
 <div align="center">
 
-<img src="icons/icon128.png" alt="Stash" width="100" height="100">
+<img src="icons/icon128.png" alt="Stash" width="80">
 
 # Stash
 
 **Save your tabs. Free your mind.**
 
-[![Version](https://img.shields.io/badge/version-1.0.0-0969da?style=for-the-badge&labelColor=1a1a2e)](https://github.com/sudoeren/stash)
-[![Manifest](https://img.shields.io/badge/manifest-v3-00b894?style=for-the-badge&labelColor=1a1a2e)](https://developer.chrome.com/docs/extensions/mv3/)
-[![License](https://img.shields.io/badge/license-MIT-a855f7?style=for-the-badge&labelColor=1a1a2e)](LICENSE)
-
-<br>
-
-*Stop drowning in tabs. Save them all and restore when you need them.*
-
-<br>
+[![Version](https://img.shields.io/badge/v1.0.0-blue?style=flat-square)](https://github.com/sudoeren/stash)
+[![Manifest V3](https://img.shields.io/badge/MV3-green?style=flat-square)](https://developer.chrome.com/docs/extensions/mv3/)
+[![MIT](https://img.shields.io/badge/MIT-purple?style=flat-square)](LICENSE)
 
 </div>
 
 ---
 
-<br>
+## Features
 
-## ✨ Features
-
-<table>
-<tr>
-<td width="50%">
-
-### ⚡ One-Click Save
-Save all open tabs instantly
-
-### 📂 Smart Grouping
-Automatic date and time-based organization
-
-### 🔍 Quick Search
-Instant search across saved tabs
-
-</td>
-<td width="50%">
-
-### ⭐ Favorites
-Mark important groups as favorites
-
-### 🌓 Theme Support
-Light and dark theme options
-
-### 💾 Backup
-Import/export in JSON format
-
-</td>
-</tr>
-</table>
-
-<br>
+⚡ **One-Click Save** — Save all tabs instantly  
+📂 **Smart Groups** — Auto date/time organization  
+🔍 **Quick Search** — Find any saved tab  
+⭐ **Favorites** — Mark important groups  
+🌓 **Themes** — Light & dark mode  
+💾 **Backup** — JSON import/export  
+⌨️ **Shortcut** — `Alt+Shift+S`
 
 ---
 
-<br>
+## Install
 
-## 🚀 Installation
-
-```
-1. Go to chrome://extensions
-2. Enable Developer mode (top right)
-3. Click Load unpacked → Select this folder
-4. Done! 🎉
-```
-
-<br>
+1. Go to `chrome://extensions`
+2. Enable **Developer mode**
+3. Click **Load unpacked** → Select folder
+4. Done 🎉
 
 ---
 
-<br>
+## Usage
 
-## 📖 Usage
-
-<table>
-<tr>
-<td align="center" width="33%">
-<h3>🖱️ Popup</h3>
-<p>Click the icon in toolbar<br><strong>Save All</strong></p>
-</td>
-<td align="center" width="33%">
-<h3>⌨️ Keyboard</h3>
-<p>Save with one key<br><code>Alt + Shift + S</code></p>
-</td>
-<td align="center" width="33%">
-<h3>🖱️ Right Click</h3>
-<p>On any page use the<br><strong>Stash menu</strong></p>
-</td>
-</tr>
-</table>
-
-<br>
+| Method | Action |
+|--------|--------|
+| **Popup** | Click icon → Save All |
+| **Keyboard** | `Alt + Shift + S` |
+| **Right Click** | Use Stash menu |
 
 ---
 
-<br>
+## Tech
 
-## 🛠️ Tech Stack
-
-<p align="center">
-<img src="https://img.shields.io/badge/Chrome_Extension-Manifest_V3-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Chrome">
-<img src="https://img.shields.io/badge/JavaScript-Vanilla-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
-</p>
-
-<br>
+`Chrome Extension` `Manifest V3` `Vanilla JS` `Storage API`
 
 ---
-
-<br>
 
 <div align="center">
 
-## 👨‍💻 Developer
+**Eren Çakar** · [@sudoeren](https://github.com/sudoeren)
 
-**Eren Çakar**
-
-[![GitHub](https://img.shields.io/badge/@sudoeren-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sudoeren)
-
-<br>
-
----
-
-<br>
-
-### 📄 License
-
-MIT © 2025 Eren Çakar
-
-<br>
-
----
-
-<br>
-
-<sub>
-
-**Keep your tabs organized, keep your mind clear.** ✨
-
-</sub>
+MIT © 2025
 
 </div>
