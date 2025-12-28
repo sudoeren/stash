@@ -182,6 +182,13 @@ function setupEventListeners() {
 
     // Search
     elements.dashboardSearch.addEventListener('input', handleSearch);
+
+    // Global click handler to close dropdowns
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.tag-dropdown') && !e.target.closest('.add-tag')) {
+            document.querySelectorAll('.tag-dropdown').forEach(dd => dd.style.display = 'none');
+        }
+    });
 }
 
 // Tag Filter
@@ -474,11 +481,6 @@ function createGroupCard(group) {
             const tag = btn.dataset.tag;
             await removeTag(group.id, tag);
         });
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', () => {
-        tagDropdown.style.display = 'none';
     });
 
     favoriteBtn.addEventListener('click', () => toggleFavorite(group.id));
