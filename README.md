@@ -1,77 +1,99 @@
-# Stash
+<p align="center">
+  <img src="icons/icon128.png" alt="Stash Logo" width="80" height="80">
+</p>
 
-**Sekmelerinizi tek tıkla kaydedin ve hatırlayın.**
+<h1 align="center">Stash</h1>
 
-Minimal, hızlı ve modern bir sekme yöneticisi.
+<p align="center">
+  <strong>Sekmelerini kaydet. Aklını özgür bırak.</strong>
+</p>
 
----
-
-## ✨ Özellikler
-
-- 🚀 **Tek Tıkla Kaydetme** - Tüm açık sekmeleri anında kaydedin
-- 📂 **Otomatik Gruplama** - Sekmeler tarih/saate göre gruplandırılır
-- 🔍 **Hızlı Arama** - Kaydedilen sekmeler arasında anlık arama
-- ⭐ **Favoriler** - Önemli grupları favorilere ekleyin
-- 💾 **İçe/Dışa Aktarma** - JSON formatında yedekleme
-- 🌙 **Karanlık/Açık Tema** - Göz yormayan tasarım
-- ⌨️ **Klavye Kısayolu** - `Alt+Shift+S` ile hızlı kaydetme
-- � **Tam Ekran Dashboard** - Geniş görünüm için dashboard
+<p align="center">
+  <img src="https://img.shields.io/badge/version-1.0.0-blue?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/manifest-v3-green?style=flat-square" alt="Manifest V3">
+  <img src="https://img.shields.io/badge/license-MIT-purple?style=flat-square" alt="MIT License">
+</p>
 
 ---
 
-## 🛠️ Kurulum
+## Ne İşe Yarar?
 
-1. Chrome'da `chrome://extensions` adresine gidin
-2. **"Geliştirici modu"** nu açın (sağ üst)
-3. **"Paketlenmemiş öğe yükle"** butonuna tıklayın
-4. Bu klasörü seçin
-5. Stash araç çubuğunda görünecek! 🎉
+Stash, açık sekmelerinizi tek tıkla kaydeden minimal bir Chrome uzantısıdır. Onlarca sekmeyle boğuşmak yerine, hepsini kaydedin ve ihtiyaç duyduğunuzda geri yükleyin.
 
 ---
 
-## 📖 Kullanım
+## Özellikler
+
+| | |
+|---|---|
+| ⚡ **Tek Tıkla Kaydet** | Tüm sekmeleri anında kaydedin |
+| 📂 **Akıllı Gruplama** | Otomatik tarih/saat bazlı gruplar |
+| 🔍 **Hızlı Arama** | Kayıtlı sekmeler arasında anlık arama |
+| ⭐ **Favoriler** | Önemli grupları işaretleyin |
+| 🌓 **Tema Desteği** | Açık ve karanlık tema |
+| 💾 **Yedekleme** | JSON ile içe/dışa aktarma |
+| ⌨️ **Kısayol** | `Alt+Shift+S` ile anında kaydet |
+
+---
+
+## Kurulum
+
+1. `chrome://extensions` adresine git
+2. **Geliştirici modu**'nu aç (sağ üst)
+3. **Paketlenmemiş öğe yükle** > Bu klasörü seç
+4. Hazır! 🎉
+
+---
+
+## Kullanım
 
 ### Popup
-- Extension ikonuna tıklayarak popup'ı açın
-- "Tümünü Kaydet" ile tüm sekmeleri kaydedin
-- Tam ekran için genişletme ikonuna tıklayın
+Araç çubuğundaki Stash ikonuna tıkla → **Tümünü Kaydet**
 
-### Klavye Kısayolu
-- `Alt+Shift+S` - Tüm sekmeleri kaydet
+### Klavye
+`Alt + Shift + S` → Tek tuşla kaydet
 
-### Sağ Tık Menüsü
-- "Bu sekmeyi Stash'e kaydet"
-- "Tüm sekmeleri Stash'e kaydet"
-- "Stash'i aç" (Dashboard)
+### Sağ Tık
+Herhangi bir sayfada sağ tıkla → Stash menüsünü kullan
 
 ---
 
-## 📁 Dosyalar
+## Ekran Görüntüleri
 
-```
-ext/
-├── manifest.json      # Extension yapılandırması
-├── popup.html/js/css  # Popup arayüzü
-├── dashboard.html/js/css  # Tam ekran dashboard
-├── background.js      # Arka plan işlemleri
-└── icons/             # Uygulama ikonları
-```
+<p align="center">
+  <i>Yakında eklenecek...</i>
+</p>
 
 ---
 
-## 💡 Eklenebilecek Özellikler
+## Teknolojiler
 
-1. **Etiketleme Sistemi** - Gruplara etiket ekleyerek kategorize etme
-2. **Sekme Zincirleri** - Birbiriyle ilişkili sekmeleri otomatik gruplama
-3. **Zamanlayıcı** - Belirli zamanlarda otomatik kaydetme
-4. **Senkronizasyon** - Chrome sync ile cihazlar arası senkron
-5. **İstatistikler** - En çok ziyaret edilen siteler, kullanım analizi
-6. **Notlar** - Gruplara not ekleme özelliği
-7. **Kısayol Tuşları** - Özelleştirilebilir klavye kısayolları
-8. **Paylaşım** - Sekme gruplarını link olarak paylaşma
-9. **Otomatik Temizlik** - Eski grupları otomatik silme
-10. **Arama Geçmişi** - Son aramaları hatırlama
+- Chrome Extension Manifest V3
+- Vanilla JavaScript
+- Chrome Storage API
+- Context Menus API
 
 ---
 
-**Stash** ile sekmelerinizi düzenli tutun! �
+## Geliştirici
+
+<table>
+  <tr>
+    <td align="center">
+      <strong>Eren Çakar</strong><br>
+      <a href="https://github.com/sudoeren">@sudoeren</a>
+    </td>
+  </tr>
+</table>
+
+---
+
+## Lisans
+
+MIT © 2024 Eren Çakar
+
+---
+
+<p align="center">
+  <sub>Sekmelerini düzenli tut, kafanı rahat tut.</sub>
+</p>
