@@ -3,7 +3,6 @@
     "name": "Stash",
     "version": "1.0.0",
     "description": "Save your tabs with one click. Minimal and fast.",
-    "default_locale": "en",
     "permissions": [
         "tabs",
         "storage",
