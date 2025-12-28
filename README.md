@@ -90,7 +90,7 @@ Herhangi bir sayfada sağ tıkla → Stash menüsünü kullan
 
 ## Lisans
 
-MIT © 2024 Eren Çakar
+MIT © 2025 Eren Çakar
 
 ---
 
