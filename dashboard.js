@@ -120,7 +120,7 @@ function applyLanguage() {
         el.title = t(key);
     });
 
-    // Update view title
+    // Update View Title & Header Info
     updateViewTitle();
 }
 
@@ -198,28 +198,36 @@ function renderTagFilter() {
     const predefinedTags = getPredefinedTags();
     const usedTags = getUsedTags();
 
-    elements.tagFilterContainer.innerHTML = `
-        <button class="tag-filter-btn ${!currentTagFilter ? 'active' : ''}" data-tag="">
-            ${t('allGroups')}
-        </button>
-        ${predefinedTags.map(tag => {
+    // If no tags are being used, hide the filter section completely
+    if (Object.keys(usedTags).length === 0) {
+        elements.tagFilterContainer.innerHTML = '';
+        elements.tagFilterContainer.style.display = 'none';
+        return;
+    }
+
+    elements.tagFilterContainer.style.display = 'flex';
+    elements.tagFilterContainer.innerHTML = predefinedTags.map(tag => {
         const count = usedTags[tag] || 0;
         if (count === 0) return '';
         return `
-                <button class="tag-filter-btn ${currentTagFilter === tag ? 'active' : ''}" 
-                        data-tag="${tag}" 
-                        style="--tag-color: ${getTagColor(tag)}">
-                    <span class="tag-dot" style="background: ${getTagColor(tag)}"></span>
-                    ${t(tag)} (${count})
-                </button>
-            `;
-    }).join('')}
-    `;
+            <button class="tag-filter-btn ${currentTagFilter === tag ? 'active' : ''}" 
+                    data-tag="${tag}" 
+                    style="--tag-color: ${getTagColor(tag)}">
+                <span class="tag-dot" style="background: ${getTagColor(tag)}"></span>
+                ${t(tag)} (${count})
+            </button>
+        `;
+    }).join('');
 
-    // Add event listeners
+    // Add event listeners with toggle logic
     elements.tagFilterContainer.querySelectorAll('.tag-filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            currentTagFilter = btn.dataset.tag || null;
+            const clickedTag = btn.dataset.tag;
+            if (currentTagFilter === clickedTag) {
+                currentTagFilter = null; // Toggle off
+            } else {
+                currentTagFilter = clickedTag;
+            }
             renderTagFilter();
             renderGroups();
         });
@@ -325,54 +333,98 @@ async function saveAllTabs() {
     }
 }
 
-// Render Groups
+// Render Groups (Masonry Grid)
 function renderGroups(searchQuery = '') {
-    let groups = [...tabGroups];
+    const container = elements.contentArea;
+    if (!container) return;
 
-    // Filter by view
-    if (currentView === 'recent') {
-        const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
-        groups = groups.filter(g => new Date(g.createdAt).getTime() > oneDayAgo);
-    } else if (currentView === 'favorites') {
-        groups = groups.filter(g => g.favorite);
+    // 1. Filter by Search
+    let groups = tabGroups;
+    if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        groups = tabGroups.map(group => {
+            // Check if group matches
+            const groupMatches = group.tabs.some(tab =>
+                (tab.title && tab.title.toLowerCase().includes(query)) ||
+                (tab.url && tab.url.toLowerCase().includes(query))
+            ) || (group.tags && group.tags.some(tag => tag.toLowerCase().includes(query)));
+
+            if (groupMatches) return group;
+            return null;
+        }).filter(g => g !== null);
     }
 
-    // Filter by tag
+    // 2. Filter by View (Favorites/Recent)
+    if (currentView === 'favorites') {
+        groups = groups.filter(g => g.favorite);
+    }
+    // Recent is just default sort, but if we had specific logic:
+    // else if (currentView === 'recent') { ... } 
+
+    // 3. Filter by Tag
     if (currentTagFilter) {
         groups = groups.filter(g => g.tags && g.tags.includes(currentTagFilter));
     }
 
-    // Filter by search
-    if (searchQuery) {
-        groups = groups.map(group => ({
-            ...group,
-            tabs: group.tabs.filter(tab =>
-                tab.title.toLowerCase().includes(searchQuery) ||
-                tab.url.toLowerCase().includes(searchQuery)
-            )
-        })).filter(group => group.tabs.length > 0);
-    }
+    // Clear Container
+    container.innerHTML = '';
 
-    // Update header count
-    const totalTabs = groups.reduce((sum, g) => sum + g.tabs.length, 0);
-    elements.headerTabCount.textContent = `${totalTabs} ${t('tabsCount')}`;
-
-    // Clear content
-    const existingCards = elements.contentArea.querySelectorAll('.group-card');
-    existingCards.forEach(card => card.remove());
-
+    // Empty State Handling
     if (groups.length === 0) {
-        elements.dashboardEmpty.style.display = 'flex';
+        const emptyWrapper = document.createElement('div');
+        emptyWrapper.className = 'empty-state-wrapper';
+
+        let emptyTitle = t('noTabsYet');
+        let emptyDesc = t('noTabsDescription');
+        let emptyIcon = `
+             <div class="graphic-circle"></div>
+             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                 <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                 <line x1="8" y1="21" x2="16" y2="21" />
+                 <line x1="12" y1="17" x2="12" y2="21" />
+             </svg>
+        `;
+
+        // Special "Sweet" Animation for Favorites
+        if (currentView === 'favorites') {
+            emptyTitle = "No Favorites Yet";
+            emptyDesc = "Mark items as favorite to see them here.";
+            emptyIcon = `
+                <div class="graphic-circle" style="border-color: var(--danger); opacity: 0.3;"></div>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.5" style="animation: heartbeat 1.5s ease-in-out infinite;">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <style>
+                    @keyframes heartbeat {
+                        0% { transform: scale(1); }
+                        15% { transform: scale(1.15); }
+                        30% { transform: scale(1); }
+                        45% { transform: scale(1.15); }
+                        60% { transform: scale(1); }
+                        100% { transform: scale(1); }
+                    }
+                </style>
+             `;
+        } else if (searchQuery) {
+            emptyTitle = "No matches found";
+            emptyDesc = "Try a different search term";
+        }
+
+        emptyWrapper.innerHTML = `
+            <div class="empty-graphic">
+                ${emptyIcon}
+            </div>
+            <h2>${emptyTitle}</h2>
+            <p>${emptyDesc}</p>
+        `;
+        container.appendChild(emptyWrapper);
         return;
     }
 
-    elements.dashboardEmpty.style.display = 'none';
-
-    // Render cards
-    groups.forEach((group, index) => {
+    // Render Groups
+    groups.forEach(group => {
         const card = createGroupCard(group);
-        card.style.animationDelay = `${index * 50}ms`;
-        elements.contentArea.appendChild(card);
+        container.appendChild(card);
     });
 }
 
