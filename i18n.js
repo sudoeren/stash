@@ -85,7 +85,10 @@ const translations = {
         other: 'Other',
         filterByTag: 'Filter by tag',
         allGroups: 'All Groups',
-        noTags: 'No tags'
+        noTags: 'No tags',
+
+        // Drag and Drop
+        dragToReorder: 'Drag to reorder'
     },
 
     tr: {
@@ -170,7 +173,10 @@ const translations = {
         other: 'Diğer',
         filterByTag: 'Etikete göre filtrele',
         allGroups: 'Tüm Gruplar',
-        noTags: 'Etiket yok'
+        noTags: 'Etiket yok',
+
+        // Drag and Drop
+        dragToReorder: 'Sıralamak için sürükle'
     }
 };
 

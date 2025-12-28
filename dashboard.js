@@ -503,6 +503,9 @@ function createGroupCard(group) {
         });
     });
 
+    // Setup drag and drop
+    setupDragAndDrop(card, group);
+
     return card;
 }
 
@@ -743,3 +746,247 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
+
+// ==========================================
+// DRAG AND DROP SYSTEM
+// ==========================================
+
+let draggedElement = null;
+let draggedType = null; // 'group' or 'tab'
+let draggedGroupId = null;
+let draggedTabId = null;
+let dragPlaceholder = null;
+
+function setupDragAndDrop(card, group) {
+    // Make the card draggable for group reordering
+    const cardHeader = card.querySelector('.group-card-header');
+
+    // Add drag handle
+    const dragHandle = document.createElement('div');
+    dragHandle.className = 'drag-handle';
+    dragHandle.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="5" r="1"/>
+            <circle cx="9" cy="12" r="1"/>
+            <circle cx="9" cy="19" r="1"/>
+            <circle cx="15" cy="5" r="1"/>
+            <circle cx="15" cy="12" r="1"/>
+            <circle cx="15" cy="19" r="1"/>
+        </svg>
+    `;
+    dragHandle.title = t('dragToReorder') || 'Drag to reorder';
+    cardHeader.querySelector('.group-card-info').prepend(dragHandle);
+
+    // Group drag events
+    dragHandle.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        startGroupDrag(card, group.id, e);
+    });
+
+    // Tab drag events
+    const tabItems = card.querySelectorAll('.card-tab-item');
+    tabItems.forEach(tabItem => {
+        tabItem.draggable = true;
+        tabItem.addEventListener('dragstart', (e) => {
+            draggedElement = tabItem;
+            draggedType = 'tab';
+            draggedGroupId = group.id;
+            draggedTabId = tabItem.dataset.tabId;
+            tabItem.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', tabItem.dataset.tabId);
+        });
+
+        tabItem.addEventListener('dragend', () => {
+            tabItem.classList.remove('dragging');
+            draggedElement = null;
+            draggedType = null;
+            draggedGroupId = null;
+            draggedTabId = null;
+            removeDragPlaceholder();
+        });
+
+        tabItem.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            if (draggedType !== 'tab') return;
+
+            const afterElement = getDragAfterElement(tabItem.parentElement, e.clientY);
+            if (afterElement !== tabItem && afterElement !== draggedElement) {
+                showDragPlaceholder(tabItem.parentElement, afterElement, 'tab');
+            }
+        });
+    });
+
+    // Tab drop zone
+    const tabsContainer = card.querySelector('.group-card-tabs');
+    tabsContainer.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        if (draggedType !== 'tab') return;
+    });
+
+    tabsContainer.addEventListener('drop', async (e) => {
+        e.preventDefault();
+        if (draggedType !== 'tab' || !draggedTabId) return;
+
+        const targetGroupId = group.id;
+        const afterElement = getDragAfterElement(tabsContainer, e.clientY);
+
+        await moveTab(draggedGroupId, targetGroupId, draggedTabId, afterElement?.dataset?.tabId);
+        removeDragPlaceholder();
+    });
+}
+
+function startGroupDrag(card, groupId, e) {
+    draggedElement = card;
+    draggedType = 'group';
+    draggedGroupId = groupId;
+    card.classList.add('dragging');
+
+    const startY = e.clientY;
+    const startX = e.clientX;
+    const rect = card.getBoundingClientRect();
+    const offsetY = startY - rect.top;
+    const offsetX = startX - rect.left;
+
+    // Create clone for dragging
+    const clone = card.cloneNode(true);
+    clone.className = 'group-card drag-clone';
+    clone.style.width = rect.width + 'px';
+    clone.style.height = rect.height + 'px';
+    clone.style.position = 'fixed';
+    clone.style.zIndex = '1000';
+    clone.style.pointerEvents = 'none';
+    clone.style.opacity = '0.9';
+    document.body.appendChild(clone);
+
+    function moveClone(e) {
+        clone.style.top = (e.clientY - offsetY) + 'px';
+        clone.style.left = (e.clientX - offsetX) + 'px';
+
+        // Find drop position
+        const cards = [...elements.contentArea.querySelectorAll('.group-card:not(.dragging):not(.drag-clone)')];
+        let afterCard = null;
+
+        for (const c of cards) {
+            const box = c.getBoundingClientRect();
+            const centerY = box.top + box.height / 2;
+            if (e.clientY < centerY) {
+                afterCard = c;
+                break;
+            }
+        }
+
+        showDragPlaceholder(elements.contentArea, afterCard, 'group');
+    }
+
+    async function endGroupDrag(e) {
+        document.removeEventListener('mousemove', moveClone);
+        document.removeEventListener('mouseup', endGroupDrag);
+
+        clone.remove();
+        card.classList.remove('dragging');
+
+        // Find new position
+        const cards = [...elements.contentArea.querySelectorAll('.group-card:not(.dragging):not(.drag-placeholder)')];
+        let newIndex = cards.length;
+
+        for (let i = 0; i < cards.length; i++) {
+            const box = cards[i].getBoundingClientRect();
+            if (e.clientY < box.top + box.height / 2) {
+                newIndex = i;
+                break;
+            }
+        }
+
+        await reorderGroup(groupId, newIndex);
+        removeDragPlaceholder();
+
+        draggedElement = null;
+        draggedType = null;
+        draggedGroupId = null;
+    }
+
+    document.addEventListener('mousemove', moveClone);
+    document.addEventListener('mouseup', endGroupDrag);
+
+    moveClone(e);
+}
+
+function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('.card-tab-item:not(.dragging)')];
+
+    return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+
+        if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+        } else {
+            return closest;
+        }
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
+function showDragPlaceholder(container, beforeElement, type) {
+    removeDragPlaceholder();
+
+    dragPlaceholder = document.createElement('div');
+    dragPlaceholder.className = `drag-placeholder ${type}-placeholder`;
+
+    if (beforeElement) {
+        container.insertBefore(dragPlaceholder, beforeElement);
+    } else {
+        container.appendChild(dragPlaceholder);
+    }
+}
+
+function removeDragPlaceholder() {
+    if (dragPlaceholder) {
+        dragPlaceholder.remove();
+        dragPlaceholder = null;
+    }
+}
+
+async function moveTab(fromGroupId, toGroupId, tabId, beforeTabId) {
+    const fromGroup = tabGroups.find(g => g.id === fromGroupId);
+    const toGroup = tabGroups.find(g => g.id === toGroupId);
+
+    if (!fromGroup || !toGroup) return;
+
+    const tabIndex = fromGroup.tabs.findIndex(t => t.id === tabId);
+    if (tabIndex === -1) return;
+
+    const [tab] = fromGroup.tabs.splice(tabIndex, 1);
+
+    if (beforeTabId) {
+        const beforeIndex = toGroup.tabs.findIndex(t => t.id === beforeTabId);
+        toGroup.tabs.splice(beforeIndex, 0, tab);
+    } else {
+        toGroup.tabs.push(tab);
+    }
+
+    // Remove empty groups
+    if (fromGroup.tabs.length === 0) {
+        tabGroups = tabGroups.filter(g => g.id !== fromGroupId);
+    }
+
+    await saveTabGroups();
+    renderTagFilter();
+    renderGroups();
+    updateStats();
+}
+
+async function reorderGroup(groupId, newIndex) {
+    const currentIndex = tabGroups.findIndex(g => g.id === groupId);
+    if (currentIndex === -1 || currentIndex === newIndex) return;
+
+    const [group] = tabGroups.splice(currentIndex, 1);
+
+    // Adjust index if needed
+    const adjustedIndex = newIndex > currentIndex ? newIndex - 1 : newIndex;
+    tabGroups.splice(adjustedIndex, 0, group);
+
+    await saveTabGroups();
+    renderGroups();
+}
+

@@ -991,6 +991,75 @@ body {
 }
 
 /* ==========================================
+   DRAG AND DROP
+   ========================================== */
+
+.drag-handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 36px;
+    color: var(--text-muted);
+    cursor: grab;
+    opacity: 0;
+    transition: all var(--transition);
+    flex-shrink: 0;
+    margin-right: 4px;
+}
+
+.group-card:hover .drag-handle {
+    opacity: 1;
+}
+
+.drag-handle:hover {
+    color: var(--text-secondary);
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.group-card.dragging {
+    opacity: 0.4;
+}
+
+.card-tab-item.dragging {
+    opacity: 0.4;
+}
+
+.card-tab-item {
+    cursor: pointer;
+}
+
+.card-tab-item:hover {
+    cursor: grab;
+}
+
+.drag-placeholder {
+    background: var(--border-color);
+    border-radius: var(--radius-md);
+    border: 2px dashed var(--border-hover);
+    transition: all var(--transition);
+}
+
+.group-placeholder {
+    height: 120px;
+    margin-bottom: var(--gap-lg);
+}
+
+.tab-placeholder {
+    height: 48px;
+    margin: 4px 0;
+}
+
+.drag-clone {
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+    transform: rotate(2deg);
+    border-color: var(--text-primary) !important;
+}
+
+/* ==========================================
    RESPONSIVE
    ========================================== */
 
