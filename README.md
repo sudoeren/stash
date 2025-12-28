@@ -58,14 +58,6 @@ Herhangi bir sayfada sağ tıkla → Stash menüsünü kullan
 
 ---
 
-## Ekran Görüntüleri
-
-<p align="center">
-  <i>Yakında eklenecek...</i>
-</p>
-
----
-
 ## Teknolojiler
 
 - Chrome Extension Manifest V3
