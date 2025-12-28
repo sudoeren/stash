@@ -402,10 +402,11 @@ body {
    ========================================== */
 
 .group-card {
+    position: relative;
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-xl);
-    overflow: hidden;
+    overflow: visible;
     transition: all var(--transition);
     animation: fadeIn 300ms ease;
 }
@@ -939,10 +940,9 @@ body {
 
 .tag-dropdown {
     position: absolute;
-    top: 100%;
-    right: 0;
-    z-index: 100;
-    margin-top: 4px;
+    top: 60px;
+    right: 20px;
+    z-index: 200;
 }
 
 .tag-dropdown-content {
