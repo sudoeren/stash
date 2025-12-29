@@ -2,38 +2,29 @@
 // Stash - Popup JavaScript
 // ==========================================
 
-// DOM Elements
-const elements = {
-    saveAllTabs: document.getElementById('saveAllTabs'),
-    exportBtn: document.getElementById('exportBtn'),
-    importBtn: document.getElementById('importBtn'),
-    importFile: document.getElementById('importFile'),
-    settingsBtn: document.getElementById('settingsBtn'),
-    settingsModal: document.getElementById('settingsModal'),
-    closeSettings: document.getElementById('closeSettings'),
-    openDashboard: document.getElementById('openDashboard'),
-    groupsContainer: document.getElementById('groupsContainer'),
-    emptyState: document.getElementById('emptyState'),
-    searchInput: document.getElementById('searchInput'),
-    totalGroups: document.getElementById('totalGroups'),
-    totalTabs: document.getElementById('totalTabs'),
-    toast: document.getElementById('toast'),
-    toastMessage: document.getElementById('toastMessage'),
-    // Settings
-    closeAfterSave: document.getElementById('closeAfterSave'),
-    includePinned: document.getElementById('includePinned'),
-    darkMode: document.getElementById('darkMode'),
-    languageSelect: document.getElementById('languageSelect'),
-    clearAllData: document.getElementById('clearAllData')
-};
-
 // State
 let tabGroups = [];
-let settings = {
-    closeAfterSave: true,
-    includePinned: false,
-    darkMode: true,
-    language: 'en'
+let settings = { darkMode: true, language: 'en', includePinned: false, closeAfterSave: true };
+const elements = {
+    // Header
+    openDashboard: document.getElementById('openDashboard'),
+
+    // Main Action
+    saveAllTabs: document.getElementById('saveAllTabs'),
+
+    // Stats
+    activeTabCount: document.getElementById('activeTabCount'),
+
+    // Search
+    searchInput: document.getElementById('searchInput'),
+
+    // Groups
+    groupsContainer: document.getElementById('groupsContainer'),
+    emptyState: document.getElementById('emptyState'),
+
+    // Toast
+    toast: document.getElementById('toast'),
+    toastMessage: document.getElementById('toastMessage')
 };
 
 // Initialize
@@ -49,18 +40,21 @@ async function init() {
     setupEventListeners();
 }
 
-// Settings Management
+// Load/Save
 async function loadSettings() {
     const stored = await chrome.storage.local.get('settings');
     if (stored.settings) {
         settings = { ...settings, ...stored.settings };
     }
+}
 
-    // Apply to UI
-    elements.closeAfterSave.checked = settings.closeAfterSave;
-    elements.includePinned.checked = settings.includePinned;
-    elements.darkMode.checked = !settings.darkMode; // Inverted: checkbox = light mode
-    elements.languageSelect.value = settings.language || 'en';
+async function loadTabGroups() {
+    const stored = await chrome.storage.local.get('tabGroups');
+    tabGroups = stored.tabGroups || [];
+}
+
+async function saveTabGroups() {
+    await chrome.storage.local.set({ tabGroups });
 }
 
 async function saveSettings() {
@@ -77,7 +71,9 @@ function applyTheme() {
 
 function applyLanguage() {
     const lang = settings.language || 'en';
-    setLanguage(lang);
+    if (typeof setLanguage === 'function') {
+        setLanguage(lang);
+    }
 
     // Update all elements with data-i18n attribute
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -91,78 +87,32 @@ function applyLanguage() {
         el.placeholder = t(key);
     });
 
-    // Update titles
+    // Update titles (tooltips)
     document.querySelectorAll('[data-i18n-title]').forEach(el => {
         const key = el.getAttribute('data-i18n-title');
         el.title = t(key);
     });
+
+    // Update button text specifically if needed (though data-i18n handles it)
 }
 
-// Tab Groups Management
-async function loadTabGroups() {
-    const stored = await chrome.storage.local.get('tabGroups');
-    tabGroups = stored.tabGroups || [];
-}
-
-async function saveTabGroups() {
-    await chrome.storage.local.set({ tabGroups });
+// Stats
+async function updateStats() {
+    if (elements.activeTabCount) {
+        const tabs = await chrome.tabs.query({ currentWindow: true });
+        elements.activeTabCount.textContent = tabs.length;
+    }
 }
 
 // Event Listeners
 function setupEventListeners() {
-    // Save all tabs
-    elements.saveAllTabs.addEventListener('click', saveAllTabs);
-
-    // Open dashboard
+    // Open Dashboard
     elements.openDashboard.addEventListener('click', () => {
-        chrome.tabs.create({ url: chrome.runtime.getURL('dashboard.html') });
+        chrome.tabs.create({ url: 'dashboard.html' });
     });
 
-    // Export/Import
-    elements.exportBtn.addEventListener('click', exportData);
-    elements.importBtn.addEventListener('click', () => elements.importFile.click());
-    elements.importFile.addEventListener('change', importData);
-
-    // Settings
-    elements.settingsBtn.addEventListener('click', () => {
-        elements.settingsModal.classList.add('active');
-    });
-
-    elements.closeSettings.addEventListener('click', () => {
-        elements.settingsModal.classList.remove('active');
-    });
-
-    elements.settingsModal.addEventListener('click', (e) => {
-        if (e.target === elements.settingsModal) {
-            elements.settingsModal.classList.remove('active');
-        }
-    });
-
-    // Settings toggles
-    elements.closeAfterSave.addEventListener('change', (e) => {
-        settings.closeAfterSave = e.target.checked;
-        saveSettings();
-    });
-
-    elements.includePinned.addEventListener('change', (e) => {
-        settings.includePinned = e.target.checked;
-        saveSettings();
-    });
-
-    elements.darkMode.addEventListener('change', (e) => {
-        settings.darkMode = !e.target.checked; // Inverted
-        saveSettings();
-        applyTheme();
-    });
-
-    elements.languageSelect.addEventListener('change', (e) => {
-        settings.language = e.target.value;
-        saveSettings();
-        applyLanguage();
-        renderGroups(); // Re-render with new language
-    });
-
-    elements.clearAllData.addEventListener('click', clearAllData);
+    // Main Actions
+    elements.saveAllTabs.addEventListener('click', saveAllTabs);
 
     // Search
     elements.searchInput.addEventListener('input', handleSearch);

@@ -4,238 +4,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stash</title>
+    <title>Stash - Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <!-- Background Elements for Visual Flair -->
-    <div class="bg-gradient-1"></div>
-    <div class="bg-gradient-2"></div>
-
-    <div class="app-layout">
-        <!-- Top Bar: Logo & Search -->
-        <header class="top-bar">
-            <div class="brand">
-                <div class="brand-icon">
-                    <img src="icons/icon128.png" alt="Stash Logo"
-                        style="width: 32px; height: 32px; object-fit: contain;">
-                </div>
-                <!-- Dynamic Title based on view -->
-                <div class="brand-text">
-                    <h1 id="viewTitle" data-i18n="allTabs">Stash</h1>
-                    <span class="subtitle" id="headerTabCount">0 Tabs Stashed</span>
+    <!-- Main App Container -->
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <img src="icon128.png" alt="Stash" width="36" height="36">
+                    <span class="logo-text">Stash</span>
                 </div>
             </div>
 
-            <div class="search-wrapper">
-                <div class="search-input-group">
-                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            <div class="header-center">
+                <div class="search-box">
+                    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2">
                         <circle cx="11" cy="11" r="8" />
                         <line x1="21" y1="21" x2="16.65" y2="16.65" />
                     </svg>
-                    <input type="text" id="dashboardSearch" data-i18n-placeholder="searchPlaceholder"
-                        placeholder="Search your tabs...">
+                    <input type="text" id="searchInput" placeholder="Sekmelerde ara..."
+                        data-i18n-placeholder="searchPlaceholder">
                 </div>
             </div>
 
-            <div class="top-actions">
-                <button class="primary-action-btn" id="dashboardSaveAll">
-                    <span class="btn-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5">
-                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                            <polyline points="17 21 17 13 7 13 7 21" />
-                            <polyline points="7 3 7 8 15 8" />
-                        </svg>
-                    </span>
-                    <span class="btn-text" data-i18n="saveAll">Stash Content</span>
+            <div class="header-right">
+                <button class="btn-primary" id="saveAllBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                        <polyline points="17 21 17 13 7 13 7 21" />
+                        <polyline points="7 3 7 8 15 8" />
+                    </svg>
+                    <span data-i18n="saveAll">Tümünü Kaydet</span>
                 </button>
             </div>
         </header>
 
-        <!-- Main Content Area -->
-        <main class="main-container">
-            <!-- Filter Tags -->
-            <div class="filter-section" id="tagFilterContainer">
-                <!-- Injected via JS -->
-            </div>
-
-            <!-- Grid Content -->
-            <div class="masonry-grid" id="contentArea">
-                <!-- Cards Injected via JS -->
-
-                <!-- Empty State -->
-                <div class="empty-state-wrapper" id="dashboardEmpty">
-                    <div class="empty-graphic">
-                        <div class="graphic-circle"></div>
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
-                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-                            <line x1="8" y1="21" x2="16" y2="21" />
-                            <line x1="12" y1="17" x2="12" y2="21" />
-                        </svg>
-                    </div>
-                    <h2 data-i18n="noTabsYet">It's quiet here</h2>
-                    <p data-i18n="noTabsDescription">Open some tabs and click "Stash Content" to save them for later.
-                    </p>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- Floating Navigation Dock -->
-    <div class="dock-container">
-        <nav class="dock">
-            <button class="dock-item active" data-view="all" data-tooltip="All Stashes">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-view="all">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="3" width="7" height="7" rx="1" />
                     <rect x="14" y="3" width="7" height="7" rx="1" />
                     <rect x="14" y="14" width="7" height="7" rx="1" />
                     <rect x="3" y="14" width="7" height="7" rx="1" />
                 </svg>
+                <span data-i18n="allTabs">Tüm Sekmeler</span>
             </button>
-
-            <button class="dock-item" data-view="recent" data-tooltip="Recent">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10" />
-                    <polyline points="12 6 12 12 16 14" />
+            <button class="nav-tab" data-view="favorites">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon
+                        points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
                 </svg>
+                <span data-i18n="favorites">Favoriler</span>
             </button>
-
-            <button class="dock-item" data-view="favorites" data-tooltip="Favorites">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path
-                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                </svg>
-            </button>
-
-            <div class="dock-divider"></div>
-
-            <button class="dock-item nav-item no-select" id="themeToggle" data-tooltip="Toggle Theme">
-                <svg class="icon-light" style="display:none" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="5" />
-                    <line x1="12" y1="1" x2="12" y2="3" />
-                    <line x1="12" y1="21" x2="12" y2="23" />
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                    <line x1="1" y1="12" x2="3" y2="12" />
-                    <line x1="21" y1="12" x2="23" y2="12" />
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                </svg>
-                <svg class="icon-dark" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                </svg>
-            </button>
-
-            <button class="dock-item" id="dashboardSettings" data-tooltip="Settings">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <button class="nav-tab" data-view="settings">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="3" />
                     <path
                         d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
                 </svg>
+                <span data-i18n="settings">Ayarlar</span>
             </button>
         </nav>
-    </div>
 
-    <!-- Modals -->
-    <div class="modal-backdrop" id="settingsModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3 data-i18n="settings">Settings</h3>
-                <button class="modal-close" id="closeSettingsModal">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                    </svg>
-                </button>
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Groups Grid -->
+            <div class="groups-grid" id="groupsGrid">
+                <!-- Content injected by JS -->
             </div>
 
-            <div class="modal-content">
-                <div class="setting-row">
-                    <div class="setting-text">
-                        <span class="setting-title" data-i18n="closeAfterSave">Close tabs after saving</span>
-                        <span class="setting-desc">Automatically close pinned tabs when stashed</span>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="settingCloseAfterSave">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-
-                <div class="setting-row">
-                    <div class="setting-text">
-                        <span class="setting-title" data-i18n="includePinned">Include pinned tabs</span>
-                        <span class="setting-desc">Stash pinned tabs along with others</span>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="settingIncludePinned">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-
-                <div class="setting-row">
-                    <div class="setting-text">
-                        <span class="setting-title">Language</span>
-                    </div>
-                    <select id="settingLanguage" class="selectbox">
-                        <option value="en">English</option>
-                        <option value="tr">Türkçe</option>
-                    </select>
-                </div>
-
-                <hr class="modal-divider">
-
-                <div class="data-actions">
-                    <button class="secondary-btn" id="dashboardExport">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
-                        <span data-i18n="export">Export</span>
-                    </button>
-                    <button class="secondary-btn" id="dashboardImport">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="17 8 12 3 7 8" />
-                            <line x1="12" y1="3" x2="12" y2="15" />
-                        </svg>
-                        <span data-i18n="import">Import</span>
-                    </button>
-                    <input type="file" id="dashboardImportFile" accept=".json" style="display: none;">
-                </div>
-
-                <button class="danger-btn-full" id="clearAllDataBtn">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path
-                            d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-icon">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                        <line x1="8" y1="21" x2="16" y2="21" />
+                        <line x1="12" y1="17" x2="12" y2="21" />
                     </svg>
-                    <span data-i18n="clearAllData">Reset All Data</span>
-                </button>
+                </div>
+                <h2 data-i18n="noTabsYet">Henüz kayıtlı sekme yok</h2>
+                <p data-i18n="noTabsDescription">Sekmelerinizi kaydetmek için "Tümünü Kaydet" butonuna tıklayın</p>
             </div>
-        </div>
+
+            <!-- Settings View -->
+            <div class="settings-view" id="settingsView" style="display: none;">
+                <div class="settings-section">
+                    <h3>Genel Ayarlar</h3>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <span class="setting-title" data-i18n="closeAfterSave">Kaydettikten sonra sekmeleri
+                                kapat</span>
+                            <span class="setting-desc">Sekmeler kaydedilince otomatik kapanır</span>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" id="settingCloseAfterSave">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <span class="setting-title" data-i18n="includePinned">Sabitlenmiş sekmeleri dahil et</span>
+                            <span class="setting-desc">Pinli sekmeler de kaydedilir</span>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" id="settingIncludePinned">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Görünüm</h3>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <span class="setting-title" data-i18n="darkTheme">Karanlık Tema</span>
+                            <span class="setting-desc">Açık ve koyu tema arasında geçiş</span>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" id="settingDarkMode" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <span class="setting-title">Dil / Language</span>
+                            <span class="setting-desc">Tercih ettiğiniz dili seçin</span>
+                        </div>
+                        <select id="settingLanguage" class="select-input">
+                            <option value="en">English</option>
+                            <option value="tr">Türkçe</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="settings-section danger">
+                    <h3>Veri Yönetimi</h3>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <span class="setting-title" data-i18n="export">Dışa Aktar</span>
+                            <span class="setting-desc">Verilerinizi JSON olarak yedekleyin</span>
+                        </div>
+                        <button class="btn-secondary" id="exportBtn">Dışa Aktar</button>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <span class="setting-title" data-i18n="import">İçe Aktar</span>
+                            <span class="setting-desc">Yedekten verileri geri yükleyin</span>
+                        </div>
+                        <button class="btn-secondary" id="importBtn">İçe Aktar</button>
+                        <input type="file" id="importFile" accept=".json" style="display: none;">
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <span class="setting-title text-danger" data-i18n="clearAllData">Tüm Verileri Sil</span>
+                            <span class="setting-desc">Tüm kayıtlı sekmeler kalıcı olarak silinir</span>
+                        </div>
+                        <button class="btn-danger" id="clearAllBtn">Tümünü Sil</button>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 
-    <!-- Hidden elements for JS compatibility -->
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <!-- Hidden Stats Elements -->
     <div style="display: none;">
-        <span id="sidebarGroups"></span>
-        <span id="sidebarTabs"></span>
-    </div>
-
-    <!-- Toast -->
-    <div class="toast-wrapper" id="dashboardToast">
-        <div class="toast-content">
-            <span id="dashboardToastMessage"></span>
-        </div>
+        <span id="sidebarGroups">0</span>
+        <span id="sidebarTabs">0</span>
     </div>
 
     <script src="i18n.js"></script>

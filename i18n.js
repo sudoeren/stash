@@ -33,10 +33,16 @@ const translations = {
         noTabsDescription: 'Click "Save All" to save your open tabs',
 
         // Settings
+        general: 'General',
+        appearance: 'Appearance',
+        settings: 'Settings',
+        language: 'Language',
         closeAfterSave: 'Close tabs after saving',
         includePinned: 'Include pinned tabs',
-        lightTheme: 'Light theme',
+        darkTheme: 'Dark Theme',
+        theme: 'Theme',
         clearAllData: 'Clear All Data',
+        activeTabs: 'Active Tabs',
 
         // Toast Messages
         tabsSaved: 'tabs saved',
@@ -133,10 +139,16 @@ const translations = {
         noTabsDescription: 'Açık sekmelerinizi kaydetmek için "Tümünü Kaydet" butonuna tıklayın',
 
         // Settings
+        general: 'Genel',
+        appearance: 'Görünüm',
+        settings: 'Ayarlar',
+        language: 'Dil',
         closeAfterSave: 'Kayıttan sonra kapat',
         includePinned: 'Pinli sekmeleri dahil et',
-        lightTheme: 'Açık tema',
+        darkTheme: 'Koyu Tema',
+        theme: 'Tema',
         clearAllData: 'Tümünü Sil',
+        activeTabs: 'Aktif Sekmeler',
 
         // Toast Messages
         tabsSaved: 'sekme kaydedildi',

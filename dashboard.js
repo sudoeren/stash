@@ -1,54 +1,50 @@
 // ==========================================
-// Stash - Full Dashboard JavaScript
+// Stash Dashboard - Clean JavaScript
 // ==========================================
 
 // State
 let tabGroups = [];
 let currentView = 'all';
-let currentTagFilter = null;
-let settings = { darkMode: true, language: 'en' };
+let settings = {
+    darkMode: true,
+    language: 'tr',
+    closeAfterSave: true,
+    includePinned: false
+};
 
 // DOM Elements
 const elements = {
     // Navigation
-    navItems: document.querySelectorAll('.dock-item[data-view]'),
-    brand: document.querySelector('.brand'),
-    viewTitle: document.getElementById('viewTitle'),
-    headerTabCount: document.getElementById('headerTabCount'),
-
-    // Stats
-    sidebarGroups: document.getElementById('sidebarGroups'),
-    sidebarTabs: document.getElementById('sidebarTabs'),
-
-    // Actions
-    dashboardSaveAll: document.getElementById('dashboardSaveAll'),
-    dashboardExport: document.getElementById('dashboardExport'),
-    dashboardImport: document.getElementById('dashboardImport'),
-    dashboardImportFile: document.getElementById('dashboardImportFile'),
-    themeToggle: document.getElementById('themeToggle'),
-    dashboardSettings: document.getElementById('dashboardSettings'),
-
-    // Settings Modal
-    settingsModal: document.getElementById('settingsModal'),
-    closeSettingsModal: document.getElementById('closeSettingsModal'),
-    settingCloseAfterSave: document.getElementById('settingCloseAfterSave'),
-    settingIncludePinned: document.getElementById('settingIncludePinned'),
-    settingLanguage: document.getElementById('settingLanguage'),
-    clearAllDataBtn: document.getElementById('clearAllDataBtn'),
-
-    // Tag Filter
-    tagFilterContainer: document.getElementById('tagFilterContainer'),
-
-    // Search
-    dashboardSearch: document.getElementById('dashboardSearch'),
+    navTabs: document.querySelectorAll('.nav-tab'),
 
     // Content
-    contentArea: document.getElementById('contentArea'),
-    dashboardEmpty: document.getElementById('dashboardEmpty'),
+    groupsGrid: document.getElementById('groupsGrid'),
+    emptyState: document.getElementById('emptyState'),
+    settingsView: document.getElementById('settingsView'),
+
+    // Search
+    searchInput: document.getElementById('searchInput'),
+
+    // Actions
+    saveAllBtn: document.getElementById('saveAllBtn'),
+    exportBtn: document.getElementById('exportBtn'),
+    importBtn: document.getElementById('importBtn'),
+    importFile: document.getElementById('importFile'),
+    clearAllBtn: document.getElementById('clearAllBtn'),
+
+    // Settings
+    settingCloseAfterSave: document.getElementById('settingCloseAfterSave'),
+    settingIncludePinned: document.getElementById('settingIncludePinned'),
+    settingDarkMode: document.getElementById('settingDarkMode'),
+    settingLanguage: document.getElementById('settingLanguage'),
 
     // Toast
-    toast: document.getElementById('dashboardToast'),
-    toastMessage: document.getElementById('dashboardToastMessage')
+    toast: document.getElementById('toast'),
+    toastMessage: document.getElementById('toastMessage'),
+
+    // Stats (hidden)
+    sidebarGroups: document.getElementById('sidebarGroups'),
+    sidebarTabs: document.getElementById('sidebarTabs')
 };
 
 // Initialize
@@ -59,36 +55,63 @@ async function init() {
     await loadTabGroups();
     applyTheme();
     applyLanguage();
-    renderTagFilter();
-    renderGroups();
+    renderView();
     updateStats();
     setupEventListeners();
 }
 
-// Load/Save
+// Storage
 async function loadSettings() {
-    const stored = await chrome.storage.local.get('settings');
-    if (stored.settings) {
-        settings = { ...settings, ...stored.settings };
+    try {
+        const stored = await chrome.storage.local.get('settings');
+        if (stored.settings) {
+            settings = { ...settings, ...stored.settings };
+        }
+        syncSettingsUI();
+    } catch (e) {
+        console.error('Error loading settings:', e);
     }
+}
 
-    // Apply to UI
-    if (elements.settingLanguage) {
-        elements.settingLanguage.value = settings.language || 'en';
+async function saveSettings() {
+    try {
+        await chrome.storage.local.set({ settings });
+    } catch (e) {
+        console.error('Error saving settings:', e);
     }
 }
 
 async function loadTabGroups() {
-    const stored = await chrome.storage.local.get('tabGroups');
-    tabGroups = stored.tabGroups || [];
+    try {
+        const stored = await chrome.storage.local.get('tabGroups');
+        tabGroups = stored.tabGroups || [];
+    } catch (e) {
+        console.error('Error loading tab groups:', e);
+    }
 }
 
 async function saveTabGroups() {
-    await chrome.storage.local.set({ tabGroups });
+    try {
+        await chrome.storage.local.set({ tabGroups });
+    } catch (e) {
+        console.error('Error saving tab groups:', e);
+    }
 }
 
-async function saveSettings() {
-    await chrome.storage.local.set({ settings });
+// UI Sync
+function syncSettingsUI() {
+    if (elements.settingCloseAfterSave) {
+        elements.settingCloseAfterSave.checked = settings.closeAfterSave !== false;
+    }
+    if (elements.settingIncludePinned) {
+        elements.settingIncludePinned.checked = settings.includePinned || false;
+    }
+    if (elements.settingDarkMode) {
+        elements.settingDarkMode.checked = settings.darkMode !== false;
+    }
+    if (elements.settingLanguage) {
+        elements.settingLanguage.value = settings.language || 'tr';
+    }
 }
 
 function applyTheme() {
@@ -100,213 +123,260 @@ function applyTheme() {
 }
 
 function applyLanguage() {
-    const lang = settings.language || 'en';
-    setLanguage(lang);
+    const lang = settings.language || 'tr';
+    if (typeof setLanguage === 'function') {
+        setLanguage(lang);
+    }
 
-    // Update all elements with data-i18n attribute
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        el.textContent = t(key);
+        if (typeof t === 'function') {
+            el.textContent = t(key);
+        }
     });
 
-    // Update placeholders
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.getAttribute('data-i18n-placeholder');
-        el.placeholder = t(key);
+        if (typeof t === 'function') {
+            el.placeholder = t(key);
+        }
     });
-
-    // Update titles
-    document.querySelectorAll('[data-i18n-title]').forEach(el => {
-        const key = el.getAttribute('data-i18n-title');
-        el.title = t(key);
-    });
-
-    // Update View Title & Header Info
-    updateViewTitle();
 }
 
 // Event Listeners
 function setupEventListeners() {
     // Navigation
-    elements.navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            elements.navItems.forEach(n => n.classList.remove('active'));
-            item.classList.add('active');
-            currentView = item.dataset.view;
-            updateViewTitle();
-            renderGroups();
+    elements.navTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            elements.navTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            currentView = tab.dataset.view;
+            renderView();
         });
     });
 
-    // Brand Click (Home)
-    if (elements.brand) {
-        elements.brand.style.cursor = 'pointer';
-        elements.brand.addEventListener('click', () => {
-            const allBtn = document.querySelector('.dock-item[data-view="all"]');
-            if (allBtn) allBtn.click();
+    // Save All
+    if (elements.saveAllBtn) {
+        elements.saveAllBtn.addEventListener('click', saveAllTabs);
+    }
+
+    // Search
+    if (elements.searchInput) {
+        elements.searchInput.addEventListener('input', handleSearch);
+    }
+
+    // Settings toggles
+    if (elements.settingCloseAfterSave) {
+        elements.settingCloseAfterSave.addEventListener('change', (e) => {
+            settings.closeAfterSave = e.target.checked;
+            saveSettings();
         });
     }
 
-    // Save all tabs
-    elements.dashboardSaveAll.addEventListener('click', saveAllTabs);
+    if (elements.settingIncludePinned) {
+        elements.settingIncludePinned.addEventListener('change', (e) => {
+            settings.includePinned = e.target.checked;
+            saveSettings();
+        });
+    }
+
+    if (elements.settingDarkMode) {
+        elements.settingDarkMode.addEventListener('change', (e) => {
+            settings.darkMode = e.target.checked;
+            saveSettings();
+            applyTheme();
+        });
+    }
+
+    if (elements.settingLanguage) {
+        elements.settingLanguage.addEventListener('change', (e) => {
+            settings.language = e.target.value;
+            saveSettings();
+            applyLanguage();
+            renderView();
+        });
+    }
 
     // Export/Import
-    elements.dashboardExport.addEventListener('click', exportData);
-    elements.dashboardImport.addEventListener('click', () => elements.dashboardImportFile.click());
-    elements.dashboardImportFile.addEventListener('change', importData);
+    if (elements.exportBtn) {
+        elements.exportBtn.addEventListener('click', exportData);
+    }
 
-    // Theme toggle
-    elements.themeToggle.addEventListener('click', () => {
-        settings.darkMode = !settings.darkMode;
-        saveSettings();
-        applyTheme();
-    });
+    if (elements.importBtn) {
+        elements.importBtn.addEventListener('click', () => elements.importFile.click());
+    }
 
-    // Settings modal
-    elements.dashboardSettings.addEventListener('click', openSettingsModal);
-    elements.closeSettingsModal.addEventListener('click', closeSettingsModal);
-    elements.settingsModal.addEventListener('click', (e) => {
-        if (e.target === elements.settingsModal) closeSettingsModal();
-    });
+    if (elements.importFile) {
+        elements.importFile.addEventListener('change', importData);
+    }
 
-    // Settings toggles
-    elements.settingCloseAfterSave.addEventListener('change', (e) => {
-        settings.closeAfterSave = e.target.checked;
-        saveSettings();
-    });
-
-    elements.settingIncludePinned.addEventListener('change', (e) => {
-        settings.includePinned = e.target.checked;
-        saveSettings();
-    });
-
-    elements.settingLanguage.addEventListener('change', (e) => {
-        settings.language = e.target.value;
-        saveSettings();
-        applyLanguage();
-        renderTagFilter();
-        renderGroups();
-    });
-
-    elements.clearAllDataBtn.addEventListener('click', clearAllData);
-
-    // Search
-    elements.dashboardSearch.addEventListener('input', handleSearch);
-
-    // Global click handler to close dropdowns
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.tag-dropdown') && !e.target.closest('.add-tag')) {
-            document.querySelectorAll('.tag-dropdown').forEach(dd => dd.style.display = 'none');
-        }
-    });
+    if (elements.clearAllBtn) {
+        elements.clearAllBtn.addEventListener('click', clearAllData);
+    }
 }
 
-// Tag Filter
-function renderTagFilter() {
-    if (!elements.tagFilterContainer) return;
+// Render
+function renderView() {
+    const groupsGrid = elements.groupsGrid;
+    const emptyState = elements.emptyState;
+    const settingsView = elements.settingsView;
 
-    const predefinedTags = getPredefinedTags();
-    const usedTags = getUsedTags();
+    // Reset visibility
+    if (groupsGrid) groupsGrid.style.display = 'none';
+    if (emptyState) emptyState.style.display = 'none';
+    if (settingsView) settingsView.style.display = 'none';
 
-    // If no tags are being used, hide the filter section completely
-    if (Object.keys(usedTags).length === 0) {
-        elements.tagFilterContainer.innerHTML = '';
-        elements.tagFilterContainer.style.display = 'none';
+    if (currentView === 'settings') {
+        if (settingsView) settingsView.style.display = 'block';
         return;
     }
 
-    elements.tagFilterContainer.style.display = 'flex';
-    elements.tagFilterContainer.innerHTML = predefinedTags.map(tag => {
-        const count = usedTags[tag] || 0;
-        if (count === 0) return '';
-        return `
-            <button class="tag-filter-btn ${currentTagFilter === tag ? 'active' : ''}" 
-                    data-tag="${tag}" 
-                    style="--tag-color: ${getTagColor(tag)}">
-                <span class="tag-dot" style="background: ${getTagColor(tag)}"></span>
-                ${t(tag)} (${count})
-            </button>
-        `;
-    }).join('');
+    // Filter groups
+    let groups = [...tabGroups];
 
-    // Add event listeners with toggle logic
-    elements.tagFilterContainer.querySelectorAll('.tag-filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const clickedTag = btn.dataset.tag;
-            if (currentTagFilter === clickedTag) {
-                currentTagFilter = null; // Toggle off
-            } else {
-                currentTagFilter = clickedTag;
-            }
-            renderTagFilter();
-            renderGroups();
-        });
-    });
+    if (currentView === 'favorites') {
+        groups = groups.filter(g => g.favorite);
+    }
+
+    // Render
+    if (groups.length === 0) {
+        if (emptyState) emptyState.style.display = 'flex';
+    } else {
+        if (groupsGrid) {
+            groupsGrid.style.display = 'grid';
+            groupsGrid.innerHTML = '';
+            groups.forEach(group => {
+                const card = createGroupCard(group);
+                groupsGrid.appendChild(card);
+            });
+        }
+    }
 }
 
-function getUsedTags() {
-    const tags = {};
-    tabGroups.forEach(group => {
-        if (group.tags && Array.isArray(group.tags)) {
-            group.tags.forEach(tag => {
-                tags[tag] = (tags[tag] || 0) + 1;
+function createGroupCard(group) {
+    const card = document.createElement('div');
+    card.className = 'group-card';
+    card.dataset.groupId = group.id;
+
+    const date = formatDate(new Date(group.createdAt));
+
+    card.innerHTML = `
+        <div class="group-header">
+            <div class="group-info">
+                <div class="group-count">${group.tabs.length}</div>
+                <div class="group-meta">
+                    <h4>${date}</h4>
+                    <span>${group.tabs.length} sekme</span>
+                </div>
+            </div>
+            <div class="group-actions">
+                <button class="action-btn favorite ${group.favorite ? 'active' : ''}" title="Favori">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="${group.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                    </svg>
+                </button>
+                <button class="action-btn restore" title="Tümünü Aç">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15,3 21,3 21,9"/>
+                        <path d="M21 3l-7 7"/>
+                        <path d="M21 14v5a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h5"/>
+                    </svg>
+                </button>
+                <button class="action-btn danger delete" title="Sil">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3,6 5,6 21,6"/>
+                        <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="tab-list">
+            ${group.tabs.map(tab => createTabItemHTML(tab)).join('')}
+        </div>
+    `;
+
+    // Event listeners
+    const favoriteBtn = card.querySelector('.favorite');
+    const restoreBtn = card.querySelector('.restore');
+    const deleteBtn = card.querySelector('.delete');
+
+    favoriteBtn.addEventListener('click', () => toggleFavorite(group.id));
+    restoreBtn.addEventListener('click', () => restoreGroup(group.id));
+    deleteBtn.addEventListener('click', () => deleteGroup(group.id));
+
+    // Tab events
+    card.querySelectorAll('.tab-item').forEach(tabEl => {
+        const tabId = tabEl.dataset.tabId;
+        const tab = group.tabs.find(t => t.id === tabId);
+
+        tabEl.addEventListener('click', (e) => {
+            if (!e.target.closest('.tab-delete')) {
+                openTab(tab.url);
+            }
+        });
+
+        const deleteTabBtn = tabEl.querySelector('.tab-delete');
+        if (deleteTabBtn) {
+            deleteTabBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                deleteTab(group.id, tabId);
             });
         }
     });
-    return tags;
+
+    return card;
 }
 
-// Settings Modal
-function openSettingsModal() {
-    elements.settingCloseAfterSave.checked = settings.closeAfterSave !== false;
-    elements.settingIncludePinned.checked = settings.includePinned || false;
-    elements.settingLanguage.value = settings.language || 'en';
-    elements.settingsModal.classList.add('active');
+function createTabItemHTML(tab) {
+    const faviconHTML = tab.favicon
+        ? `<img class="tab-favicon" src="${tab.favicon}" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+           <div class="tab-favicon-placeholder" style="display: none;">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <circle cx="12" cy="12" r="10"/>
+             </svg>
+           </div>`
+        : `<div class="tab-favicon-placeholder">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <circle cx="12" cy="12" r="10"/>
+             </svg>
+           </div>`;
+
+    const domain = extractDomain(tab.url);
+
+    return `
+        <div class="tab-item" data-tab-id="${tab.id}">
+            ${faviconHTML}
+            <div class="tab-info">
+                <div class="tab-title">${escapeHtml(tab.title)}</div>
+                <div class="tab-url">${domain}</div>
+            </div>
+            <button class="tab-delete" title="Sil">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+    `;
 }
 
-function closeSettingsModal() {
-    elements.settingsModal.classList.remove('active');
-}
-
-async function clearAllData() {
-    if (!confirm(t('confirmClearAll'))) return;
-    tabGroups = [];
-    await saveTabGroups();
-    closeSettingsModal();
-    renderTagFilter();
-    renderGroups();
-    updateStats();
-    showToast(t('allDataCleared'));
-}
-
-function updateViewTitle() {
-    const titles = {
-        all: t('allTabs'),
-        recent: t('recent'),
-        favorites: t('favorites')
-    };
-    elements.viewTitle.textContent = titles[currentView] || t('allTabs');
-}
-
-// Save All Tabs
+// Actions
 async function saveAllTabs() {
     try {
         const tabs = await chrome.tabs.query({ currentWindow: true });
-        const stored = await chrome.storage.local.get('settings');
-        const userSettings = stored.settings || { includePinned: false, closeAfterSave: true };
 
         let filteredTabs = tabs.filter(tab => {
             if (tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://')) {
                 return false;
             }
-            if (!userSettings.includePinned && tab.pinned) {
+            if (!settings.includePinned && tab.pinned) {
                 return false;
             }
             return true;
         });
 
         if (filteredTabs.length === 0) {
-            showToast(t('noTabsToSave'));
+            showToast('Kaydedilecek sekme yok');
             return;
         }
 
@@ -317,7 +387,7 @@ async function saveAllTabs() {
             tags: [],
             tabs: filteredTabs.map(tab => ({
                 id: generateId(),
-                title: tab.title || t('untitled'),
+                title: tab.title || 'Başlıksız',
                 url: tab.url,
                 favicon: tab.favIconUrl || null
             }))
@@ -326,328 +396,20 @@ async function saveAllTabs() {
         tabGroups.unshift(group);
         await saveTabGroups();
 
-        if (userSettings.closeAfterSave) {
+        if (settings.closeAfterSave) {
             const tabIds = filteredTabs.map(tab => tab.id);
             await chrome.tabs.create({ url: 'chrome://newtab' });
             await chrome.tabs.remove(tabIds);
         }
 
-        renderTagFilter();
-        renderGroups();
+        renderView();
         updateStats();
-        showToast(`${filteredTabs.length} ${t('tabsSaved')}`);
+        showToast(`${filteredTabs.length} sekme kaydedildi`);
 
     } catch (error) {
         console.error('Error saving tabs:', error);
-        showToast(t('errorOccurred'));
+        showToast('Bir hata oluştu');
     }
-}
-
-// Render Groups (Masonry Grid)
-function renderGroups(searchQuery = '') {
-    const container = elements.contentArea;
-    if (!container) return;
-
-    // 1. Filter by Search
-    let groups = tabGroups;
-    if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        groups = tabGroups.map(group => {
-            // Check if group matches
-            const groupMatches = group.tabs.some(tab =>
-                (tab.title && tab.title.toLowerCase().includes(query)) ||
-                (tab.url && tab.url.toLowerCase().includes(query))
-            ) || (group.tags && group.tags.some(tag => tag.toLowerCase().includes(query)));
-
-            if (groupMatches) return group;
-            return null;
-        }).filter(g => g !== null);
-    }
-
-    // 2. Filter by View (Favorites/Recent)
-    if (currentView === 'favorites') {
-        groups = groups.filter(g => g.favorite);
-    }
-    // Recent is just default sort, but if we had specific logic:
-    // else if (currentView === 'recent') { ... } 
-
-    // 3. Filter by Tag
-    if (currentTagFilter) {
-        groups = groups.filter(g => g.tags && g.tags.includes(currentTagFilter));
-    }
-
-    // Update header count if in 'all' view with no filters, specific logic could be added here
-    if (currentView === 'all' && !searchQuery && !currentTagFilter) {
-        const totalTabs = tabGroups.reduce((sum, g) => sum + g.tabs.length, 0);
-        const subtitleEl = document.getElementById('headerTabCount');
-        if (subtitleEl) subtitleEl.textContent = `${totalTabs} ${t('tabsStashed')}`;
-    }
-
-    // Clear Container
-    container.innerHTML = '';
-
-    // Empty State Handling
-    if (groups.length === 0) {
-        const emptyWrapper = document.createElement('div');
-        emptyWrapper.className = 'empty-state-wrapper';
-
-        let emptyTitle = t('noTabsYet');
-        let emptyDesc = t('noTabsDescription');
-        let emptyIcon = `
-             <div class="graphic-circle"></div>
-             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                 <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-                 <line x1="8" y1="21" x2="16" y2="21" />
-                 <line x1="12" y1="17" x2="12" y2="21" />
-             </svg>
-        `;
-
-        // Special "Sweet" Animation for Favorites
-        if (currentView === 'favorites') {
-            emptyTitle = t('noFavoritesYet');
-            emptyDesc = t('noFavoritesDescription');
-            emptyIcon = `
-                <div class="graphic-circle" style="border-color: var(--danger); opacity: 0.3;"></div>
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.5" style="animation: heartbeat 1.5s ease-in-out infinite;">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                </svg>
-                <style>
-                    @keyframes heartbeat {
-                        0% { transform: scale(1); }
-                        15% { transform: scale(1.15); }
-                        30% { transform: scale(1); }
-                        45% { transform: scale(1.15); }
-                        60% { transform: scale(1); }
-                        100% { transform: scale(1); }
-                    }
-                </style>
-             `;
-        } else if (searchQuery) {
-            emptyTitle = t('noMatchesFound');
-            emptyDesc = t('tryDifferentSearch');
-        }
-
-        emptyWrapper.innerHTML = `
-            <div class="empty-graphic">
-                ${emptyIcon}
-            </div>
-            <h2>${emptyTitle}</h2>
-            <p>${emptyDesc}</p>
-        `;
-        container.appendChild(emptyWrapper);
-        return;
-    }
-
-    // Render Groups
-    groups.forEach(group => {
-        const card = createGroupCard(group);
-        container.appendChild(card);
-    });
-}
-
-function createGroupCard(group) {
-    const card = document.createElement('div');
-    card.className = 'group-card';
-    card.dataset.groupId = group.id;
-
-    const date = new Date(group.createdAt);
-    const formattedDate = formatDate(date);
-
-    // Generate tags HTML
-    const tagsHTML = (group.tags && group.tags.length > 0)
-        ? `<div class="group-tags">
-            ${group.tags.map(tag => `
-                <span class="group-tag" style="background: ${getTagColor(tag)}20; color: ${getTagColor(tag)}; border-color: ${getTagColor(tag)}40">
-                    ${t(tag)}
-                    <button class="tag-remove" data-tag="${tag}" title="${t('delete')}">×</button>
-                </span>
-            `).join('')}
-           </div>`
-        : '';
-
-    card.innerHTML = `
-    <div class="group-card-header">
-      <div class="group-card-info">
-        <div class="group-card-icon">${group.tabs.length}</div>
-        <div class="group-card-details">
-          <h3>${formattedDate}</h3>
-          <span>${group.tabs.length} ${t('tabsCount')}</span>
-          ${tagsHTML}
-        </div>
-      </div>
-      <div class="group-card-actions">
-        <button class="card-action-btn add-tag" title="${t('addTag')}">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
-            <line x1="7" y1="7" x2="7.01" y2="7"/>
-          </svg>
-        </button>
-        <button class="card-action-btn favorite ${group.favorite ? 'active' : ''}" title="${t('favorite')}">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="${group.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
-            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
-          </svg>
-        </button>
-        <button class="card-action-btn restore-all" title="${t('openAll')}">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="15,3 21,3 21,9"/>
-            <path d="M21 3l-7 7"/>
-            <path d="M21 14v5a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h5"/>
-          </svg>
-        </button>
-        <button class="card-action-btn danger delete-group" title="${t('deleteGroup')}">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="3,6 5,6 21,6"/>
-            <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-    <div class="tag-dropdown" style="display: none;">
-      <div class="tag-dropdown-content">
-        ${getPredefinedTags().map(tag => `
-          <button class="tag-option ${group.tags && group.tags.includes(tag) ? 'selected' : ''}" data-tag="${tag}">
-            <span class="tag-dot" style="background: ${getTagColor(tag)}"></span>
-            ${t(tag)}
-            ${group.tags && group.tags.includes(tag) ? '<span class="tag-check">✓</span>' : ''}
-          </button>
-        `).join('')}
-      </div>
-    </div>
-    <div class="group-card-tabs">
-      ${group.tabs.map(tab => createTabItemHTML(tab)).join('')}
-    </div>
-  `;
-
-    // Event listeners
-    const addTagBtn = card.querySelector('.add-tag');
-    const tagDropdown = card.querySelector('.tag-dropdown');
-    const favoriteBtn = card.querySelector('.favorite');
-    const restoreBtn = card.querySelector('.restore-all');
-    const deleteBtn = card.querySelector('.delete-group');
-
-    // Tag dropdown toggle
-    addTagBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isVisible = tagDropdown.style.display === 'block';
-        // Close all other dropdowns
-        document.querySelectorAll('.tag-dropdown').forEach(dd => dd.style.display = 'none');
-        tagDropdown.style.display = isVisible ? 'none' : 'block';
-    });
-
-    // Tag selection
-    card.querySelectorAll('.tag-option').forEach(option => {
-        option.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            const tag = option.dataset.tag;
-            await toggleTag(group.id, tag);
-        });
-    });
-
-    // Tag remove
-    card.querySelectorAll('.tag-remove').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            const tag = btn.dataset.tag;
-            await removeTag(group.id, tag);
-        });
-    });
-
-    favoriteBtn.addEventListener('click', () => toggleFavorite(group.id));
-    restoreBtn.addEventListener('click', () => restoreGroup(group.id));
-    deleteBtn.addEventListener('click', () => deleteGroup(group.id));
-
-    // Tab events
-    card.querySelectorAll('.card-tab-item').forEach(tabItem => {
-        const tabId = tabItem.dataset.tabId;
-        const tab = group.tabs.find(t => t.id === tabId);
-
-        tabItem.addEventListener('click', (e) => {
-            if (!e.target.closest('.card-tab-delete')) {
-                openTab(tab.url);
-            }
-        });
-
-        const deleteTabBtn = tabItem.querySelector('.card-tab-delete');
-        deleteTabBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            deleteTab(group.id, tabId);
-        });
-    });
-
-    // Setup drag and drop
-    setupDragAndDrop(card, group);
-
-    return card;
-}
-
-function createTabItemHTML(tab) {
-    const faviconHTML = tab.favicon
-        ? `<img class="card-tab-favicon" src="${tab.favicon}" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-       <div class="card-tab-favicon-placeholder" style="display: none;">
-         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-           <circle cx="12" cy="12" r="10"/>
-         </svg>
-       </div>`
-        : `<div class="card-tab-favicon-placeholder">
-         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-           <circle cx="12" cy="12" r="10"/>
-         </svg>
-       </div>`;
-
-    const domain = extractDomain(tab.url);
-
-    return `
-    <div class="card-tab-item" data-tab-id="${tab.id}">
-      ${faviconHTML}
-      <div class="card-tab-info">
-        <div class="card-tab-title">${escapeHtml(tab.title)}</div>
-        <div class="card-tab-url">${domain}</div>
-      </div>
-      <button class="card-tab-delete" title="${t('deleteTab')}">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="18" y1="6" x2="6" y2="18"/>
-          <line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-      </button>
-    </div>
-  `;
-}
-
-// Tag Actions
-async function toggleTag(groupId, tag) {
-    const group = tabGroups.find(g => g.id === groupId);
-    if (!group) return;
-
-    if (!group.tags) group.tags = [];
-
-    const tagIndex = group.tags.indexOf(tag);
-    if (tagIndex === -1) {
-        group.tags.push(tag);
-        showToast(t('tagAdded'));
-    } else {
-        group.tags.splice(tagIndex, 1);
-        showToast(t('tagRemoved'));
-    }
-
-    await saveTabGroups();
-    renderTagFilter();
-    renderGroups();
-}
-
-async function removeTag(groupId, tag) {
-    const group = tabGroups.find(g => g.id === groupId);
-    if (!group || !group.tags) return;
-
-    group.tags = group.tags.filter(t => t !== tag);
-    await saveTabGroups();
-    renderTagFilter();
-    renderGroups();
-    showToast(t('tagRemoved'));
-}
-
-// Actions
-async function openTab(url) {
-    await chrome.tabs.create({ url });
 }
 
 async function toggleFavorite(groupId) {
@@ -655,8 +417,7 @@ async function toggleFavorite(groupId) {
     if (group) {
         group.favorite = !group.favorite;
         await saveTabGroups();
-        renderGroups();
-        updateStats();
+        renderView();
     }
 }
 
@@ -671,20 +432,18 @@ async function restoreGroup(groupId) {
     tabGroups = tabGroups.filter(g => g.id !== groupId);
     await saveTabGroups();
 
-    renderTagFilter();
-    renderGroups();
+    renderView();
     updateStats();
-    showToast(`${group.tabs.length} ${t('tabsOpened')}`);
+    showToast(`${group.tabs.length} sekme açıldı`);
 }
 
 async function deleteGroup(groupId) {
     tabGroups = tabGroups.filter(g => g.id !== groupId);
     await saveTabGroups();
 
-    renderTagFilter();
-    renderGroups();
+    renderView();
     updateStats();
-    showToast(t('groupDeleted'));
+    showToast('Grup silindi');
 }
 
 async function deleteTab(groupId, tabId) {
@@ -698,15 +457,53 @@ async function deleteTab(groupId, tabId) {
     }
 
     await saveTabGroups();
-    renderTagFilter();
-    renderGroups();
+    renderView();
     updateStats();
+}
+
+async function openTab(url) {
+    await chrome.tabs.create({ url });
 }
 
 // Search
 function handleSearch(e) {
     const query = e.target.value.toLowerCase().trim();
-    renderGroups(query);
+
+    if (!query) {
+        renderView();
+        return;
+    }
+
+    let groups = [...tabGroups];
+
+    if (currentView === 'favorites') {
+        groups = groups.filter(g => g.favorite);
+    }
+
+    const filtered = groups.filter(group => {
+        return group.tabs.some(tab =>
+            (tab.title && tab.title.toLowerCase().includes(query)) ||
+            (tab.url && tab.url.toLowerCase().includes(query))
+        );
+    });
+
+    const groupsGrid = elements.groupsGrid;
+    const emptyState = elements.emptyState;
+
+    if (filtered.length === 0) {
+        if (groupsGrid) groupsGrid.style.display = 'none';
+        if (emptyState) emptyState.style.display = 'flex';
+    } else {
+        if (emptyState) emptyState.style.display = 'none';
+        if (groupsGrid) {
+            groupsGrid.style.display = 'grid';
+            groupsGrid.innerHTML = '';
+            filtered.forEach(group => {
+                const card = createGroupCard(group);
+                groupsGrid.appendChild(card);
+            });
+        }
+    }
 }
 
 // Export/Import
@@ -722,11 +519,11 @@ function exportData() {
 
     const a = document.createElement('a');
     a.href = url;
-    a.download = `stash-export-${formatDateForFile(new Date())}.json`;
+    a.download = `stash-export-${new Date().toISOString().split('T')[0]}.json`;
     a.click();
 
     URL.revokeObjectURL(url);
-    showToast(t('exported'));
+    showToast('Veriler dışa aktarıldı');
 }
 
 async function importData(e) {
@@ -738,23 +535,39 @@ async function importData(e) {
         const data = JSON.parse(text);
 
         if (!data.groups || !Array.isArray(data.groups)) {
-            throw new Error('Invalid format');
+            throw new Error('Geçersiz format');
         }
 
         tabGroups = [...data.groups, ...tabGroups];
         await saveTabGroups();
 
-        renderTagFilter();
-        renderGroups();
+        renderView();
         updateStats();
-        showToast(`${data.groups.length} ${t('groupsImported')}`);
+        showToast(`${data.groups.length} grup içe aktarıldı`);
 
     } catch (error) {
         console.error('Import error:', error);
-        showToast(t('importFailed'));
+        showToast('İçe aktarma başarısız');
     }
 
     e.target.value = '';
+}
+
+async function clearAllData() {
+    if (!confirm('Tüm veriler silinecek. Emin misiniz?')) return;
+
+    tabGroups = [];
+    await saveTabGroups();
+
+    // Go back to all view
+    currentView = 'all';
+    elements.navTabs.forEach(t => t.classList.remove('active'));
+    const allTab = document.querySelector('.nav-tab[data-view="all"]');
+    if (allTab) allTab.classList.add('active');
+
+    renderView();
+    updateStats();
+    showToast('Tüm veriler silindi');
 }
 
 // Stats
@@ -762,18 +575,21 @@ function updateStats() {
     const groupCount = tabGroups.length;
     const tabCount = tabGroups.reduce((sum, g) => sum + g.tabs.length, 0);
 
-    elements.sidebarGroups.textContent = groupCount;
-    elements.sidebarTabs.textContent = tabCount;
+    if (elements.sidebarGroups) elements.sidebarGroups.textContent = groupCount;
+    if (elements.sidebarTabs) elements.sidebarTabs.textContent = tabCount;
 }
 
 // Toast
 function showToast(message) {
-    elements.toastMessage.textContent = message;
-    elements.toast.classList.add('active');
-
-    setTimeout(() => {
-        elements.toast.classList.remove('active');
-    }, 3000);
+    if (elements.toastMessage) {
+        elements.toastMessage.textContent = message;
+    }
+    if (elements.toast) {
+        elements.toast.classList.add('active');
+        setTimeout(() => {
+            elements.toast.classList.remove('active');
+        }, 3000);
+    }
 }
 
 // Utilities
@@ -788,20 +604,16 @@ function formatDate(date) {
     const hours = Math.floor(diff / 3600000);
     const days = Math.floor(diff / 86400000);
 
-    if (minutes < 1) return t('justNow');
-    if (minutes < 60) return `${minutes} ${t('minutesAgo')}`;
-    if (hours < 24) return `${hours} ${t('hoursAgo')}`;
-    if (days < 7) return `${days} ${t('daysAgo')}`;
+    if (minutes < 1) return 'Az önce';
+    if (minutes < 60) return `${minutes} dk önce`;
+    if (hours < 24) return `${hours} saat önce`;
+    if (days < 7) return `${days} gün önce`;
 
-    return date.toLocaleDateString(settings.language === 'tr' ? 'tr-TR' : 'en-US', {
+    return date.toLocaleDateString('tr-TR', {
         day: 'numeric',
         month: 'long',
         year: 'numeric'
     });
-}
-
-function formatDateForFile(date) {
-    return date.toISOString().split('T')[0];
 }
 
 function extractDomain(url) {
@@ -817,247 +629,3 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
-
-// ==========================================
-// DRAG AND DROP SYSTEM
-// ==========================================
-
-let draggedElement = null;
-let draggedType = null; // 'group' or 'tab'
-let draggedGroupId = null;
-let draggedTabId = null;
-let dragPlaceholder = null;
-
-function setupDragAndDrop(card, group) {
-    // Make the card draggable for group reordering
-    const cardHeader = card.querySelector('.group-card-header');
-
-    // Add drag handle
-    const dragHandle = document.createElement('div');
-    dragHandle.className = 'drag-handle';
-    dragHandle.innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="9" cy="5" r="1"/>
-            <circle cx="9" cy="12" r="1"/>
-            <circle cx="9" cy="19" r="1"/>
-            <circle cx="15" cy="5" r="1"/>
-            <circle cx="15" cy="12" r="1"/>
-            <circle cx="15" cy="19" r="1"/>
-        </svg>
-    `;
-    dragHandle.title = t('dragToReorder') || 'Drag to reorder';
-    cardHeader.querySelector('.group-card-info').prepend(dragHandle);
-
-    // Group drag events
-    dragHandle.addEventListener('mousedown', (e) => {
-        e.preventDefault();
-        startGroupDrag(card, group.id, e);
-    });
-
-    // Tab drag events
-    const tabItems = card.querySelectorAll('.card-tab-item');
-    tabItems.forEach(tabItem => {
-        tabItem.draggable = true;
-        tabItem.addEventListener('dragstart', (e) => {
-            draggedElement = tabItem;
-            draggedType = 'tab';
-            draggedGroupId = group.id;
-            draggedTabId = tabItem.dataset.tabId;
-            tabItem.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/plain', tabItem.dataset.tabId);
-        });
-
-        tabItem.addEventListener('dragend', () => {
-            tabItem.classList.remove('dragging');
-            draggedElement = null;
-            draggedType = null;
-            draggedGroupId = null;
-            draggedTabId = null;
-            removeDragPlaceholder();
-        });
-
-        tabItem.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            if (draggedType !== 'tab') return;
-
-            const afterElement = getDragAfterElement(tabItem.parentElement, e.clientY);
-            if (afterElement !== tabItem && afterElement !== draggedElement) {
-                showDragPlaceholder(tabItem.parentElement, afterElement, 'tab');
-            }
-        });
-    });
-
-    // Tab drop zone
-    const tabsContainer = card.querySelector('.group-card-tabs');
-    tabsContainer.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        if (draggedType !== 'tab') return;
-    });
-
-    tabsContainer.addEventListener('drop', async (e) => {
-        e.preventDefault();
-        if (draggedType !== 'tab' || !draggedTabId) return;
-
-        const targetGroupId = group.id;
-        const afterElement = getDragAfterElement(tabsContainer, e.clientY);
-
-        await moveTab(draggedGroupId, targetGroupId, draggedTabId, afterElement?.dataset?.tabId);
-        removeDragPlaceholder();
-    });
-}
-
-function startGroupDrag(card, groupId, e) {
-    draggedElement = card;
-    draggedType = 'group';
-    draggedGroupId = groupId;
-    card.classList.add('dragging');
-
-    const startY = e.clientY;
-    const startX = e.clientX;
-    const rect = card.getBoundingClientRect();
-    const offsetY = startY - rect.top;
-    const offsetX = startX - rect.left;
-
-    // Create clone for dragging
-    const clone = card.cloneNode(true);
-    clone.className = 'group-card drag-clone';
-    clone.style.width = rect.width + 'px';
-    clone.style.height = rect.height + 'px';
-    clone.style.position = 'fixed';
-    clone.style.zIndex = '1000';
-    clone.style.pointerEvents = 'none';
-    clone.style.opacity = '0.9';
-    document.body.appendChild(clone);
-
-    function moveClone(e) {
-        clone.style.top = (e.clientY - offsetY) + 'px';
-        clone.style.left = (e.clientX - offsetX) + 'px';
-
-        // Find drop position
-        const cards = [...elements.contentArea.querySelectorAll('.group-card:not(.dragging):not(.drag-clone)')];
-        let afterCard = null;
-
-        for (const c of cards) {
-            const box = c.getBoundingClientRect();
-            const centerY = box.top + box.height / 2;
-            if (e.clientY < centerY) {
-                afterCard = c;
-                break;
-            }
-        }
-
-        showDragPlaceholder(elements.contentArea, afterCard, 'group');
-    }
-
-    async function endGroupDrag(e) {
-        document.removeEventListener('mousemove', moveClone);
-        document.removeEventListener('mouseup', endGroupDrag);
-
-        clone.remove();
-        card.classList.remove('dragging');
-
-        // Find new position
-        const cards = [...elements.contentArea.querySelectorAll('.group-card:not(.dragging):not(.drag-placeholder)')];
-        let newIndex = cards.length;
-
-        for (let i = 0; i < cards.length; i++) {
-            const box = cards[i].getBoundingClientRect();
-            if (e.clientY < box.top + box.height / 2) {
-                newIndex = i;
-                break;
-            }
-        }
-
-        await reorderGroup(groupId, newIndex);
-        removeDragPlaceholder();
-
-        draggedElement = null;
-        draggedType = null;
-        draggedGroupId = null;
-    }
-
-    document.addEventListener('mousemove', moveClone);
-    document.addEventListener('mouseup', endGroupDrag);
-
-    moveClone(e);
-}
-
-function getDragAfterElement(container, y) {
-    const draggableElements = [...container.querySelectorAll('.card-tab-item:not(.dragging)')];
-
-    return draggableElements.reduce((closest, child) => {
-        const box = child.getBoundingClientRect();
-        const offset = y - box.top - box.height / 2;
-
-        if (offset < 0 && offset > closest.offset) {
-            return { offset: offset, element: child };
-        } else {
-            return closest;
-        }
-    }, { offset: Number.NEGATIVE_INFINITY }).element;
-}
-
-function showDragPlaceholder(container, beforeElement, type) {
-    removeDragPlaceholder();
-
-    dragPlaceholder = document.createElement('div');
-    dragPlaceholder.className = `drag-placeholder ${type}-placeholder`;
-
-    if (beforeElement) {
-        container.insertBefore(dragPlaceholder, beforeElement);
-    } else {
-        container.appendChild(dragPlaceholder);
-    }
-}
-
-function removeDragPlaceholder() {
-    if (dragPlaceholder) {
-        dragPlaceholder.remove();
-        dragPlaceholder = null;
-    }
-}
-
-async function moveTab(fromGroupId, toGroupId, tabId, beforeTabId) {
-    const fromGroup = tabGroups.find(g => g.id === fromGroupId);
-    const toGroup = tabGroups.find(g => g.id === toGroupId);
-
-    if (!fromGroup || !toGroup) return;
-
-    const tabIndex = fromGroup.tabs.findIndex(t => t.id === tabId);
-    if (tabIndex === -1) return;
-
-    const [tab] = fromGroup.tabs.splice(tabIndex, 1);
-
-    if (beforeTabId) {
-        const beforeIndex = toGroup.tabs.findIndex(t => t.id === beforeTabId);
-        toGroup.tabs.splice(beforeIndex, 0, tab);
-    } else {
-        toGroup.tabs.push(tab);
-    }
-
-    // Remove empty groups
-    if (fromGroup.tabs.length === 0) {
-        tabGroups = tabGroups.filter(g => g.id !== fromGroupId);
-    }
-
-    await saveTabGroups();
-    renderTagFilter();
-    renderGroups();
-    updateStats();
-}
-
-async function reorderGroup(groupId, newIndex) {
-    const currentIndex = tabGroups.findIndex(g => g.id === groupId);
-    if (currentIndex === -1 || currentIndex === newIndex) return;
-
-    const [group] = tabGroups.splice(currentIndex, 1);
-
-    // Adjust index if needed
-    const adjustedIndex = newIndex > currentIndex ? newIndex - 1 : newIndex;
-    tabGroups.splice(adjustedIndex, 0, group);
-
-    await saveTabGroups();
-    renderGroups();
-}
-
