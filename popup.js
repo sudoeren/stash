@@ -4,7 +4,15 @@
 
 // State
 let tabGroups = [];
-let settings = { darkMode: true, language: 'en', includePinned: false, closeAfterSave: true };
+let settings = { themeMode: 'system', language: 'en', includePinned: false, closeAfterSave: true };
+
+// System theme detection
+const systemThemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+systemThemeQuery.addEventListener('change', () => {
+    if (settings.themeMode === 'system') {
+        applyTheme();
+    }
+});
 const elements = {
     // Header
     openDashboard: document.getElementById('openDashboard'),
@@ -62,7 +70,17 @@ async function saveSettings() {
 }
 
 function applyTheme() {
-    if (settings.darkMode) {
+    let isDark = true;
+
+    if (settings.themeMode === 'light') {
+        isDark = false;
+    } else if (settings.themeMode === 'system') {
+        isDark = systemThemeQuery.matches;
+    } else {
+        isDark = true; // default to dark
+    }
+
+    if (isDark) {
         document.body.classList.remove('light-theme');
     } else {
         document.body.classList.add('light-theme');
@@ -385,76 +403,7 @@ function handleSearch(e) {
     renderGroups(filteredGroups);
 }
 
-// Export/Import
-function exportData() {
-    const data = {
-        version: '1.0',
-        exportedAt: new Date().toISOString(),
-        groups: tabGroups
-    };
 
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `stash-${formatDateForFile(new Date())}.json`;
-    a.click();
-
-    URL.revokeObjectURL(url);
-    showToast(t('exported'));
-}
-
-async function importData(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    try {
-        const text = await file.text();
-        const data = JSON.parse(text);
-
-        if (!data.groups || !Array.isArray(data.groups)) {
-            throw new Error('Invalid format');
-        }
-
-        tabGroups = [...data.groups, ...tabGroups];
-        await saveTabGroups();
-
-        renderGroups();
-        updateStats();
-        showToast(`${data.groups.length} ${t('groupsImported')}`);
-
-    } catch (error) {
-        console.error('Import error:', error);
-        showToast(t('importFailed'));
-    }
-
-    e.target.value = '';
-}
-
-// Clear All Data
-async function clearAllData() {
-    if (!confirm(t('confirmClearAll'))) {
-        return;
-    }
-
-    tabGroups = [];
-    await saveTabGroups();
-
-    elements.settingsModal.classList.remove('active');
-    renderGroups();
-    updateStats();
-    showToast(t('allDataCleared'));
-}
-
-// Stats
-function updateStats() {
-    const groupCount = tabGroups.length;
-    const tabCount = tabGroups.reduce((sum, g) => sum + g.tabs.length, 0);
-
-    elements.totalGroups.textContent = groupCount;
-    elements.totalTabs.textContent = tabCount;
-}
 
 // Toast
 function showToast(message) {

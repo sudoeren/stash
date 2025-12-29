@@ -128,13 +128,14 @@
 
                     <div class="setting-item">
                         <div class="setting-info">
-                            <span class="setting-title" data-i18n="darkTheme">Karanlık Tema</span>
-                            <span class="setting-desc">Açık ve koyu tema arasında geçiş</span>
+                            <span class="setting-title" data-i18n="themeMode">Tema Modu</span>
+                            <span class="setting-desc">Koyu, açık veya sistem temasını seçin</span>
                         </div>
-                        <label class="toggle">
-                            <input type="checkbox" id="settingDarkMode" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
+                        <select id="settingThemeMode" class="select-input">
+                            <option value="dark" data-i18n="themeDark">Koyu</option>
+                            <option value="light" data-i18n="themeLight">Açık</option>
+                            <option value="system" data-i18n="themeSystem">Sistem</option>
+                        </select>
                     </div>
 
                     <div class="setting-item">

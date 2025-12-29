@@ -6,11 +6,19 @@
 let tabGroups = [];
 let currentView = 'all';
 let settings = {
-    darkMode: true,
+    themeMode: 'system', // 'dark', 'light', 'system'
     language: 'tr',
     closeAfterSave: true,
     includePinned: false
 };
+
+// System theme detection
+const systemThemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+systemThemeQuery.addEventListener('change', () => {
+    if (settings.themeMode === 'system') {
+        applyTheme();
+    }
+});
 
 // DOM Elements
 const elements = {
@@ -35,7 +43,7 @@ const elements = {
     // Settings
     settingCloseAfterSave: document.getElementById('settingCloseAfterSave'),
     settingIncludePinned: document.getElementById('settingIncludePinned'),
-    settingDarkMode: document.getElementById('settingDarkMode'),
+    settingThemeMode: document.getElementById('settingThemeMode'),
     settingLanguage: document.getElementById('settingLanguage'),
 
     // Toast
@@ -106,8 +114,8 @@ function syncSettingsUI() {
     if (elements.settingIncludePinned) {
         elements.settingIncludePinned.checked = settings.includePinned || false;
     }
-    if (elements.settingDarkMode) {
-        elements.settingDarkMode.checked = settings.darkMode !== false;
+    if (elements.settingThemeMode) {
+        elements.settingThemeMode.value = settings.themeMode || 'system';
     }
     if (elements.settingLanguage) {
         elements.settingLanguage.value = settings.language || 'tr';
@@ -115,7 +123,17 @@ function syncSettingsUI() {
 }
 
 function applyTheme() {
-    if (settings.darkMode) {
+    let isDark = true;
+
+    if (settings.themeMode === 'light') {
+        isDark = false;
+    } else if (settings.themeMode === 'system') {
+        isDark = systemThemeQuery.matches;
+    } else {
+        isDark = true; // default to dark
+    }
+
+    if (isDark) {
         document.body.classList.remove('light-theme');
     } else {
         document.body.classList.add('light-theme');
@@ -180,9 +198,9 @@ function setupEventListeners() {
         });
     }
 
-    if (elements.settingDarkMode) {
-        elements.settingDarkMode.addEventListener('change', (e) => {
-            settings.darkMode = e.target.checked;
+    if (elements.settingThemeMode) {
+        elements.settingThemeMode.addEventListener('change', (e) => {
+            settings.themeMode = e.target.value;
             saveSettings();
             applyTheme();
         });

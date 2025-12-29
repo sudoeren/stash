@@ -41,6 +41,10 @@ const translations = {
         includePinned: 'Include pinned tabs',
         darkTheme: 'Dark Theme',
         theme: 'Theme',
+        themeMode: 'Theme Mode',
+        themeDark: 'Dark',
+        themeLight: 'Light',
+        themeSystem: 'System',
         clearAllData: 'Clear All Data',
         activeTabs: 'Active Tabs',
 
@@ -147,6 +151,10 @@ const translations = {
         includePinned: 'Pinli sekmeleri dahil et',
         darkTheme: 'Koyu Tema',
         theme: 'Tema',
+        themeMode: 'Tema Modu',
+        themeDark: 'Koyu',
+        themeLight: 'Açık',
+        themeSystem: 'Sistem',
         clearAllData: 'Tümünü Sil',
         activeTabs: 'Aktif Sekmeler',
 
