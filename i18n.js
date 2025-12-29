@@ -45,6 +45,7 @@ const translations = {
         themeDark: 'Dark',
         themeLight: 'Light',
         themeSystem: 'System',
+        dataManagement: 'Data Management',
         clearAllData: 'Clear All Data',
         activeTabs: 'Active Tabs',
 
@@ -155,6 +156,7 @@ const translations = {
         themeDark: 'Koyu',
         themeLight: 'Açık',
         themeSystem: 'Sistem',
+        dataManagement: 'Veri Yönetimi',
         clearAllData: 'Tümünü Sil',
         activeTabs: 'Aktif Sekmeler',
 

@@ -17,6 +17,7 @@
   --border-light: #333333;
 
   --danger: #ff4444;
+  --primary: #f59e0b;
 
   --radius-sm: 10px;
   --radius-md: 14px;
@@ -47,20 +48,19 @@
 }
 
 body {
-  width: 340px;
-  min-height: 440px;
-  max-height: 540px;
+  width: 360px;
+  height: 540px;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg-base);
   color: var(--text-primary);
+  overflow: hidden;
+  /* Dış scroll barı tamamen kaldır */
 }
 
 .app {
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 440px;
-  max-height: 540px;
 }
 
 /* ===== HEADER & CONTROLS ===== */
@@ -88,9 +88,9 @@ body {
 }
 
 .logo svg {
-  color: var(--primary);
+  color: var(--text-primary);
   /* Logo uses primary color now */
-  filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.3));
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.25));
 }
 
 .logo-text {
@@ -332,7 +332,23 @@ body {
 
 .groups-container::-webkit-scrollbar-thumb {
   background: var(--border);
-  border-radius: 4px;
+  border-radius: 10px;
+}
+
+/* Tab listesi açıldığında taşmayı önle */
+.tab-list {
+  border-top: 1px solid var(--border);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.tab-list::-webkit-scrollbar {
+  width: 3px;
+}
+
+.tab-list::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 10px;
 }
 
 /* ===== EMPTY STATE ===== */

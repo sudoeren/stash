@@ -22,8 +22,9 @@ systemThemeQuery.addEventListener('change', () => {
 
 // DOM Elements
 const elements = {
-    // Navigation
+    // Navigation (support both old and new)
     navTabs: document.querySelectorAll('.nav-tab'),
+    floatingNavItems: document.querySelectorAll('.floating-nav-item'),
 
     // Content
     groupsGrid: document.getElementById('groupsGrid'),
@@ -161,15 +162,36 @@ function applyLanguage() {
     });
 }
 
+// Navigation Helper
+function setActiveNav(view) {
+    // Update old nav tabs
+    elements.navTabs.forEach(t => t.classList.remove('active'));
+    const activeOldTab = document.querySelector(`.nav-tab[data-view="${view}"]`);
+    if (activeOldTab) activeOldTab.classList.add('active');
+
+    // Update new floating nav
+    elements.floatingNavItems.forEach(t => t.classList.remove('active'));
+    const activeFloatingItem = document.querySelector(`.floating-nav-item[data-view="${view}"]`);
+    if (activeFloatingItem) activeFloatingItem.classList.add('active');
+
+    // Set current view and render
+    currentView = view;
+    renderView();
+}
+
 // Event Listeners
 function setupEventListeners() {
-    // Navigation
+    // Navigation - Old nav tabs (legacy)
     elements.navTabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            elements.navTabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            currentView = tab.dataset.view;
-            renderView();
+            setActiveNav(tab.dataset.view);
+        });
+    });
+
+    // Navigation - New floating nav
+    elements.floatingNavItems.forEach(item => {
+        item.addEventListener('click', () => {
+            setActiveNav(item.dataset.view);
         });
     });
 
