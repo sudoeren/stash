@@ -140,54 +140,102 @@ body {
 
 .primary-btn {
   width: 100%;
-  height: 52px;
-  background: linear-gradient(135deg, var(--primary) 0%, #d97706 100%);
+  height: 56px;
+  background: var(--text-primary);
   border: none;
-  border-radius: 16px;
-  color: var(--primary-fg);
+  border-radius: 14px;
+  color: var(--bg-base);
   font-family: inherit;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  box-shadow: 0 8px 20px -6px rgba(245, 158, 11, 0.5);
   position: relative;
   overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    0 8px 20px -8px rgba(0, 0, 0, 0.3);
 }
 
 .primary-btn::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent);
+  inset: 0;
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(0, 0, 0, 0.05) 100%);
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+.primary-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%,
+      rgba(255, 255, 255, 0.2) 0%,
+      transparent 60%);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.25s ease;
 }
 
 .primary-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px -8px rgba(245, 158, 11, 0.6);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    0 12px 28px -8px rgba(0, 0, 0, 0.4);
 }
 
-.primary-btn:hover::before {
+.primary-btn:hover::after {
   opacity: 1;
 }
 
 .primary-btn:active {
   transform: translateY(0);
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.15),
+    0 4px 12px -4px rgba(0, 0, 0, 0.25);
+}
+
+.primary-btn .btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.primary-btn .btn-icon svg {
+  stroke-width: 2.5;
 }
 
 .btn-text {
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 600;
   letter-spacing: -0.2px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Light theme adjustments for save button */
+.light-theme .primary-btn {
+  background: var(--text-primary);
+  color: var(--bg-base);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    0 8px 20px -8px rgba(0, 0, 0, 0.15);
+}
+
+.light-theme .primary-btn:hover {
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.12),
+    0 12px 28px -8px rgba(0, 0, 0, 0.2);
 }
 
 /* ===== SEARCH & STATS BAR ===== */

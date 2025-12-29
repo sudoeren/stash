@@ -163,23 +163,91 @@ body {
 .btn-primary {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    height: 44px;
-    padding: 0 20px;
-    background: var(--accent);
-    color: #000000;
+    justify-content: center;
+    gap: 10px;
+    height: 48px;
+    padding: 0 24px;
+    background: var(--text-primary);
+    color: var(--bg-primary);
     border: none;
-    border-radius: var(--radius-md);
+    border-radius: 12px;
     font-family: inherit;
     font-size: 14px;
     font-weight: 600;
+    letter-spacing: -0.2px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.15),
+        0 8px 20px -8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0.15) 0%,
+            rgba(255, 255, 255, 0) 50%,
+            rgba(0, 0, 0, 0.05) 100%);
+    opacity: 1;
+    transition: opacity 0.25s ease;
+}
+
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%,
+            rgba(255, 255, 255, 0.2) 0%,
+            transparent 60%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
 }
 
 .btn-primary:hover {
-    background: var(--accent-hover);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.2),
+        0 12px 28px -8px rgba(0, 0, 0, 0.4);
+}
+
+.btn-primary:hover::after {
+    opacity: 1;
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.15),
+        0 4px 12px -4px rgba(0, 0, 0, 0.25);
+}
+
+.btn-primary svg,
+.btn-primary span {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-primary svg {
+    stroke-width: 2.5;
+}
+
+/* Light theme adjustments for save button */
+.light-theme .btn-primary {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        0 8px 20px -8px rgba(0, 0, 0, 0.15);
+}
+
+.light-theme .btn-primary:hover {
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.12),
+        0 12px 28px -8px rgba(0, 0, 0, 0.2);
 }
 
 .btn-secondary {
