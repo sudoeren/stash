@@ -46,7 +46,10 @@ const onboardingTexts = {
         allDoneDesc: 'You can always change these settings later from the dashboard.',
         back: 'Back',
         next: 'Continue',
-        finish: 'Get Started'
+        finish: 'Get Started',
+        craftedBy: 'Crafted by',
+        openSourceMsg: 'This project is open source.',
+        sourceCode: 'Source Code'
     },
     tr: {
         stepWelcome: 'Hoş Geldiniz',
@@ -82,7 +85,10 @@ const onboardingTexts = {
         allDoneDesc: 'Bu ayarları daha sonra kontrol panelinden değiştirebilirsiniz.',
         back: 'Geri',
         next: 'Devam Et',
-        finish: 'Başla'
+        finish: 'Başla',
+        craftedBy: 'Geliştirici',
+        openSourceMsg: 'Bu proje açık kaynaktır.',
+        sourceCode: 'Kaynak Kodu'
     }
 };
 
