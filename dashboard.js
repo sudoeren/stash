@@ -444,8 +444,8 @@ function createGroupCard(group) {
         const restoreBtn = card.querySelector('.restore');
         const killBtn = card.querySelector('.kill');
         
-        if (restoreBtn) restoreBtn.onclick = async () => { delete group.deletedAt; await saveTabGroups(); renderView(); };
-        if (killBtn) killBtn.onclick = async () => { if(confirm('Kalıcı olarak sil?')) { tabGroups = tabGroups.filter(g => g.id !== group.id); await saveTabGroups(); renderView(); } };
+        if (restoreBtn) restoreBtn.onclick = async () => { delete group.deletedAt; delete group.sourceGroupId; await saveTabGroups(); renderView(); };
+        if (killBtn) killBtn.onclick = async () => { if(confirm(t('confirmPermanentDelete'))) { tabGroups = tabGroups.filter(g => g.id !== group.id); await saveTabGroups(); renderView(); } };
     }
     return card;
 }
@@ -461,10 +461,62 @@ async function saveAllTabs() {
     renderView();
 }
 
-function handleSearch(e) { /* ... */ }
-function scanDuplicates() { /* ... */ }
-function exportData() { /* ... */ }
-function importData() { /* ... */ }
+function handleSearch(e) {
+    const query = e.target.value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.group-card');
+    
+    cards.forEach(card => {
+        const tabs = card.querySelectorAll('.tab-title');
+        let hasMatch = false;
+        
+        tabs.forEach(tab => {
+            if (tab.textContent.toLowerCase().includes(query)) {
+                hasMatch = true;
+            }
+        });
+        
+        card.style.display = hasMatch || query === '' ? '' : 'none';
+    });
+}
+
+function scanDuplicates() {
+    // Placeholder for future implementation
+    showToast('Coming soon');
+}
+
+function exportData() {
+    const data = JSON.stringify(tabGroups, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `stash-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast(t('export') + ' ✓');
+}
+
+function importData(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+        try {
+            const imported = JSON.parse(event.target.result);
+            if (Array.isArray(imported)) {
+                tabGroups = [...imported, ...tabGroups];
+                await saveTabGroups();
+                renderView();
+                showToast(t('import') + ' ✓');
+            }
+        } catch {
+            showToast(t('errorOccurred'));
+        }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+}
 function clearAllData() { if(confirm(t('confirmClearAll'))) { tabGroups = []; saveTabGroups(); renderView(); } }
 function cleanupTrash() { const limit = Date.now() - 30*24*60*60*1000; tabGroups = tabGroups.filter(g => !g.deletedAt || new Date(g.deletedAt) > limit); saveTabGroups(); }
 function showToast(m) { const t = document.getElementById('toast'); t.querySelector('span').textContent = m; t.classList.add('active'); setTimeout(() => t.classList.remove('active'), 3000); }
