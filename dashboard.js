@@ -171,30 +171,32 @@ function updateEmptyState(view) {
     
     const states = {
         all: {
-            icon: `<svg width="72" height="72" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 10C3 8.34315 4.34315 7 6 7H9C9.55228 7 10 7.44772 10 8V9.5C10 10.3284 10.6716 11 11.5 11H12.5C13.3284 11 14 10.3284 14 9.5V8C14 7.44772 14.4477 7 15 7H18C19.6569 7 21 8.34315 21 10V18C21 19.1046 19.6569 20 18 20H6C4.34315 20 3 18.6569 3 17V10Z" fill="currentColor" opacity="0.3" />
-                <rect x="10.5" y="4.5" width="3" height="6" rx="1.5" fill="var(--accent)" opacity="0.6" />
-                <path d="M12 14v2M12 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+            icon: `<svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                <rect x="16" y="24" width="48" height="40" rx="8" fill="var(--bg-tertiary)" stroke="var(--border)" stroke-width="2"/>
+                <rect x="24" y="32" width="32" height="4" rx="2" fill="var(--text-muted)" opacity="0.5"/>
+                <rect x="24" y="40" width="24" height="4" rx="2" fill="var(--text-muted)" opacity="0.3"/>
+                <rect x="24" y="48" width="28" height="4" rx="2" fill="var(--text-muted)" opacity="0.3"/>
+                <circle cx="56" cy="56" r="16" fill="var(--bg-secondary)" stroke="var(--accent)" stroke-width="2"/>
+                <path d="M50 56h12M56 50v12" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
             </svg>`,
             title: t('noTabsYet'),
             desc: t('noTabsDescription')
         },
         favorites: {
-            icon: `<svg width="72" height="72" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5" stroke-linejoin="round"/>
-                <circle cx="12" cy="12" r="3" fill="var(--accent)" opacity="0.4"/>
+            icon: `<svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                <path d="M40 16l7.5 15.2 16.8 2.4-12.15 11.85 2.87 16.73L40 54l-15.02 7.9 2.87-16.73L15.7 33.32l16.8-2.4L40 16z" fill="var(--bg-tertiary)" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+                <circle cx="40" cy="40" r="8" fill="var(--accent)" opacity="0.3"/>
             </svg>`,
             title: t('noFavorites'),
             desc: t('noFavoritesDesc')
         },
         trash: {
-            icon: `<svg width="72" height="72" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
-                <path d="M10 11v6M14 11v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
-                <rect x="4" y="4" width="16" height="3" rx="1" fill="currentColor" opacity="0.2"/>
-                <path d="M9 4V3a1 1 0 011-1h4a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
-                <circle cx="12" cy="14" r="6" stroke="var(--success)" stroke-width="1.5" stroke-dasharray="3 2" opacity="0.4"/>
-                <path d="M9.5 14l1.5 1.5 3-3" stroke="var(--success)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+            icon: `<svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                <rect x="24" y="24" width="32" height="8" rx="2" fill="var(--bg-tertiary)" stroke="var(--border)" stroke-width="2"/>
+                <path d="M28 32v28a4 4 0 004 4h16a4 4 0 004-4V32" fill="var(--bg-tertiary)" stroke="var(--border)" stroke-width="2"/>
+                <path d="M36 40v16M44 40v16" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+                <circle cx="40" cy="48" r="12" fill="none" stroke="var(--success)" stroke-width="2" opacity="0.6"/>
+                <path d="M35 48l3.5 3.5 7-7" stroke="var(--success)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>`,
             title: t('trashEmpty'),
             desc: t('trashEmptyDesc') || t('noTabsDescription')
@@ -245,9 +247,26 @@ function createGroupCard(group) {
                 <img class="tab-favicon" src="${getFaviconUrl(tab.url)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
                 <div class="tab-favicon-placeholder" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
                 <div class="tab-title">${tab.title}</div>
+                ${!isTrash ? `<button class="tab-delete" data-tab-index="${idx}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>` : ''}
             </div>
         `).join('')}</div>
     `;
+
+    // Setup delete for individual tabs
+    if (!isTrash) {
+        card.querySelectorAll('.tab-delete').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                const idx = parseInt(btn.dataset.tabIndex);
+                group.tabs.splice(idx, 1);
+                if (group.tabs.length === 0) {
+                    tabGroups = tabGroups.filter(g => g.id !== group.id);
+                }
+                await saveTabGroups();
+                renderView();
+            });
+        });
+    }
 
     // Setup drag & drop for tabs
     if (!isTrash) {

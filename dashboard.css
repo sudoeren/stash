@@ -620,12 +620,14 @@ body::-webkit-scrollbar-thumb {
 }
 
 .tab-title {
+    flex: 1;
     font-size: 13px;
     font-weight: 500;
     color: var(--text-primary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-width: 0;
 }
 
 .tab-url {
