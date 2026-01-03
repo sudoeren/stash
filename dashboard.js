@@ -166,7 +166,15 @@ function renderView() {
 function createGroupCard(group) {
     const card = document.createElement('div');
     card.className = 'group-card';
+    card.dataset.groupId = group.id;
     const isTrash = !!group.deletedAt;
+    
+    const getFaviconUrl = (url) => {
+        try {
+            const u = new URL(url);
+            return `https://www.google.com/s2/favicons?domain=${u.hostname}&sz=32`;
+        } catch { return null; }
+    };
     
     card.innerHTML = `
         <div class="group-header">
@@ -188,8 +196,60 @@ function createGroupCard(group) {
                 `}
             </div>
         </div>
-        <div class="tab-list">${group.tabs.map(t => `<div class="tab-item"><div class="tab-title">${t.title}</div></div>`).join('')}</div>
+        <div class="tab-list" data-group-id="${group.id}">${group.tabs.map((tab, idx) => `
+            <div class="tab-item" draggable="true" data-tab-index="${idx}" data-url="${tab.url}">
+                <img class="tab-favicon" src="${getFaviconUrl(tab.url)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+                <div class="tab-favicon-placeholder" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+                <div class="tab-title">${tab.title}</div>
+            </div>
+        `).join('')}</div>
     `;
+
+    // Setup drag & drop for tabs
+    if (!isTrash) {
+        const tabItems = card.querySelectorAll('.tab-item');
+        tabItems.forEach(item => {
+            item.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', JSON.stringify({
+                    sourceGroupId: group.id,
+                    tabIndex: parseInt(item.dataset.tabIndex),
+                    tab: group.tabs[parseInt(item.dataset.tabIndex)]
+                }));
+                item.classList.add('dragging');
+            });
+            item.addEventListener('dragend', () => item.classList.remove('dragging'));
+        });
+        
+        const tabList = card.querySelector('.tab-list');
+        tabList.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            tabList.classList.add('drag-over');
+        });
+        tabList.addEventListener('dragleave', () => tabList.classList.remove('drag-over'));
+        tabList.addEventListener('drop', async (e) => {
+            e.preventDefault();
+            tabList.classList.remove('drag-over');
+            try {
+                const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                if (data.sourceGroupId === group.id) return;
+                
+                // Add tab to this group
+                group.tabs.push(data.tab);
+                
+                // Remove tab from source group
+                const sourceGroup = tabGroups.find(g => g.id === data.sourceGroupId);
+                if (sourceGroup) {
+                    sourceGroup.tabs.splice(data.tabIndex, 1);
+                    if (sourceGroup.tabs.length === 0) {
+                        tabGroups = tabGroups.filter(g => g.id !== sourceGroup.id);
+                    }
+                }
+                
+                await saveTabGroups();
+                renderView();
+            } catch {}
+        });
+    }
 
     if (!isTrash) {
         card.querySelector('.fav').onclick = () => { group.favorite = !group.favorite; saveTabGroups(); renderView(); };

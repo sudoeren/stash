@@ -449,6 +449,7 @@ body::-webkit-scrollbar-thumb {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
+    max-height: 400px;
 }
 
 .group-card:hover {
@@ -540,6 +541,17 @@ body::-webkit-scrollbar-thumb {
 /* Tab List */
 .tab-list {
     padding: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.tab-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.tab-list::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
 }
 
 .tab-item {
@@ -548,12 +560,27 @@ body::-webkit-scrollbar-thumb {
     gap: 12px;
     padding: 10px 12px;
     border-radius: var(--radius-sm);
-    cursor: pointer;
+    cursor: grab;
     transition: background 0.15s ease;
+    border-bottom: 1px solid var(--border);
+}
+
+.tab-item:last-child {
+    border-bottom: none;
 }
 
 .tab-item:hover {
     background: var(--bg-hover);
+}
+
+.tab-item.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+}
+
+.tab-list.drag-over {
+    background: var(--accent-bg);
+    border-radius: var(--radius-sm);
 }
 
 .tab-favicon {
