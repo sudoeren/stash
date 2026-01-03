@@ -504,7 +504,8 @@ body::-webkit-scrollbar-thumb {
     transition: opacity 0.2s ease;
 }
 
-.group-card:hover .group-actions {
+.group-card:hover .group-actions,
+.group-card .group-actions:has(.restore) {
     opacity: 1;
 }
 
@@ -531,6 +532,17 @@ body::-webkit-scrollbar-thumb {
     background: var(--danger);
     color: white;
     border-color: var(--danger);
+}
+
+.action-btn.restore {
+    background: var(--accent-bg);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.action-btn.restore:hover {
+    background: var(--accent);
+    color: white;
 }
 
 .action-btn.favorite.active {
@@ -662,6 +674,19 @@ body::-webkit-scrollbar-thumb {
     color: var(--danger);
 }
 
+.tab-delete.permanent {
+    opacity: 0.5;
+}
+
+.tab-item:hover .tab-delete.permanent {
+    opacity: 1;
+}
+
+.tab-delete.permanent:hover {
+    background: var(--danger);
+    color: white;
+}
+
 /* Empty State */
 .empty-state {
     display: flex;
@@ -673,29 +698,86 @@ body::-webkit-scrollbar-thumb {
 }
 
 .empty-icon {
-    width: 120px;
-    height: 120px;
+    margin-bottom: 24px;
+}
+
+.empty-icon-box,
+.empty-icon-star,
+.empty-icon-trash {
+    width: 100px;
+    height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--bg-secondary);
     border: 1px solid var(--border);
-    border-radius: 50%;
-    margin-bottom: 24px;
+    border-radius: 24px;
     color: var(--text-muted);
+    position: relative;
+}
+
+.empty-icon-trash .empty-check {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 28px;
+    height: 28px;
+    background: var(--bg-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .empty-state h2 {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 8px;
 }
 
 .empty-state p {
-    font-size: 15px;
+    font-size: 14px;
     color: var(--text-secondary);
-    max-width: 400px;
+    max-width: 300px;
+}
+
+/* Trash Actions Bar */
+.trash-actions-bar {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+}
+
+.trash-count {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.empty-trash-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid var(--danger);
+    border-radius: var(--radius-sm);
+    color: var(--danger);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.empty-trash-btn:hover {
+    background: var(--danger);
+    color: white;
 }
 
 /* Settings */

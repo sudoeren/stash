@@ -160,6 +160,31 @@ function renderView() {
     } else {
         grid.style.display = 'grid';
         grid.innerHTML = '';
+        
+        // Add empty trash button if in trash view
+        if (currentView === 'trash') {
+            const emptyTrashBar = document.createElement('div');
+            emptyTrashBar.className = 'trash-actions-bar';
+            emptyTrashBar.innerHTML = `
+                <span class="trash-count">${groups.length} ${t('groups')}</span>
+                <button class="empty-trash-btn" id="emptyTrashBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+                    </svg>
+                    <span data-i18n="emptyTrash">${t('emptyTrash')}</span>
+                </button>
+            `;
+            grid.appendChild(emptyTrashBar);
+            
+            emptyTrashBar.querySelector('#emptyTrashBtn').onclick = async () => {
+                if (confirm(t('confirmEmptyTrash'))) {
+                    tabGroups = tabGroups.filter(g => !g.deletedAt);
+                    await saveTabGroups();
+                    renderView();
+                }
+            };
+        }
+        
         groups.forEach(g => grid.appendChild(createGroupCard(g)));
     }
 }
@@ -171,35 +196,40 @@ function updateEmptyState(view) {
     
     const states = {
         all: {
-            icon: `<svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-                <rect x="16" y="24" width="48" height="40" rx="8" fill="var(--bg-tertiary)" stroke="var(--border)" stroke-width="2"/>
-                <rect x="24" y="32" width="32" height="4" rx="2" fill="var(--text-muted)" opacity="0.5"/>
-                <rect x="24" y="40" width="24" height="4" rx="2" fill="var(--text-muted)" opacity="0.3"/>
-                <rect x="24" y="48" width="28" height="4" rx="2" fill="var(--text-muted)" opacity="0.3"/>
-                <circle cx="56" cy="56" r="16" fill="var(--bg-secondary)" stroke="var(--accent)" stroke-width="2"/>
-                <path d="M50 56h12M56 50v12" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
-            </svg>`,
+            icon: `<div class="empty-icon-box">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="3" opacity="0.3"/>
+                    <path d="M12 8v8M8 12h8" stroke-linecap="round"/>
+                </svg>
+            </div>`,
             title: t('noTabsYet'),
             desc: t('noTabsDescription')
         },
         favorites: {
-            icon: `<svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-                <path d="M40 16l7.5 15.2 16.8 2.4-12.15 11.85 2.87 16.73L40 54l-15.02 7.9 2.87-16.73L15.7 33.32l16.8-2.4L40 16z" fill="var(--bg-tertiary)" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
-                <circle cx="40" cy="40" r="8" fill="var(--accent)" opacity="0.3"/>
-            </svg>`,
+            icon: `<div class="empty-icon-star">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="var(--accent)" opacity="0.15"/>
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+            </div>`,
             title: t('noFavorites'),
             desc: t('noFavoritesDesc')
         },
         trash: {
-            icon: `<svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-                <rect x="24" y="24" width="32" height="8" rx="2" fill="var(--bg-tertiary)" stroke="var(--border)" stroke-width="2"/>
-                <path d="M28 32v28a4 4 0 004 4h16a4 4 0 004-4V32" fill="var(--bg-tertiary)" stroke="var(--border)" stroke-width="2"/>
-                <path d="M36 40v16M44 40v16" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
-                <circle cx="40" cy="48" r="12" fill="none" stroke="var(--success)" stroke-width="2" opacity="0.6"/>
-                <path d="M35 48l3.5 3.5 7-7" stroke="var(--success)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>`,
+            icon: `<div class="empty-icon-trash">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2" opacity="0.5"/>
+                    <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+                    <path d="M10 11v6M14 11v6" stroke-linecap="round" opacity="0.5"/>
+                </svg>
+                <div class="empty-check">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.5">
+                        <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </div>`,
             title: t('trashEmpty'),
-            desc: t('trashEmptyDesc') || t('noTabsDescription')
+            desc: t('trashEmptyDesc')
         }
     };
     
@@ -237,36 +267,64 @@ function createGroupCard(group) {
                     <button class="action-btn open"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,3 21,3 21,9"/><path d="M21 3l-7 7"/><path d="M21 14v5a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h5"/></svg></button>
                     <button class="action-btn danger del"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>
                 ` : `
-                    <button class="action-btn restore">Restore</button>
-                    <button class="action-btn danger kill">Permanent</button>
+                    <button class="action-btn restore" title="Restore"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
+                    <button class="action-btn danger kill" title="Delete Permanently"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>
                 `}
             </div>
         </div>
         <div class="tab-list" data-group-id="${group.id}">${group.tabs.map((tab, idx) => `
-            <div class="tab-item" draggable="true" data-tab-index="${idx}" data-url="${tab.url}">
+            <div class="tab-item" draggable="${!isTrash}" data-tab-index="${idx}" data-url="${tab.url}">
                 <img class="tab-favicon" src="${getFaviconUrl(tab.url)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
                 <div class="tab-favicon-placeholder" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
                 <div class="tab-title">${tab.title}</div>
-                ${!isTrash ? `<button class="tab-delete" data-tab-index="${idx}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>` : ''}
+                <button class="tab-delete ${isTrash ? 'permanent' : ''}" data-tab-index="${idx}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
             </div>
         `).join('')}</div>
     `;
 
     // Setup delete for individual tabs
-    if (!isTrash) {
-        card.querySelectorAll('.tab-delete').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                const idx = parseInt(btn.dataset.tabIndex);
+    card.querySelectorAll('.tab-delete').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const idx = parseInt(btn.dataset.tabIndex);
+            
+            if (!isTrash) {
+                // Moving tab to trash
+                const deletedTab = group.tabs.splice(idx, 1)[0];
+                
+                // Find existing trash group from same source group, or create new one
+                let trashGroup = tabGroups.find(g => g.deletedAt && g.sourceGroupId === group.id);
+                
+                if (trashGroup) {
+                    // Add to existing trash group
+                    trashGroup.tabs.push(deletedTab);
+                } else {
+                    // Create new trash group
+                    trashGroup = {
+                        id: 'trash-' + Date.now().toString(),
+                        sourceGroupId: group.id,
+                        createdAt: new Date().toISOString(),
+                        deletedAt: new Date().toISOString(),
+                        tabs: [deletedTab]
+                    };
+                    tabGroups.push(trashGroup);
+                }
+                
+                if (group.tabs.length === 0) {
+                    tabGroups = tabGroups.filter(g => g.id !== group.id);
+                }
+            } else {
+                // Permanent delete from trash
                 group.tabs.splice(idx, 1);
                 if (group.tabs.length === 0) {
                     tabGroups = tabGroups.filter(g => g.id !== group.id);
                 }
-                await saveTabGroups();
-                renderView();
-            });
+            }
+            
+            await saveTabGroups();
+            renderView();
         });
-    }
+    });
 
     // Setup drag & drop for tabs
     if (!isTrash) {
