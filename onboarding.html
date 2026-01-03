@@ -14,94 +14,181 @@
             justify-content: center;
             min-height: 100vh;
             background: var(--bg-primary);
+            padding: 20px;
         }
-        .onboarding-card {
+
+        .onboarding-container {
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
             background: var(--bg-secondary);
             border: 1px solid var(--border);
             border-radius: 24px;
-            padding: 40px;
-            text-align: center;
+            padding: 48px;
             box-shadow: var(--shadow-lg);
+            text-align: center;
+            animation: slideUp 0.5s ease-out;
         }
-        .logo-large {
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-area {
+            margin-bottom: 32px;
+        }
+
+        .logo-icon {
             width: 64px;
             height: 64px;
-            margin-bottom: 24px;
             color: var(--text-primary);
+            margin-bottom: 16px;
         }
+
         h1 {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 800;
             margin-bottom: 12px;
             background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
         }
-        p {
+
+        p.subtitle {
             color: var(--text-secondary);
-            margin-bottom: 32px;
             font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 40px;
         }
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
+
+        .selection-group {
             margin-bottom: 32px;
-        }
-        .option-group {
             text-align: left;
         }
-        .option-label {
+
+        .group-label {
             display: block;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
         }
+
+        /* Option Cards */
+        .options-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .option-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+
+        .option-card:hover {
+            border-color: var(--text-muted);
+            transform: translateY(-2px);
+        }
+
+        .option-card.active {
+            border-color: var(--accent);
+            background: var(--accent-bg);
+            color: var(--accent);
+        }
+
+        .option-card.active .option-icon {
+            color: var(--accent);
+        }
+
+        .option-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .option-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Finish Button */
         .finish-btn {
             width: 100%;
-            height: 52px;
+            height: 56px;
             font-size: 16px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 16px;
         }
+        
+        .finish-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.25);
+        }
+
     </style>
 </head>
 <body>
-    <div class="onboarding-card">
-        <svg class="logo-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 10C3 8.34315 4.34315 7 6 7H9C9.55228 7 10 7.44772 10 8V9.5C10 10.3284 10.6716 11 11.5 11H12.5C13.3284 11 14 10.3284 14 9.5V8C14 7.44772 14.4477 7 15 7H18C19.6569 7 21 8.34315 21 10V18C21 19.1046 19.6569 20 18 20H6C4.34315 20 3 18.6569 3 17V10Z" />
-            <rect x="10.5" y="4.5" width="3" height="6" rx="1.5" fill="#f59e0b" stroke="none"/>
-        </svg>
-        
-        <h1 id="title">Welcome to Stash</h1>
-        <p id="subtitle">Save your tabs with one click. Let's get you set up.</p>
+    <div class="onboarding-container">
+        <div class="logo-area">
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 10C3 8.34315 4.34315 7 6 7H9C9.55228 7 10 7.44772 10 8V9.5C10 10.3284 10.6716 11 11.5 11H12.5C13.3284 11 14 10.3284 14 9.5V8C14 7.44772 14.4477 7 15 7H18C19.6569 7 21 8.34315 21 10V18C21 19.1046 19.6569 20 18 20H6C4.34315 20 3 18.6569 3 17V10Z" />
+                <rect x="10.5" y="4.5" width="3" height="6" rx="1.5" fill="#f59e0b" stroke="none"/>
+            </svg>
+            <h1 id="title">Welcome to Stash</h1>
+            <p class="subtitle" id="subtitle">The minimalist way to save your tabs and clear your mind.</p>
+        </div>
 
-        <div class="options-grid">
-            <div class="option-group">
-                <span class="option-label" id="labelLanguage">Language</span>
-                <select id="languageSelect" class="modern-select">
-                    <option value="en">English</option>
-                    <option value="tr">Türkçe</option>
-                </select>
+        <div class="selection-group">
+            <span class="group-label" id="labelLanguage">Language</span>
+            <div class="options-row">
+                <div class="option-card" data-type="language" data-value="en">
+                    <span class="option-text">English</span>
+                </div>
+                <div class="option-card" data-type="language" data-value="tr">
+                    <span class="option-text">Türkçe</span>
+                </div>
             </div>
-            <div class="option-group">
-                <span class="option-label" id="labelTheme">Theme</span>
-                <select id="themeSelect" class="modern-select">
-                    <option value="system">System</option>
-                    <option value="dark">Dark</option>
-                    <option value="light">Light</option>
-                </select>
+        </div>
+
+        <div class="selection-group">
+            <span class="group-label" id="labelTheme">Theme</span>
+            <div class="options-row" style="grid-template-columns: 1fr 1fr 1fr;">
+                <div class="option-card" data-type="theme" data-value="light">
+                    <svg class="option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    <span class="option-text">Light</span>
+                </div>
+                <div class="option-card" data-type="theme" data-value="dark">
+                    <svg class="option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    <span class="option-text">Dark</span>
+                </div>
+                <div class="option-card" data-type="theme" data-value="system">
+                    <svg class="option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    <span class="option-text">System</span>
+                </div>
             </div>
         </div>
 
         <button id="finishBtn" class="btn-primary finish-btn">
             <span id="btnText">Get Started</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
     </div>
 

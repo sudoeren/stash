@@ -1,58 +1,78 @@
+let settings = {
+    themeMode: 'system',
+    language: 'en',
+    closeAfterSave: true,
+    includePinned: false,
+    autoSave: false,
+    autoSaveInterval: 30
+};
+
+// Initialize
 document.addEventListener('DOMContentLoaded', async () => {
-    const languageSelect = document.getElementById('languageSelect');
-    const themeSelect = document.getElementById('themeSelect');
-    const finishBtn = document.getElementById('finishBtn');
-
-    // Default settings
-    let settings = {
-        themeMode: 'system',
-        language: 'en',
-        closeAfterSave: true,
-        includePinned: false
-    };
-
-    // Load existing settings if any
-    const stored = await chrome.storage.local.get('settings');
-    if (stored.settings) {
-        settings = { ...settings, ...stored.settings };
-    } else {
-        // Try to detect browser language
-        const browserLang = navigator.language.split('-')[0];
-        if (['tr', 'en'].includes(browserLang)) {
-            settings.language = browserLang;
-        }
+    // Detect system language
+    const browserLang = navigator.language.split('-')[0];
+    if (['tr', 'en'].includes(browserLang)) {
+        settings.language = browserLang;
     }
 
-    // Set initial values
-    languageSelect.value = settings.language;
-    themeSelect.value = settings.themeMode;
-    applyTheme(settings.themeMode);
-    updateTexts(settings.language);
+    // Initial Render
+    updateUI();
+    applyTheme();
 
-    // Event Listeners
-    languageSelect.addEventListener('change', (e) => {
-        settings.language = e.target.value;
-        updateTexts(settings.language);
-    });
-
-    themeSelect.addEventListener('change', (e) => {
-        settings.themeMode = e.target.value;
-        applyTheme(settings.themeMode);
-    });
-
-    finishBtn.addEventListener('click', async () => {
-        await chrome.storage.local.set({ settings });
-        // Close tab
-        chrome.tabs.getCurrent(tab => {
-            chrome.tabs.remove(tab.id);
+    // Event Listeners for Options
+    document.querySelectorAll('.option-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const type = card.dataset.type;
+            const value = card.dataset.value;
+            selectOption(type, value);
         });
-        // Or redirect to dashboard if prefered
-         chrome.tabs.create({ url: 'dashboard.html' });
     });
+
+    // Finish Button
+    document.getElementById('finishBtn').addEventListener('click', finishSetup);
 });
 
-function applyTheme(mode) {
-    const isDark = mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+function selectOption(type, value) {
+    if (type === 'language') {
+        settings.language = value;
+    } else if (type === 'theme') {
+        settings.themeMode = value;
+    }
+    updateUI();
+    applyTheme();
+}
+
+function updateUI() {
+    // Update active states
+    document.querySelectorAll('.option-card').forEach(card => {
+        card.classList.remove('active');
+        const type = card.dataset.type;
+        const value = card.dataset.value;
+
+        if (type === 'language' && value === settings.language) {
+            card.classList.add('active');
+        }
+        if (type === 'theme' && value === settings.themeMode) {
+            card.classList.add('active');
+        }
+    });
+
+    // Update Texts
+    const t = texts[settings.language];
+    document.getElementById('title').textContent = t.title;
+    document.getElementById('subtitle').textContent = t.subtitle;
+    document.getElementById('labelLanguage').textContent = t.labelLanguage;
+    document.getElementById('labelTheme').textContent = t.labelTheme;
+    document.getElementById('btnText').textContent = t.btnText;
+    
+    // Update theme texts in cards
+    document.querySelector('[data-value="light"][data-type="theme"] .option-text').textContent = t.themeLight;
+    document.querySelector('[data-value="dark"][data-type="theme"] .option-text').textContent = t.themeDark;
+    document.querySelector('[data-value="system"][data-type="theme"] .option-text').textContent = t.themeSystem;
+}
+
+function applyTheme() {
+    const isDark = settings.themeMode === 'dark' || (settings.themeMode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
     if (isDark) {
         document.body.classList.remove('light-theme');
     } else {
@@ -60,28 +80,36 @@ function applyTheme(mode) {
     }
 }
 
+async function finishSetup() {
+    await chrome.storage.local.set({ settings });
+    
+    // Close current tab and open dashboard
+    chrome.tabs.create({ url: 'dashboard.html' }, () => {
+        chrome.tabs.getCurrent(tab => {
+            if (tab) chrome.tabs.remove(tab.id);
+        });
+    });
+}
+
 const texts = {
     en: {
         title: 'Welcome to Stash',
-        subtitle: 'Save your tabs with one click. Let\'s get you set up.',
-        labelLanguage: 'Language',
-        labelTheme: 'Theme',
+        subtitle: 'The minimalist way to save your tabs and clear your mind.',
+        labelLanguage: 'LANGUAGE',
+        labelTheme: 'THEME',
+        themeLight: 'Light',
+        themeDark: 'Dark',
+        themeSystem: 'System',
         btnText: 'Get Started'
     },
     tr: {
         title: 'Stash\'e Hoş Geldiniz',
-        subtitle: 'Sekmelerinizi tek tıkla kaydedin. Hadi başlayalım.',
-        labelLanguage: 'Dil',
-        labelTheme: 'Tema',
-        btnText: 'Başlayın'
+        subtitle: 'Sekmelerinizi kaydetmenin ve zihninizi boşaltmanın en minimalist yolu.',
+        labelLanguage: 'DİL',
+        labelTheme: 'TEMA',
+        themeLight: 'Açık',
+        themeDark: 'Koyu',
+        themeSystem: 'Sistem',
+        btnText: 'Başlayalım'
     }
 };
-
-function updateTexts(lang) {
-    const t = texts[lang] || texts.en;
-    document.getElementById('title').textContent = t.title;
-    document.getElementById('subtitle').textContent = t.subtitle;
-    document.getElementById('labelLanguage').textContent = t.labelLanguage;
-    document.getElementById('labelTheme').textContent = t.labelTheme;
-    document.getElementById('btnText').textContent = t.btnText;
-}
