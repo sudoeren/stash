@@ -102,6 +102,12 @@ function setupEventListeners() {
     // Actions
     if (el('saveAllBtn')) el('saveAllBtn').addEventListener('click', saveAllTabs);
     if (el('searchInput')) el('searchInput').addEventListener('input', handleSearch);
+    if (el('searchClear')) el('searchClear').addEventListener('click', () => {
+        const input = el('searchInput');
+        input.value = '';
+        input.dispatchEvent(new Event('input'));
+        input.focus();
+    });
     if (el('exportBtn')) el('exportBtn').addEventListener('click', exportData);
     if (el('importBtn')) el('importBtn').addEventListener('click', () => el('importFile').click());
     if (el('importFile')) el('importFile').addEventListener('change', importData);
@@ -464,6 +470,17 @@ async function saveAllTabs() {
 function handleSearch(e) {
     const query = e.target.value.toLowerCase().trim();
     const cards = document.querySelectorAll('.group-card');
+    const searchBox = document.querySelector('.search-box');
+    const searchCount = document.getElementById('searchCount');
+    
+    // Toggle has-value class
+    if (query) {
+        searchBox.classList.add('has-value');
+    } else {
+        searchBox.classList.remove('has-value');
+    }
+    
+    let visibleCount = 0;
     
     cards.forEach(card => {
         const tabs = card.querySelectorAll('.tab-item');
@@ -478,8 +495,18 @@ function handleSearch(e) {
             }
         });
         
-        card.style.display = hasMatch || query === '' ? '' : 'none';
+        if (hasMatch || query === '') {
+            card.style.display = '';
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
     });
+    
+    // Update count display
+    if (query && searchCount) {
+        searchCount.textContent = visibleCount;
+    }
 }
 
 function scanDuplicates() {
