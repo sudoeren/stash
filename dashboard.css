@@ -182,52 +182,46 @@ body::-webkit-scrollbar-thumb {
     color: var(--text-muted);
 }
 
-.search-clear {
+.search-result {
     position: absolute;
     right: 12px;
     top: 50%;
     transform: translateY(-50%);
-    width: 24px;
-    height: 24px;
     display: none;
     align-items: center;
-    justify-content: center;
-    background: var(--bg-hover);
-    border: none;
-    border-radius: 50%;
+    gap: 6px;
+    font-size: 12px;
     color: var(--text-muted);
-    cursor: pointer;
-    transition: all 0.15s ease;
+    padding: 4px 10px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
 }
 
-.search-clear:hover {
+.search-result .result-count {
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.search-result .result-label {
+    color: var(--text-muted);
+}
+
+.search-result.no-results {
     background: var(--danger-bg);
+    border-color: var(--danger);
+}
+
+.search-result.no-results .result-count {
     color: var(--danger);
 }
 
-.search-box.has-value .search-clear {
+.search-box.has-value .search-result {
     display: flex;
 }
 
 .search-box.has-value input {
-    padding-right: 80px;
-}
-
-.search-count {
-    position: absolute;
-    right: 44px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 12px;
-    color: var(--text-muted);
-    background: var(--bg-secondary);
-    padding: 2px 8px;
-    border-radius: 10px;
-    display: none;
-}
-
-.search-box.has-value .search-count {
-    display: block;
+    padding-right: 100px;
 }
 
 .header-right {

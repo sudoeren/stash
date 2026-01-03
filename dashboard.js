@@ -102,12 +102,6 @@ function setupEventListeners() {
     // Actions
     if (el('saveAllBtn')) el('saveAllBtn').addEventListener('click', saveAllTabs);
     if (el('searchInput')) el('searchInput').addEventListener('input', handleSearch);
-    if (el('searchClear')) el('searchClear').addEventListener('click', () => {
-        const input = el('searchInput');
-        input.value = '';
-        input.dispatchEvent(new Event('input'));
-        input.focus();
-    });
     if (el('exportBtn')) el('exportBtn').addEventListener('click', exportData);
     if (el('importBtn')) el('importBtn').addEventListener('click', () => el('importFile').click());
     if (el('importFile')) el('importFile').addEventListener('change', importData);
@@ -471,7 +465,7 @@ function handleSearch(e) {
     const query = e.target.value.toLowerCase().trim();
     const cards = document.querySelectorAll('.group-card');
     const searchBox = document.querySelector('.search-box');
-    const searchCount = document.getElementById('searchCount');
+    const searchResult = document.getElementById('searchResult');
     
     // Toggle has-value class
     if (query) {
@@ -503,9 +497,15 @@ function handleSearch(e) {
         }
     });
     
-    // Update count display
-    if (query && searchCount) {
-        searchCount.textContent = visibleCount;
+    // Update result display
+    if (query && searchResult) {
+        if (visibleCount === 0) {
+            searchResult.className = 'search-result no-results';
+            searchResult.innerHTML = `<span class="result-count">0</span><span class="result-label">${t('found')}</span>`;
+        } else {
+            searchResult.className = 'search-result';
+            searchResult.innerHTML = `<span class="result-count">${visibleCount}</span><span class="result-label">${t('found')}</span>`;
+        }
     }
 }
 
