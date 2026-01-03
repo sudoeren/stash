@@ -11,60 +11,41 @@
 </head>
 
 <body>
-    <!-- Main App Container -->
     <div class="app">
-        <!-- Header -->
         <header class="header">
             <div class="header-left">
                 <div class="logo">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M3 10C3 8.34315 4.34315 7 6 7H9C9.55228 7 10 7.44772 10 8V9.5C10 10.3284 10.6716 11 11.5 11H12.5C13.3284 11 14 10.3284 14 9.5V8C14 7.44772 14.4477 7 15 7H18C19.6569 7 21 8.34315 21 10V18C21 19.1046 19.6569 20 18 20H6C4.34315 20 3 18.6569 3 17V10Z"
-                            fill="currentColor" />
+                        <path d="M3 10C3 8.34315 4.34315 7 6 7H9C9.55228 7 10 7.44772 10 8V9.5C10 10.3284 10.6716 11 11.5 11H12.5C13.3284 11 14 10.3284 14 9.5V8C14 7.44772 14.4477 7 15 7H18C19.6569 7 21 8.34315 21 10V18C21 19.1046 19.6569 20 18 20H6C4.34315 20 3 18.6569 3 17V10Z" fill="currentColor" />
                         <rect x="10.5" y="4.5" width="3" height="6" rx="1.5" fill="#f59e0b" />
                     </svg>
                     <span class="logo-text">Stash</span>
                 </div>
             </div>
-
             <div class="header-center">
                 <div class="search-box">
-                    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8" />
-                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
                     </svg>
-                    <input type="text" id="searchInput" placeholder="Search (e.g. site:github.com)"
-                        data-i18n-placeholder="searchPlaceholder">
+                    <input type="text" id="searchInput" placeholder="Search..." data-i18n-placeholder="searchPlaceholder">
                 </div>
             </div>
-
             <div class="header-right">
                 <button class="btn-primary" id="saveAllBtn">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                        <polyline points="17 21 17 13 7 13 7 21" />
-                        <polyline points="7 3 7 8 15 8" />
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" />
                     </svg>
                     <span data-i18n="saveAll">Save All</span>
                 </button>
             </div>
         </header>
 
-        <!-- Main Content Area -->
         <main class="main-content">
-            <!-- Groups Grid -->
-            <div class="groups-grid" id="groupsGrid">
-                <!-- Content injected by JS -->
-            </div>
-
-            <!-- Empty State -->
+            <div class="groups-grid" id="groupsGrid"></div>
             <div class="empty-state" id="emptyState" style="display: none;">
                 <div class="empty-icon">
                     <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M3 10C3 8.34315 4.34315 7 6 7H9C9.55228 7 10 7.44772 10 8V9C10 10.1046 10.8954 11 12 11C13.1046 11 14 10.1046 14 9V8C14 7.44772 14.4477 7 15 7H18C19.6569 7 21 8.34315 21 10V18C21 19.1046 19.6569 20 18 20H6C4.34315 20 3 18.6569 3 17V10Z"
-                            fill="currentColor" opacity="0.4" />
+                        <path d="M3 10C3 8.34315 4.34315 7 6 7H9C9.55228 7 10 7.44772 10 8V9C10 10.1046 10.8954 11 12 11C13.1046 11 14 10.1046 14 9V8C14 7.44772 14.4477 7 15 7H18C19.6569 7 21 8.34315 21 10V18C21 19.1046 19.6569 20 18 20H6C4.34315 20 3 18.6569 3 17V10Z" fill="currentColor" opacity="0.4" />
                         <rect x="10" y="5" width="4" height="6" rx="2" fill="#f59e0b" opacity="0.4" />
                     </svg>
                 </div>
@@ -72,11 +53,8 @@
                 <p data-i18n="noTabsDescription">Click "Save All" to save your open tabs</p>
             </div>
 
-            <!-- Settings View (Bento Grid) -->
             <div class="settings-view" id="settingsView" style="display: none;">
                 <div class="settings-container">
-                    
-                    <!-- Top Row: General & Auto Save -->
                     <div class="settings-grid">
                         <!-- General Settings -->
                         <div class="settings-card">
@@ -90,20 +68,16 @@
                                 <div class="setting-row">
                                     <div class="setting-label">
                                         <span class="title" data-i18n="closeAfterSave">Close after save</span>
+                                        <span class="desc" data-i18n="closeAfterSaveDesc">Automatically close tabs after they are stashed</span>
                                     </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" id="settingCloseAfterSave">
-                                        <span class="slider"></span>
-                                    </label>
+                                    <label class="toggle-switch"><input type="checkbox" id="settingCloseAfterSave"><span class="slider"></span></label>
                                 </div>
                                 <div class="setting-row">
                                     <div class="setting-label">
                                         <span class="title" data-i18n="includePinned">Include pinned</span>
+                                        <span class="desc" data-i18n="includePinnedDesc">Also save your pinned tabs</span>
                                     </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" id="settingIncludePinned">
-                                        <span class="slider"></span>
-                                    </label>
+                                    <label class="toggle-switch"><input type="checkbox" id="settingIncludePinned"><span class="slider"></span></label>
                                 </div>
                             </div>
                         </div>
@@ -120,18 +94,27 @@
                                 <div class="setting-row">
                                     <div class="setting-label">
                                         <span class="title" data-i18n="enableAutoSave">Enable Auto Save</span>
-                                        <span class="desc" data-i18n="autoSaveDesc">Save every 30 mins</span>
+                                        <span class="desc" data-i18n="autoSaveDesc">Automatically save tabs at regular intervals</span>
                                     </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" id="settingAutoSave">
-                                        <span class="slider"></span>
-                                    </label>
+                                    <label class="toggle-switch"><input type="checkbox" id="settingAutoSave"><span class="slider"></span></label>
+                                </div>
+                                <!-- Added d-none class for explicit hidden state -->
+                                <div class="setting-row d-none" id="autoSaveIntervalRow">
+                                    <div class="setting-label">
+                                        <span class="title" data-i18n="autoSaveInterval">Interval</span>
+                                        <span class="desc" data-i18n="autoSaveIntervalDesc">How often should we save?</span>
+                                    </div>
+                                    <select id="settingAutoSaveInterval" class="modern-select" style="width: 120px;">
+                                        <option value="15">15 min</option>
+                                        <option value="30">30 min</option>
+                                        <option value="60">1 hour</option>
+                                        <option value="120">2 hours</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Middle Row: Appearance & Language -->
                     <div class="settings-grid">
                         <div class="settings-card">
                             <div class="card-header">
@@ -148,7 +131,6 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="settings-card">
                             <div class="card-header">
                                 <div class="card-title-group">
@@ -165,7 +147,6 @@
                         </div>
                     </div>
 
-                    <!-- Bottom Row: Data & Advanced -->
                     <div class="settings-card">
                          <div class="card-header">
                             <div class="card-title-group">
@@ -175,18 +156,10 @@
                         </div>
                         <div class="card-body">
                             <div class="action-buttons">
-                                <button class="action-btn-modern" id="exportBtn">
-                                    <span data-i18n="export">Export</span>
-                                </button>
-                                <button class="action-btn-modern" id="importBtn">
-                                    <span data-i18n="import">Import</span>
-                                </button>
-                                <button class="action-btn-modern" id="scanDuplicatesBtn">
-                                    <span data-i18n="scanDuplicates">Scan Duplicates</span>
-                                </button>
-                                <button class="action-btn-modern danger" id="clearAllBtn">
-                                    <span data-i18n="clearAllData">Reset All</span>
-                                </button>
+                                <button class="action-btn-modern" id="exportBtn"><span data-i18n="export">Export</span></button>
+                                <button class="action-btn-modern" id="importBtn"><span data-i18n="import">Import</span></button>
+                                <button class="action-btn-modern" id="scanDuplicatesBtn"><span data-i18n="scanDuplicates">Duplicates</span></button>
+                                <button class="action-btn-modern danger" id="clearAllBtn"><span data-i18n="clearAllData">Reset</span></button>
                             </div>
                             <input type="file" id="importFile" accept=".json" style="display: none;">
                         </div>
@@ -196,48 +169,18 @@
         </main>
     </div>
 
-    <!-- Toast Notification -->
-    <div class="toast" id="toast">
-        <span id="toastMessage"></span>
-    </div>
+    <div class="toast" id="toast"><span id="toastMessage"></span></div>
 
-    <!-- Floating Bottom Navigation -->
     <nav class="floating-nav">
         <div class="floating-nav-container">
-            <button class="floating-nav-item active" data-view="all" title="All Tabs">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="3" width="7" height="7" rx="2" />
-                    <rect x="14" y="3" width="7" height="7" rx="2" />
-                    <rect x="14" y="14" width="7" height="7" rx="2" />
-                    <rect x="3" y="14" width="7" height="7" rx="2" />
-                </svg>
-                <span class="floating-nav-label" data-i18n="allTabs">All</span>
-            </button>
-            <button class="floating-nav-item" data-view="favorites" title="Favorites">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-                </svg>
-                <span class="floating-nav-label" data-i18n="favorites">Favorites</span>
-            </button>
-            <button class="floating-nav-item" data-view="trash" title="Trash">
-                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="3 6 5 6 21 6"></polyline>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                </svg>
-                <span class="floating-nav-label" data-i18n="trash">Trash</span>
-            </button>
-            <button class="floating-nav-item" data-view="settings" title="Settings">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="3" />
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-                </svg>
-                <span class="floating-nav-label" data-i18n="settings">Settings</span>
-            </button>
+            <button class="floating-nav-item active" data-view="all"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="2" /><rect x="14" y="3" width="7" height="7" rx="2" /><rect x="14" y="14" width="7" height="7" rx="2" /><rect x="3" y="14" width="7" height="7" rx="2" /></svg><span class="floating-nav-label" data-i18n="allTabs">All</span></button>
+            <button class="floating-nav-item" data-view="favorites"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" /></svg><span class="floating-nav-label" data-i18n="favorites">Favorites</span></button>
+            <button class="floating-nav-item" data-view="trash"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg><span class="floating-nav-label" data-i18n="trash">Trash</span></button>
+            <button class="floating-nav-item" data-view="settings"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg><span class="floating-nav-label" data-i18n="settings">Settings</span></button>
         </div>
     </nav>
 
     <script src="i18n.js"></script>
     <script src="dashboard.js"></script>
 </body>
-
 </html>

@@ -32,7 +32,8 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
     if (namespace === 'local' && changes.settings) {
         const newSettings = changes.settings.newValue;
         if (newSettings.autoSave) {
-            chrome.alarms.create('autoSave', { periodInMinutes: 30 });
+            const interval = parseInt(newSettings.autoSaveInterval) || 30;
+            chrome.alarms.create('autoSave', { periodInMinutes: interval });
         } else {
             chrome.alarms.clear('autoSave');
         }

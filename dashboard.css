@@ -54,6 +54,11 @@
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
 
+/* Utilities */
+.d-none {
+    display: none !important;
+}
+
 /* Reset */
 *,
 *::before,
@@ -75,7 +80,6 @@ body {
 /* App Container */
 .app {
     max-width: 1200px;
-    /* Daha dar ve odaklanmış */
     margin: 0 auto;
     padding: 24px 40px;
     min-height: 100vh;
@@ -83,7 +87,6 @@ body {
     flex-direction: column;
 }
 
-/* Sayfa genelindeki gereksiz scrolları kaldır */
 html,
 body {
     overflow-x: hidden;
@@ -259,7 +262,6 @@ body::-webkit-scrollbar-thumb {
     stroke-width: 2.5;
 }
 
-/* Light theme adjustments for save button */
 .light-theme .btn-primary {
     background: var(--text-primary);
     color: var(--bg-primary);
@@ -335,7 +337,6 @@ body::-webkit-scrollbar-thumb {
     background: var(--bg-secondary);
     border: 1px solid var(--border);
     border-radius: 100px;
-    /* Tam kapsül görünümü */
     box-shadow:
         0 4px 20px rgba(0, 0, 0, 0.3),
         0 8px 40px rgba(0, 0, 0, 0.2);
@@ -352,14 +353,11 @@ body::-webkit-scrollbar-thumb {
 .floating-nav-item {
     display: flex;
     flex-direction: row;
-    /* Yan yana dizilim */
     align-items: center;
     justify-content: center;
     gap: 10px;
     height: 42px;
-    /* Dikey dar */
     padding: 0 20px;
-    /* Yatay geniş */
     background: transparent;
     color: var(--text-muted);
     border: none;
@@ -410,7 +408,6 @@ body::-webkit-scrollbar-thumb {
 
 .floating-nav-label {
     font-size: 13px;
-    /* Daha okunaklı */
     font-weight: 600;
     letter-spacing: -0.2px;
     position: relative;
@@ -422,7 +419,6 @@ body::-webkit-scrollbar-thumb {
     color: var(--bg-primary);
 }
 
-/* Hide old nav-tabs (legacy support) */
 .nav-tabs {
     display: none;
 }
@@ -431,7 +427,6 @@ body::-webkit-scrollbar-thumb {
     display: none;
 }
 
-/* Main Content - add bottom padding for floating nav */
 .main-content {
     min-height: calc(100vh - 180px);
     padding-bottom: 100px;
@@ -667,7 +662,7 @@ body::-webkit-scrollbar-thumb {
     max-width: 400px;
 }
 
-/* Modern Rectangular Settings Layout */
+/* Settings */
 .settings-container {
     max-width: 800px;
     margin: 0 auto;
@@ -754,14 +749,12 @@ body::-webkit-scrollbar-thumb {
     color: var(--text-secondary);
 }
 
-/* Grid for smaller cards */
 .settings-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;
 }
 
-/* Form Elements */
 .modern-select {
     width: 100%;
     height: 44px;
@@ -782,7 +775,30 @@ body::-webkit-scrollbar-thumb {
     border-color: var(--text-muted);
 }
 
-/* Toggle Switch - Modern Sharp */
+.modern-input {
+    width: 80px;
+    height: 36px;
+    padding: 0 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.modern-input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.light-theme .modern-input {
+    background: #f5f5f5;
+}
+
 .toggle-switch {
     position: relative;
     width: 44px;
@@ -827,7 +843,6 @@ body::-webkit-scrollbar-thumb {
     background: var(--bg-primary);
 }
 
-/* Action Buttons */
 .action-buttons {
     display: flex;
     gap: 12px;
@@ -863,12 +878,10 @@ body::-webkit-scrollbar-thumb {
     border-color: var(--danger);
 }
 
-/* Danger Zone tweak */
 .danger-zone {
     border-color: rgba(239, 68, 68, 0.2);
 }
 
-/* Light Theme Adjustments */
 .light-theme .settings-card {
     background: white;
 }
@@ -882,7 +895,6 @@ body::-webkit-scrollbar-thumb {
     background: #f5f5f5;
 }
 
-/* Toggle Re-styling for Bento */
 .toggle {
     position: relative;
     width: 44px;
@@ -922,7 +934,6 @@ body::-webkit-scrollbar-thumb {
     background: var(--bg-primary);
 }
 
-/* Toast */
 .toast {
     position: fixed;
     bottom: 24px;
@@ -948,7 +959,6 @@ body::-webkit-scrollbar-thumb {
     transform: translateX(-50%) translateY(0);
 }
 
-/* Animations */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -965,7 +975,6 @@ body::-webkit-scrollbar-thumb {
     animation: fadeIn 0.3s ease-out;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .app {
         padding: 16px;
