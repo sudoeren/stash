@@ -466,11 +466,14 @@ function handleSearch(e) {
     const cards = document.querySelectorAll('.group-card');
     
     cards.forEach(card => {
-        const tabs = card.querySelectorAll('.tab-title');
+        const tabs = card.querySelectorAll('.tab-item');
         let hasMatch = false;
         
         tabs.forEach(tab => {
-            if (tab.textContent.toLowerCase().includes(query)) {
+            const title = tab.querySelector('.tab-title')?.textContent.toLowerCase() || '';
+            const url = (tab.dataset.url || '').toLowerCase();
+            
+            if (title.includes(query) || url.includes(query)) {
                 hasMatch = true;
             }
         });
