@@ -89,7 +89,7 @@ body {
 
 html,
 body {
-    overflow-x: hidden;
+    overflow: hidden;
     height: 100%;
 }
 
@@ -672,6 +672,16 @@ body::-webkit-scrollbar-thumb {
     padding-bottom: 100px;
 }
 
+.settings-view {
+    overflow: hidden !important;
+    height: auto;
+    max-height: none;
+}
+
+.main-content {
+    overflow: hidden;
+}
+
 .settings-card {
     background: var(--bg-secondary);
     border: 1px solid var(--border);
@@ -996,6 +1006,176 @@ body::-webkit-scrollbar-thumb {
     }
 
     .groups-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* About Card Styles */
+.about-card .about-body {
+    padding: 24px;
+}
+
+.about-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.about-content-vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+}
+
+.about-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.about-content-vertical .about-brand {
+    flex-direction: column;
+    gap: 12px;
+}
+
+.about-logo {
+    color: var(--text-primary);
+}
+
+.about-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.about-content-vertical .about-info {
+    align-items: center;
+}
+
+.about-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.about-version {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.about-details {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.about-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.author-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.crafted-label {
+    color: var(--text-muted);
+}
+
+.author-link {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s;
+}
+
+.author-link:hover {
+    color: var(--accent);
+}
+
+.link-icon {
+    width: 12px;
+    height: 12px;
+    opacity: 0.7;
+}
+
+.os-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.source-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.source-btn:hover {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    border-color: var(--text-primary);
+}
+
+/* Vertical action buttons for data management */
+.action-buttons-vertical {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 12px;
+}
+
+.action-buttons-vertical .action-btn-modern {
+    height: 56px;
+    font-size: 14px;
+    padding: 0 16px;
+    white-space: nowrap;
+}
+
+.action-buttons-vertical .action-btn-modern.reset-btn {
+    grid-column: 1 / -1;
+    height: 64px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+@media (max-width: 600px) {
+    .about-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .about-details {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .action-buttons-vertical {
         grid-template-columns: 1fr;
     }
 }
