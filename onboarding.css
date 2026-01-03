@@ -15,6 +15,7 @@
     --accent: #f59e0b;
     --accent-hover: #d97706;
     --accent-bg: rgba(245, 158, 11, 0.15);
+    --accent-gradient: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(245, 158, 11, 0.05) 100%);
 
     --border: #2a2a2a;
     --border-light: #333333;
@@ -68,7 +69,7 @@ body {
 .wizard-container {
     width: 100%;
     max-width: 850px;
-    height: 540px; /* Reduced height for tighter feel */
+    height: 540px;
     background: var(--bg-secondary);
     border: 1px solid var(--border);
     border-radius: var(--radius-xl);
@@ -211,7 +212,7 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* No scrolling allowed by design */
+    overflow: hidden;
 }
 
 /* === Language Selection (Step 1) === */
@@ -257,59 +258,89 @@ body {
     font-weight: 600;
 }
 
-/* === Features (Step 2) === */
-.features-container {
+/* === Features Bento Grid (Step 2 - NEW) === */
+.bento-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1.3fr 1fr;
+    grid-template-rows: 1fr 1fr;
     gap: 16px;
-    height: 100%;
-    align-content: start;
+    height: 320px; /* Fixed height container */
 }
 
-.feature-box {
+.bento-item {
     background: var(--bg-tertiary);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: 24px 16px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    transition: all 0.2s ease;
-    height: 100%;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
-.feature-box:hover {
-    transform: translateY(-4px);
+.bento-item:hover {
+    transform: translateY(-2px);
     border-color: var(--text-muted);
     background: var(--bg-hover);
 }
 
-.feature-icon-circle {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent);
-    margin-bottom: 16px;
+/* Large Main Item (Left) */
+.bento-item.main {
+    grid-row: span 2;
+    background: var(--accent-gradient);
+    border-color: rgba(245, 158, 11, 0.3);
 }
 
-.feature-box h4 {
-    font-size: 14px;
+.bento-item.main:hover {
+    border-color: var(--accent);
+}
+
+.bento-icon {
+    width: 48px;
+    height: 48px;
+    color: var(--accent);
+    margin-bottom: 20px;
+    filter: drop-shadow(0 4px 12px rgba(245, 158, 11, 0.3));
+}
+
+.bento-item.main .bento-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: auto; /* Push content down */
+    margin-top: 20px;
+}
+
+.bento-content {
+    margin-top: auto;
+}
+
+.bento-item h4 {
+    font-size: 16px;
     font-weight: 700;
     margin-bottom: 8px;
     color: var(--text-primary);
 }
 
-.feature-box p {
-    font-size: 12px;
-    color: var(--text-secondary);
-    line-height: 1.4;
+.bento-item.main h4 {
+    font-size: 20px;
 }
+
+.bento-item p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.bento-item.main p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+}
+.light-theme .bento-item.main p {
+    color: rgba(0, 0, 0, 0.7);
+}
+
 
 /* === Customize (Step 3) - COMPACT === */
 .section-title {
@@ -329,7 +360,7 @@ body {
 
 .theme-option {
     flex: 1;
-    height: 70px; /* Reduced height */
+    height: 70px;
     background: var(--bg-tertiary);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
@@ -439,7 +470,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: auto; /* Push to bottom */
+    margin-top: auto;
     padding-top: 24px;
     border-top: 1px solid var(--border);
 }
@@ -498,6 +529,7 @@ body {
     }
     .steps-nav { display: none; }
     .wizard-content { padding: 24px; }
-    .features-container { grid-template-columns: 1fr; }
+    .bento-grid { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; }
+    .bento-item.main { grid-row: span 1; }
     .theme-selector { flex-direction: row; }
 }
