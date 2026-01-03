@@ -156,11 +156,55 @@ function renderView() {
 
     if (groups.length === 0) {
         empty.style.display = 'flex';
+        updateEmptyState(currentView);
     } else {
         grid.style.display = 'grid';
         grid.innerHTML = '';
         groups.forEach(g => grid.appendChild(createGroupCard(g)));
     }
+}
+
+function updateEmptyState(view) {
+    const icon = document.getElementById('emptyIcon');
+    const title = document.getElementById('emptyTitle');
+    const desc = document.getElementById('emptyDesc');
+    
+    const states = {
+        all: {
+            icon: `<svg width="72" height="72" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 10C3 8.34315 4.34315 7 6 7H9C9.55228 7 10 7.44772 10 8V9.5C10 10.3284 10.6716 11 11.5 11H12.5C13.3284 11 14 10.3284 14 9.5V8C14 7.44772 14.4477 7 15 7H18C19.6569 7 21 8.34315 21 10V18C21 19.1046 19.6569 20 18 20H6C4.34315 20 3 18.6569 3 17V10Z" fill="currentColor" opacity="0.3" />
+                <rect x="10.5" y="4.5" width="3" height="6" rx="1.5" fill="var(--accent)" opacity="0.6" />
+                <path d="M12 14v2M12 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+            </svg>`,
+            title: t('noTabsYet'),
+            desc: t('noTabsDescription')
+        },
+        favorites: {
+            icon: `<svg width="72" height="72" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" fill="var(--accent)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="3" fill="var(--accent)" opacity="0.4"/>
+            </svg>`,
+            title: t('noFavorites'),
+            desc: t('noFavoritesDesc')
+        },
+        trash: {
+            icon: `<svg width="72" height="72" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
+                <path d="M10 11v6M14 11v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+                <rect x="4" y="4" width="16" height="3" rx="1" fill="currentColor" opacity="0.2"/>
+                <path d="M9 4V3a1 1 0 011-1h4a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                <circle cx="12" cy="14" r="6" stroke="var(--success)" stroke-width="1.5" stroke-dasharray="3 2" opacity="0.4"/>
+                <path d="M9.5 14l1.5 1.5 3-3" stroke="var(--success)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+            </svg>`,
+            title: t('trashEmpty'),
+            desc: t('trashEmptyDesc') || t('noTabsDescription')
+        }
+    };
+    
+    const state = states[view] || states.all;
+    icon.innerHTML = state.icon;
+    title.textContent = state.title;
+    desc.textContent = state.desc;
 }
 
 function createGroupCard(group) {

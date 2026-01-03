@@ -445,7 +445,7 @@ body::-webkit-scrollbar-thumb {
     background: var(--bg-secondary);
     border: 1px solid var(--border);
     border-radius: var(--radius-xl);
-    overflow: visible;
+    overflow: hidden;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
@@ -463,6 +463,7 @@ body::-webkit-scrollbar-thumb {
     padding: 16px;
     background: var(--bg-tertiary);
     border-bottom: 1px solid var(--border);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
 }
 
 .group-info {
