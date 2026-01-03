@@ -375,12 +375,19 @@ function createGroupCard(group) {
     }
 
     if (!isTrash) {
-        card.querySelector('.fav').onclick = () => { group.favorite = !group.favorite; saveTabGroups(); renderView(); };
-        card.querySelector('.open').onclick = () => { group.tabs.forEach(t => chrome.tabs.create({ url: t.url })); };
-        card.querySelector('.del').onclick = () => { group.deletedAt = new Date().toISOString(); saveTabGroups(); renderView(); };
+        const favBtn = card.querySelector('.fav');
+        const openBtn = card.querySelector('.open');
+        const delBtn = card.querySelector('.del');
+        
+        if (favBtn) favBtn.onclick = async () => { group.favorite = !group.favorite; await saveTabGroups(); renderView(); };
+        if (openBtn) openBtn.onclick = () => { group.tabs.forEach(tab => chrome.tabs.create({ url: tab.url })); };
+        if (delBtn) delBtn.onclick = async () => { group.deletedAt = new Date().toISOString(); await saveTabGroups(); renderView(); };
     } else {
-        card.querySelector('.restore').onclick = () => { delete group.deletedAt; saveTabGroups(); renderView(); };
-        card.querySelector('.kill').onclick = () => { if(confirm('Permanent?')) { tabGroups = tabGroups.filter(g => g.id !== group.id); saveTabGroups(); renderView(); } };
+        const restoreBtn = card.querySelector('.restore');
+        const killBtn = card.querySelector('.kill');
+        
+        if (restoreBtn) restoreBtn.onclick = async () => { delete group.deletedAt; await saveTabGroups(); renderView(); };
+        if (killBtn) killBtn.onclick = async () => { if(confirm('Kalıcı olarak sil?')) { tabGroups = tabGroups.filter(g => g.id !== group.id); await saveTabGroups(); renderView(); } };
     }
     return card;
 }
