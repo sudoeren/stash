@@ -14,11 +14,13 @@ const translations = {
         theme: 'Theme',
         settings: 'Settings',
         delete: 'Delete',
+        scanDuplicates: 'Scan Duplicates',
 
         // Navigation
         allTabs: 'All Tabs',
         recent: 'Recent',
         favorites: 'Favorites',
+        trash: 'Trash',
 
         // Stats
         groups: 'Groups',
@@ -26,11 +28,14 @@ const translations = {
         tabsCount: 'tabs',
 
         // Search
-        searchPlaceholder: 'Search tabs...',
+        searchPlaceholder: 'Search (e.g. site:github.com)',
 
         // Empty State
         noTabsYet: 'No tabs yet',
         noTabsDescription: 'Click "Save All" to save your open tabs',
+        trashEmpty: 'Trash is empty',
+        noFavorites: 'No favorites yet',
+        noFavoritesDesc: 'Mark items as favorite to see them here',
 
         // Settings
         general: 'General',
@@ -46,13 +51,16 @@ const translations = {
         themeLight: 'Light',
         themeSystem: 'System',
         dataManagement: 'Data Management',
-        clearAllData: 'Clear All Data',
+        clearAllData: 'Reset All',
         activeTabs: 'Active Tabs',
+        autoSave: 'Auto Save',
+        enableAutoSave: 'Enable Auto Save',
+        autoSaveDesc: 'Save every 30 mins',
 
         // Toast Messages
         tabsSaved: 'tabs saved',
         tabsOpened: 'tabs opened',
-        groupDeleted: 'Group deleted',
+        groupDeleted: 'Group moved to trash',
         allDataCleared: 'All data cleared',
         exported: 'Exported',
         groupsImported: 'groups imported',
@@ -125,11 +133,13 @@ const translations = {
         theme: 'Tema',
         settings: 'Ayarlar',
         delete: 'Sil',
+        scanDuplicates: 'Çoğaltmaları Tara',
 
         // Navigation
         allTabs: 'Tüm Sekmeler',
         recent: 'Son Eklenenler',
         favorites: 'Favoriler',
+        trash: 'Çöp Kutusu',
 
         // Stats
         groups: 'Grup',
@@ -137,11 +147,14 @@ const translations = {
         tabsCount: 'sekme',
 
         // Search
-        searchPlaceholder: 'Sekmelerde ara...',
+        searchPlaceholder: 'Ara (örn. site:github.com)',
 
         // Empty State
         noTabsYet: 'Henüz sekme yok',
         noTabsDescription: 'Açık sekmelerinizi kaydetmek için "Tümünü Kaydet" butonuna tıklayın',
+        trashEmpty: 'Çöp kutusu boş',
+        noFavorites: 'Henüz favori yok',
+        noFavoritesDesc: 'Favorilediğiniz öğeler burada görünür',
 
         // Settings
         general: 'Genel',
@@ -157,13 +170,16 @@ const translations = {
         themeLight: 'Açık',
         themeSystem: 'Sistem',
         dataManagement: 'Veri Yönetimi',
-        clearAllData: 'Tümünü Sil',
+        clearAllData: 'Tümünü Sıfırla',
         activeTabs: 'Aktif Sekmeler',
+        autoSave: 'Otomatik Kayıt',
+        enableAutoSave: 'Otomatik Kaydı Aç',
+        autoSaveDesc: 'Her 30 dk bir kaydet',
 
         // Toast Messages
         tabsSaved: 'sekme kaydedildi',
         tabsOpened: 'sekme açıldı',
-        groupDeleted: 'Grup silindi',
+        groupDeleted: 'Grup çöp kutusuna taşındı',
         allDataCleared: 'Tüm veriler silindi',
         exported: 'Dışa aktarıldı',
         groupsImported: 'grup aktarıldı',

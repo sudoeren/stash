@@ -34,7 +34,7 @@
                         <circle cx="11" cy="11" r="8" />
                         <line x1="21" y1="21" x2="16.65" y2="16.65" />
                     </svg>
-                    <input type="text" id="searchInput" placeholder="Sekmelerde ara..."
+                    <input type="text" id="searchInput" placeholder="Search (e.g. site:github.com)"
                         data-i18n-placeholder="searchPlaceholder">
                 </div>
             </div>
@@ -46,12 +46,10 @@
                         <polyline points="17 21 17 13 7 13 7 21" />
                         <polyline points="7 3 7 8 15 8" />
                     </svg>
-                    <span data-i18n="saveAll">Tümünü Kaydet</span>
+                    <span data-i18n="saveAll">Save All</span>
                 </button>
             </div>
         </header>
-
-
 
         <!-- Main Content Area -->
         <main class="main-content">
@@ -70,69 +68,83 @@
                         <rect x="10" y="5" width="4" height="6" rx="2" fill="#f59e0b" opacity="0.4" />
                     </svg>
                 </div>
-                <h2 data-i18n="noTabsYet">Henüz kayıtlı sekme yok</h2>
-                <p data-i18n="noTabsDescription">Sekmelerinizi kaydetmek için "Tümünü Kaydet" butonuna tıklayın</p>
+                <h2 data-i18n="noTabsYet">No tabs yet</h2>
+                <p data-i18n="noTabsDescription">Click "Save All" to save your open tabs</p>
             </div>
 
-            <!-- Modern Rectangular Settings -->
+            <!-- Settings View (Bento Grid) -->
             <div class="settings-view" id="settingsView" style="display: none;">
                 <div class="settings-container">
-                    <!-- General Settings -->
-                    <div class="settings-card">
-                        <div class="card-header">
-                            <div class="card-title-group">
-                                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2.5">
-                                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
-                                    <path
-                                        d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
-                                </svg>
-                                <h3 data-i18n="general">Genel Ayarlar</h3>
+                    
+                    <!-- Top Row: General & Auto Save -->
+                    <div class="settings-grid">
+                        <!-- General Settings -->
+                        <div class="settings-card">
+                            <div class="card-header">
+                                <div class="card-title-group">
+                                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" /><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" /></svg>
+                                    <h3 data-i18n="general">General</h3>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <span class="title" data-i18n="closeAfterSave">Close after save</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="settingCloseAfterSave">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <span class="title" data-i18n="includePinned">Include pinned</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="settingIncludePinned">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <div class="setting-row">
-                                <div class="setting-label">
-                                    <span class="title" data-i18n="closeAfterSave">Kayıttan sonra kapat</span>
-                                    <span class="desc">Sekmeler kaydedilince otomatik kapanır</span>
+
+                        <!-- Auto Save Settings -->
+                        <div class="settings-card">
+                            <div class="card-header">
+                                <div class="card-title-group">
+                                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                                    <h3 data-i18n="autoSave">Auto Save</h3>
                                 </div>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="settingCloseAfterSave">
-                                    <span class="slider"></span>
-                                </label>
                             </div>
-                            <div class="setting-row">
-                                <div class="setting-label">
-                                    <span class="title" data-i18n="includePinned">Sabitlenmişleri dahil et</span>
-                                    <span class="desc">Pinli sekmeler de kaydedilir</span>
+                            <div class="card-body">
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <span class="title" data-i18n="enableAutoSave">Enable Auto Save</span>
+                                        <span class="desc" data-i18n="autoSaveDesc">Save every 30 mins</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="settingAutoSave">
+                                        <span class="slider"></span>
+                                    </label>
                                 </div>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="settingIncludePinned">
-                                    <span class="slider"></span>
-                                </label>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Appearance & Language -->
+                    <!-- Middle Row: Appearance & Language -->
                     <div class="settings-grid">
                         <div class="settings-card">
                             <div class="card-header">
                                 <div class="card-title-group">
-                                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2.5">
-                                        <path
-                                            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-                                        <circle cx="12" cy="12" r="5" />
-                                    </svg>
-                                    <h3 data-i18n="appearance">Görünüm</h3>
+                                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" /><circle cx="12" cy="12" r="5" /></svg>
+                                    <h3 data-i18n="appearance">Appearance</h3>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <select id="settingThemeMode" class="modern-select">
-                                    <option value="dark" data-i18n="themeDark">Koyu</option>
-                                    <option value="light" data-i18n="themeLight">Açık</option>
-                                    <option value="system" data-i18n="themeSystem">Sistem</option>
+                                    <option value="dark" data-i18n="themeDark">Dark</option>
+                                    <option value="light" data-i18n="themeLight">Light</option>
+                                    <option value="system" data-i18n="themeSystem">System</option>
                                 </select>
                             </div>
                         </div>
@@ -140,11 +152,8 @@
                         <div class="settings-card">
                             <div class="card-header">
                                 <div class="card-title-group">
-                                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2.5">
-                                        <path d="M12 21a9 9 0 100-18 9 9 0 000 18zM12 8V7M12 17v-4M8 12l8 0" />
-                                    </svg>
-                                    <h3 data-i18n="language">Dil</h3>
+                                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM12 8V7M12 17v-4M8 12l8 0" /></svg>
+                                    <h3 data-i18n="language">Language</h3>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -156,27 +165,27 @@
                         </div>
                     </div>
 
-                    <!-- Data Management -->
-                    <div class="settings-card danger-zone">
-                        <div class="card-header">
+                    <!-- Bottom Row: Data & Advanced -->
+                    <div class="settings-card">
+                         <div class="card-header">
                             <div class="card-title-group">
-                                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2.5">
-                                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
-                                </svg>
-                                <h3 data-i18n="dataManagement">Veri Yönetimi</h3>
+                                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" /></svg>
+                                <h3 data-i18n="dataManagement">Data Management</h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="action-buttons">
                                 <button class="action-btn-modern" id="exportBtn">
-                                    <span data-i18n="export">Dışa Aktar</span>
+                                    <span data-i18n="export">Export</span>
                                 </button>
                                 <button class="action-btn-modern" id="importBtn">
-                                    <span data-i18n="import">İçe Aktar</span>
+                                    <span data-i18n="import">Import</span>
+                                </button>
+                                <button class="action-btn-modern" id="scanDuplicatesBtn">
+                                    <span data-i18n="scanDuplicates">Scan Duplicates</span>
                                 </button>
                                 <button class="action-btn-modern danger" id="clearAllBtn">
-                                    <span data-i18n="clearAllData">Tümünü Sil</span>
+                                    <span data-i18n="clearAllData">Reset All</span>
                                 </button>
                             </div>
                             <input type="file" id="importFile" accept=".json" style="display: none;">
@@ -192,38 +201,37 @@
         <span id="toastMessage"></span>
     </div>
 
-    <!-- Hidden Stats Elements -->
-    <div style="display: none;">
-        <span id="sidebarGroups">0</span>
-        <span id="sidebarTabs">0</span>
-    </div>
-
     <!-- Floating Bottom Navigation -->
     <nav class="floating-nav">
         <div class="floating-nav-container">
-            <button class="floating-nav-item active" data-view="all" title="Tüm Sekmeler">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <button class="floating-nav-item active" data-view="all" title="All Tabs">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="3" width="7" height="7" rx="2" />
                     <rect x="14" y="3" width="7" height="7" rx="2" />
                     <rect x="14" y="14" width="7" height="7" rx="2" />
                     <rect x="3" y="14" width="7" height="7" rx="2" />
                 </svg>
-                <span class="floating-nav-label" data-i18n="allTabs">Tümü</span>
+                <span class="floating-nav-label" data-i18n="allTabs">All</span>
             </button>
-            <button class="floating-nav-item" data-view="favorites" title="Favoriler">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon
-                        points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+            <button class="floating-nav-item" data-view="favorites" title="Favorites">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
                 </svg>
-                <span class="floating-nav-label" data-i18n="favorites">Favoriler</span>
+                <span class="floating-nav-label" data-i18n="favorites">Favorites</span>
             </button>
-            <button class="floating-nav-item" data-view="settings" title="Ayarlar">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <button class="floating-nav-item" data-view="trash" title="Trash">
+                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                <span class="floating-nav-label" data-i18n="trash">Trash</span>
+            </button>
+            <button class="floating-nav-item" data-view="settings" title="Settings">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="3" />
-                    <path
-                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
                 </svg>
-                <span class="floating-nav-label" data-i18n="settings">Ayarlar</span>
+                <span class="floating-nav-label" data-i18n="settings">Settings</span>
             </button>
         </div>
     </nav>
