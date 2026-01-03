@@ -474,37 +474,37 @@ function handleSearch(e) {
         searchBox.classList.remove('has-value');
     }
     
-    let visibleCount = 0;
+    let visibleTabCount = 0;
     
     cards.forEach(card => {
         const tabs = card.querySelectorAll('.tab-item');
-        let hasMatch = false;
+        let groupHasMatch = false;
         
         tabs.forEach(tab => {
             const title = tab.querySelector('.tab-title')?.textContent.toLowerCase() || '';
             const url = (tab.dataset.url || '').toLowerCase();
             
-            if (title.includes(query) || url.includes(query)) {
-                hasMatch = true;
+            if (query === '' || title.includes(query) || url.includes(query)) {
+                tab.style.display = '';
+                groupHasMatch = true;
+                if (query) visibleTabCount++;
+            } else {
+                tab.style.display = 'none';
             }
         });
         
-        if (hasMatch || query === '') {
-            card.style.display = '';
-            visibleCount++;
-        } else {
-            card.style.display = 'none';
-        }
+        // Hide group if no tabs match
+        card.style.display = groupHasMatch ? '' : 'none';
     });
     
     // Update result display
     if (query && searchResult) {
-        if (visibleCount === 0) {
+        if (visibleTabCount === 0) {
             searchResult.className = 'search-result no-results';
             searchResult.innerHTML = `<span class="result-count">0</span><span class="result-label">${t('found')}</span>`;
         } else {
             searchResult.className = 'search-result';
-            searchResult.innerHTML = `<span class="result-count">${visibleCount}</span><span class="result-label">${t('found')}</span>`;
+            searchResult.innerHTML = `<span class="result-count">${visibleTabCount}</span><span class="result-label">${t('found')}</span>`;
         }
     }
 }
