@@ -216,8 +216,59 @@ function createGroupCard(group) {
                     tab: group.tabs[parseInt(item.dataset.tabIndex)]
                 }));
                 item.classList.add('dragging');
+                setTimeout(() => item.style.display = 'none', 0);
             });
-            item.addEventListener('dragend', () => item.classList.remove('dragging'));
+            item.addEventListener('dragend', () => {
+                item.classList.remove('dragging');
+                item.style.display = '';
+            });
+            
+            // Drag over individual items for reordering
+            item.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const dragging = document.querySelector('.tab-item.dragging');
+                if (dragging && dragging !== item) {
+                    card.querySelectorAll('.tab-item').forEach(i => i.classList.remove('drag-over-item'));
+                    item.classList.add('drag-over-item');
+                }
+            });
+            item.addEventListener('dragleave', () => {
+                item.classList.remove('drag-over-item');
+            });
+            item.addEventListener('drop', async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                item.classList.remove('drag-over-item');
+                card.querySelector('.tab-list').classList.remove('drag-over');
+                
+                try {
+                    const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                    const targetIndex = parseInt(item.dataset.tabIndex);
+                    
+                    if (data.sourceGroupId === group.id) {
+                        // Reorder within same group
+                        const [movedTab] = group.tabs.splice(data.tabIndex, 1);
+                        const newIndex = data.tabIndex < targetIndex ? targetIndex : targetIndex;
+                        group.tabs.splice(newIndex, 0, movedTab);
+                    } else {
+                        // Move to this group at specific position
+                        group.tabs.splice(targetIndex, 0, data.tab);
+                        
+                        // Remove from source
+                        const sourceGroup = tabGroups.find(g => g.id === data.sourceGroupId);
+                        if (sourceGroup) {
+                            sourceGroup.tabs.splice(data.tabIndex, 1);
+                            if (sourceGroup.tabs.length === 0) {
+                                tabGroups = tabGroups.filter(g => g.id !== sourceGroup.id);
+                            }
+                        }
+                    }
+                    
+                    await saveTabGroups();
+                    renderView();
+                } catch {}
+            });
         });
         
         const tabList = card.querySelector('.tab-list');
@@ -225,29 +276,38 @@ function createGroupCard(group) {
             e.preventDefault();
             tabList.classList.add('drag-over');
         });
-        tabList.addEventListener('dragleave', () => tabList.classList.remove('drag-over'));
+        tabList.addEventListener('dragleave', (e) => {
+            if (!tabList.contains(e.relatedTarget)) {
+                tabList.classList.remove('drag-over');
+            }
+        });
         tabList.addEventListener('drop', async (e) => {
             e.preventDefault();
             tabList.classList.remove('drag-over');
-            try {
-                const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-                if (data.sourceGroupId === group.id) return;
-                
-                // Add tab to this group
-                group.tabs.push(data.tab);
-                
-                // Remove tab from source group
-                const sourceGroup = tabGroups.find(g => g.id === data.sourceGroupId);
-                if (sourceGroup) {
-                    sourceGroup.tabs.splice(data.tabIndex, 1);
-                    if (sourceGroup.tabs.length === 0) {
-                        tabGroups = tabGroups.filter(g => g.id !== sourceGroup.id);
+            card.querySelectorAll('.tab-item').forEach(i => i.classList.remove('drag-over-item'));
+            
+            // Only handle if dropped on list itself (not on an item)
+            if (e.target.classList.contains('tab-list')) {
+                try {
+                    const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                    if (data.sourceGroupId === group.id) return;
+                    
+                    // Add tab to end of this group
+                    group.tabs.push(data.tab);
+                    
+                    // Remove tab from source group
+                    const sourceGroup = tabGroups.find(g => g.id === data.sourceGroupId);
+                    if (sourceGroup) {
+                        sourceGroup.tabs.splice(data.tabIndex, 1);
+                        if (sourceGroup.tabs.length === 0) {
+                            tabGroups = tabGroups.filter(g => g.id !== sourceGroup.id);
+                        }
                     }
-                }
-                
-                await saveTabGroups();
-                renderView();
-            } catch {}
+                    
+                    await saveTabGroups();
+                    renderView();
+                } catch {}
+            }
         });
     }
 
