@@ -1,5 +1,5 @@
 // ==========================================
-// Stash - Popup JavaScript
+// Stash - Popup JavaScript V2
 // ==========================================
 
 // State
@@ -13,12 +13,15 @@ systemThemeQuery.addEventListener('change', () => {
         applyTheme();
     }
 });
+
+// DOM Elements
 const elements = {
     // Header
     openDashboard: document.getElementById('openDashboard'),
 
     // Main Action
     saveAllTabs: document.getElementById('saveAllTabs'),
+    tabCountHint: document.getElementById('tabCountHint'),
 
     // Stats
     activeTabCount: document.getElementById('activeTabCount'),
@@ -110,15 +113,28 @@ function applyLanguage() {
         const key = el.getAttribute('data-i18n-title');
         el.title = t(key);
     });
-
-    // Update button text specifically if needed (though data-i18n handles it)
 }
 
 // Stats
 async function updateStats() {
-    if (elements.activeTabCount) {
+    try {
         const tabs = await chrome.tabs.query({ currentWindow: true });
-        elements.activeTabCount.textContent = tabs.length;
+        const count = tabs.length;
+
+        if (elements.activeTabCount) {
+            elements.activeTabCount.textContent = count;
+        }
+
+        if (elements.tabCountHint) {
+            const lang = settings.language || 'en';
+            if (lang === 'tr') {
+                elements.tabCountHint.textContent = `${count} sekme kaydedilmeye hazır`;
+            } else {
+                elements.tabCountHint.textContent = `${count} tabs ready to save`;
+            }
+        }
+    } catch (error) {
+        console.error('Error updating stats:', error);
     }
 }
 
@@ -157,7 +173,7 @@ async function saveAllTabs() {
             return;
         }
 
-        // Create new group
+        // Create new group with proper favicon handling
         const group = {
             id: generateId(),
             createdAt: new Date().toISOString(),
@@ -167,7 +183,7 @@ async function saveAllTabs() {
                 id: generateId(),
                 title: tab.title || t('untitled'),
                 url: tab.url,
-                favicon: tab.favIconUrl || null
+                favicon: getFaviconUrl(tab.url, tab.favIconUrl)
             }))
         };
 
@@ -192,6 +208,32 @@ async function saveAllTabs() {
     }
 }
 
+// Get reliable favicon URL using Google's favicon service
+function getFaviconUrl(pageUrl, originalFavicon) {
+    try {
+        const url = new URL(pageUrl);
+        // Use Google's favicon service for more reliable favicon loading
+        return `https://www.google.com/s2/favicons?domain=${url.hostname}&sz=64`;
+    } catch {
+        return originalFavicon || null;
+    }
+}
+
+// Get tag color
+function getTagColor(tag) {
+    const colors = {
+        'work': '#3b82f6',
+        'personal': '#8b5cf6',
+        'reading': '#10b981',
+        'shopping': '#f59e0b',
+        'social': '#ec4899',
+        'news': '#6366f1',
+        'video': '#ef4444',
+        'music': '#14b8a6'
+    };
+    return colors[tag.toLowerCase()] || '#6b7280';
+}
+
 // Render Groups
 function renderGroups(filteredGroups = null) {
     const groups = filteredGroups || tabGroups;
@@ -208,16 +250,17 @@ function renderGroups(filteredGroups = null) {
     const existingGroups = elements.groupsContainer.querySelectorAll('.tab-group');
     existingGroups.forEach(g => g.remove());
 
-    groups.forEach(group => {
-        const groupEl = createGroupElement(group);
+    groups.forEach((group, index) => {
+        const groupEl = createGroupElement(group, index);
         elements.groupsContainer.appendChild(groupEl);
     });
 }
 
-function createGroupElement(group) {
+function createGroupElement(group, index) {
     const div = document.createElement('div');
     div.className = 'tab-group';
     div.dataset.groupId = group.id;
+    div.style.animationDelay = `${index * 50}ms`;
 
     const date = new Date(group.createdAt);
     const formattedDate = formatDate(date);
@@ -226,7 +269,7 @@ function createGroupElement(group) {
     const tagsHTML = (group.tags && group.tags.length > 0)
         ? `<div class="group-tags-mini">
             ${group.tags.map(tag => `
-                <span class="group-tag-mini" style="background: ${getTagColor(tag)}"></span>
+                <span class="group-tag-mini" style="background: ${getTagColor(tag)}; color: ${getTagColor(tag)}"></span>
             `).join('')}
            </div>`
         : '';
@@ -242,14 +285,14 @@ function createGroupElement(group) {
       </div>
       <div class="group-actions">
         <button class="group-action-btn restore-all" title="${t('openAll')}">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="15,3 21,3 21,9"/>
             <path d="M21 3l-7 7"/>
             <path d="M21 14v5a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h5"/>
           </svg>
         </button>
         <button class="group-action-btn danger delete-group" title="${t('delete')}">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="3,6 5,6 21,6"/>
             <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
           </svg>
@@ -270,6 +313,7 @@ function createGroupElement(group) {
     header.addEventListener('click', (e) => {
         if (!e.target.closest('.group-action-btn')) {
             tabList.classList.toggle('collapsed');
+            div.classList.toggle('expanded');
         }
     });
 
@@ -304,18 +348,20 @@ function createGroupElement(group) {
 }
 
 function createTabItemHTML(tab) {
-    const faviconHTML = tab.favicon
-        ? `<img class="tab-favicon" src="${tab.favicon}" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-       <div class="tab-favicon-placeholder" style="display: none;">
-         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-           <circle cx="12" cy="12" r="10"/>
-         </svg>
-       </div>`
-        : `<div class="tab-favicon-placeholder">
-         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-           <circle cx="12" cy="12" r="10"/>
-         </svg>
-       </div>`;
+    // Always use Google Favicon service for reliability
+    const faviconUrl = getFaviconUrl(tab.url, tab.favicon);
+
+    const faviconHTML = `
+        <img class="tab-favicon" 
+             src="${faviconUrl}" 
+             alt="" 
+             loading="lazy"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="tab-favicon-placeholder" style="display: none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+            </svg>
+        </div>`;
 
     const domain = extractDomain(tab.url);
 
@@ -327,7 +373,7 @@ function createTabItemHTML(tab) {
         <div class="tab-url">${domain}</div>
       </div>
       <button class="tab-delete" title="${t('delete')}">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <line x1="18" y1="6" x2="6" y2="18"/>
           <line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
@@ -403,8 +449,6 @@ function handleSearch(e) {
     renderGroups(filteredGroups);
 }
 
-
-
 // Toast
 function showToast(message) {
     elements.toastMessage.textContent = message;
@@ -436,10 +480,6 @@ function formatDate(date) {
         day: 'numeric',
         month: 'short'
     });
-}
-
-function formatDateForFile(date) {
-    return date.toISOString().split('T')[0];
 }
 
 function extractDomain(url) {

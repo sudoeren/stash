@@ -6,79 +6,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stash</title>
   <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <div class="app">
+    <!-- Glassmorphic Background -->
+    <div class="bg-gradient"></div>
+    <div class="bg-blur"></div>
+
     <!-- Header -->
     <header class="header">
-      <div class="header-left">
-        <div class="logo">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M3 10C3 8.34315 4.34315 7 6 7H9C9.55228 7 10 7.44772 10 8V9.5C10 10.3284 10.6716 11 11.5 11H12.5C13.3284 11 14 10.3284 14 9.5V8C14 7.44772 14.4477 7 15 7H18C19.6569 7 21 8.34315 21 10V18C21 19.1046 19.6569 20 18 20H6C4.34315 20 3 18.6569 3 17V10Z"
-              fill="currentColor" />
-            <rect x="10.5" y="4.5" width="3" height="6" rx="1.5" fill="#f59e0b" />
+      <div class="header-brand">
+        <div class="logo-container">
+          <svg class="logo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 10C3 8.34315 4.34315 7 6 7H9C9.55228 7 10 7.44772 10 8V9.5C10 10.3284 10.6716 11 11.5 11H12.5C13.3284 11 14 10.3284 14 9.5V8C14 7.44772 14.4477 7 15 7H18C19.6569 7 21 8.34315 21 10V18C21 19.1046 19.6569 20 18 20H6C4.34315 20 3 18.6569 3 17V10Z" fill="currentColor"/>
+            <rect x="10.5" y="4.5" width="3" height="6" rx="1.5" fill="url(#accentGradient)"/>
+            <defs>
+              <linearGradient id="accentGradient" x1="12" y1="4.5" x2="12" y2="10.5" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#f59e0b"/>
+                <stop offset="1" stop-color="#d97706"/>
+              </linearGradient>
+            </defs>
           </svg>
+        </div>
+        <div class="brand-text">
           <span class="logo-text">Stash</span>
+          <span class="logo-badge" id="activeTabCount">0</span>
         </div>
       </div>
-      <button class="icon-btn" id="openDashboard" data-i18n-title="fullscreen">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+      <button class="header-action-btn" id="openDashboard" data-i18n-title="fullscreen">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M9 3v18"/>
         </svg>
       </button>
     </header>
 
-    <!-- Main Action -->
-    <div class="hero-section">
-      <button class="primary-btn" id="saveAllTabs">
-        <span class="btn-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
-            <polyline points="17,21 17,13 7,13 7,21" />
-          </svg>
-        </span>
-        <span class="btn-text" data-i18n="saveAll">Save All Tabs</span>
+    <!-- Save Action Card -->
+    <div class="save-section">
+      <button class="save-btn" id="saveAllTabs">
+        <div class="save-btn-glow"></div>
+        <div class="save-btn-content">
+          <div class="save-icon-wrapper">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 5v14M5 12h14"/>
+            </svg>
+          </div>
+          <div class="save-text-wrapper">
+            <span class="save-text-main" data-i18n="saveAll">Save All Tabs</span>
+            <span class="save-text-sub" id="tabCountHint">Ready to save</span>
+          </div>
+        </div>
+        <svg class="save-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
       </button>
     </div>
 
-    <!-- Search & Stats Bar -->
-    <div class="search-stats-bar">
-      <div class="search-wrapper">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="11" cy="11" r="8" />
-          <path d="M21 21l-4.35-4.35" />
+    <!-- Search Bar -->
+    <div class="search-section">
+      <div class="search-container">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="M21 21l-4.35-4.35"/>
         </svg>
-        <input type="text" id="searchInput" data-i18n-placeholder="searchPlaceholder" placeholder="Search...">
-      </div>
-      <div class="stat-badge" data-i18n-title="activeTabs">
-        <span id="activeTabCount">0</span>
-        <span class="stat-label" data-i18n="tabsCount">Open</span>
+        <input type="text" id="searchInput" class="search-input" data-i18n-placeholder="searchPlaceholder" placeholder="Search saved tabs...">
       </div>
     </div>
 
-    <!-- Groups -->
-    <div class="groups-container" id="groupsContainer">
-      <div class="empty-state" id="emptyState">
-        <div class="empty-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M3 10C3 8.34315 4.34315 7 6 7H9C9.55228 7 10 7.44772 10 8V9C10 10.1046 10.8954 11 12 11C13.1046 11 14 10.1046 14 9V8C14 7.44772 14.4477 7 15 7H18C19.6569 7 21 8.34315 21 10V18C21 19.1046 19.6569 20 18 20H6C4.34315 20 3 18.6569 3 17V10Z"
-              fill="currentColor" opacity="0.6" />
-            <rect x="10" y="5" width="4" height="6" rx="2" fill="#f59e0b" opacity="0.6" />
-          </svg>
+    <!-- Groups List -->
+    <div class="groups-wrapper">
+      <div class="groups-container" id="groupsContainer">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon-wrapper">
+            <div class="empty-icon-bg"></div>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 10C3 8.34315 4.34315 7 6 7H9C9.55228 7 10 7.44772 10 8V9C10 10.1046 10.8954 11 12 11C13.1046 11 14 10.1046 14 9V8C14 7.44772 14.4477 7 15 7H18C19.6569 7 21 8.34315 21 10V18C21 19.1046 19.6569 20 18 20H6C4.34315 20 3 18.6569 3 17V10Z" fill="currentColor" opacity="0.5"/>
+              <rect x="10" y="5" width="4" height="6" rx="2" fill="currentColor" opacity="0.7"/>
+            </svg>
+          </div>
+          <h3 class="empty-title" data-i18n="noTabsYet">No tabs yet</h3>
+          <p class="empty-subtitle" data-i18n="noTabsDescription">Click save to stash your open tabs</p>
         </div>
-        <h3 data-i18n="noTabsYet">No tabs yet</h3>
-        <p data-i18n="noTabsDescription">Click "Save All" to save your open tabs</p>
       </div>
     </div>
-
-
 
     <!-- Toast -->
     <div class="toast" id="toast">
+      <div class="toast-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
       <span id="toastMessage"></span>
     </div>
   </div>

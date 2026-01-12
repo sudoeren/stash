@@ -60,12 +60,15 @@ const translations = {
         untitled: 'Untitled',
         favorite: 'Favorite',
         openAll: 'Open All',
+        noTabsToSave: 'No tabs to save',
+        fullscreen: 'Open Dashboard',
+        activeTabs: 'Active Tabs',
         about: 'About',
         aboutDesc: 'Stash is an open source project designed to help you manage your tabs efficiently.',
         openSourceMsg: 'This project is open source.',
         craftedBy: 'Crafted by',
         sourceCode: 'Source Code',
-        
+
         // Onboarding
         stepWelcome: 'Welcome',
         stepFeatures: 'Features',
@@ -147,6 +150,9 @@ const translations = {
         untitled: 'Başlıksız',
         favorite: 'Favori',
         openAll: 'Tümünü Aç',
+        noTabsToSave: 'Kaydedilecek sekme yok',
+        fullscreen: 'Paneli Aç',
+        activeTabs: 'Aktif Sekmeler',
         about: 'Hakkında',
         aboutDesc: 'Stash, sekmelerinizi verimli bir şekilde yönetmenize yardımcı olmak için tasarlanmış açık kaynaklı bir projedir.',
         openSourceMsg: 'Bu proje açık kaynaktır.',
