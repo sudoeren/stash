@@ -20,6 +20,14 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     else if (info.menuItemId === 'open-dashboard') chrome.tabs.create({ url: chrome.runtime.getURL('dashboard.html') });
 });
 
+// Message Listener for Centralized Logic
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.type === 'SAVE_ALL_TABS') {
+        saveAllTabsBackground().then(() => sendResponse({ success: true }));
+        return true; // Keep channel open for async response
+    }
+});
+
 // Alarm Listener for Auto Save
 chrome.alarms.onAlarm.addListener(async (alarm) => {
     if (alarm.name === 'autoSave') {
@@ -58,7 +66,18 @@ async function saveCurrentTab(tab) {
         if (isDuplicate) return;
     }
 
-    const group = { id: generateId(), createdAt: new Date().toISOString(), favorite: false, type: 'single', tabs: [{ id: generateId(), title: tab.title || 'Untitled', url: tab.url, favicon: tab.favIconUrl || null }] };
+    const group = { 
+        id: crypto.randomUUID(), 
+        createdAt: new Date().toISOString(), 
+        favorite: false, 
+        type: 'single', 
+        tabs: [{ 
+            id: crypto.randomUUID(), 
+            title: tab.title || 'Untitled', 
+            url: tab.url, 
+            favicon: getFaviconUrl(tab.url) 
+        }] 
+    };
     tabGroups.unshift(group);
     await chrome.storage.local.set({ tabGroups });
     if (settings.closeAfterSave) await chrome.tabs.remove(tab.id);
@@ -85,11 +104,16 @@ async function saveAllTabsBackground(isAutoSave = false) {
         }
 
         const group = { 
-            id: generateId(), 
+            id: crypto.randomUUID(), 
             createdAt: new Date().toISOString(), 
             favorite: false, 
             type: isAutoSave ? 'auto' : 'manual',
-            tabs: filteredTabs.map(tab => ({ id: generateId(), title: tab.title || 'Untitled', url: tab.url, favicon: tab.favIconUrl || null })) 
+            tabs: filteredTabs.map(tab => ({ 
+                id: crypto.randomUUID(), 
+                title: tab.title || 'Untitled', 
+                url: tab.url, 
+                favicon: getFaviconUrl(tab.url) 
+            })) 
         };
         
         tabGroups.unshift(group);
@@ -105,4 +129,13 @@ async function saveAllTabsBackground(isAutoSave = false) {
     }
 }
 
-function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2); }
+// Helper: Get reliable favicon URL using Google's favicon service
+function getFaviconUrl(pageUrl) {
+    try {
+        const url = new URL(pageUrl);
+        // Use Google's favicon service for more reliable favicon loading
+        return `https://www.google.com/s2/favicons?domain=${url.hostname}&sz=64`;
+    } catch {
+        return null;
+    }
+}
