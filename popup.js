@@ -152,56 +152,21 @@ function setupEventListeners() {
     elements.searchInput.addEventListener('input', handleSearch);
 }
 
-// Save All Tabs
+// Save All Tabs (Delegated to Background)
 async function saveAllTabs() {
     try {
-        const tabs = await chrome.tabs.query({ currentWindow: true });
-
-        // Filter tabs
-        let filteredTabs = tabs.filter(tab => {
-            if (tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://')) {
-                return false;
-            }
-            if (!settings.includePinned && tab.pinned) {
-                return false;
-            }
-            return true;
-        });
-
-        if (filteredTabs.length === 0) {
+        // Send message to background script to handle saving
+        // This prevents race conditions and code duplication
+        const response = await chrome.runtime.sendMessage({ type: 'SAVE_ALL_TABS' });
+        
+        if (response && response.success) {
+            await loadTabGroups(); // Reload data to get the new group
+            renderGroups();
+            updateStats();
+            showToast(t('tabsSaved'));
+        } else {
             showToast(t('noTabsToSave'));
-            return;
         }
-
-        // Create new group with proper favicon handling
-        const group = {
-            id: generateId(),
-            createdAt: new Date().toISOString(),
-            favorite: false,
-            tags: [],
-            tabs: filteredTabs.map(tab => ({
-                id: generateId(),
-                title: tab.title || t('untitled'),
-                url: tab.url,
-                favicon: getFaviconUrl(tab.url, tab.favIconUrl)
-            }))
-        };
-
-        // Add to groups
-        tabGroups.unshift(group);
-        await saveTabGroups();
-
-        // Close tabs if setting is on
-        if (settings.closeAfterSave) {
-            const tabIds = filteredTabs.map(tab => tab.id);
-            await chrome.tabs.create({ url: 'chrome://newtab' });
-            await chrome.tabs.remove(tabIds);
-        }
-
-        renderGroups();
-        updateStats();
-        showToast(`${filteredTabs.length} ${t('tabsSaved')}`);
-
     } catch (error) {
         console.error('Error saving tabs:', error);
         showToast(t('errorOccurred'));
@@ -348,7 +313,6 @@ function createGroupElement(group, index) {
 }
 
 function createTabItemHTML(tab) {
-    // Always use Google Favicon service for reliability
     const faviconUrl = getFaviconUrl(tab.url, tab.favicon);
 
     const faviconHTML = `
@@ -461,7 +425,7 @@ function showToast(message) {
 
 // Utilities
 function generateId() {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    return crypto.randomUUID();
 }
 
 function formatDate(date) {
