@@ -301,7 +301,7 @@ function createGroupCard(group) {
                 } else {
                     // Create new trash group
                     trashGroup = {
-                        id: 'trash-' + Date.now().toString(),
+                        id: 'trash-' + crypto.randomUUID(),
                         sourceGroupId: group.id,
                         createdAt: new Date().toISOString(),
                         deletedAt: new Date().toISOString(),
@@ -451,14 +451,12 @@ function createGroupCard(group) {
 }
 
 async function saveAllTabs() {
-    const tabs = await chrome.tabs.query({ currentWindow: true });
-    const filtered = tabs.filter(t => !t.url.startsWith('chrome') && (settings.includePinned || !t.pinned));
-    if (filtered.length === 0) return;
-    const group = { id: Date.now().toString(), createdAt: new Date().toISOString(), tabs: filtered.map(t => ({ title: t.title, url: t.url })) };
-    tabGroups.unshift(group);
-    await saveTabGroups();
-    if (settings.closeAfterSave) { await chrome.tabs.create({}); chrome.tabs.remove(filtered.map(t => t.id)); }
-    renderView();
+    const response = await chrome.runtime.sendMessage({ type: 'SAVE_ALL_TABS' });
+    if (response && response.success) {
+        await loadTabGroups();
+        renderView();
+        showToast(t('tabsSaved'));
+    }
 }
 
 function handleSearch(e) {
