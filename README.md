@@ -14,6 +14,18 @@
 
 ---
 
+## Screenshots
+
+<div align="center">
+  <h3>Popup View</h3>
+  <img src="screenshot_v2.png" width="350" alt="Stash Popup">
+  <br><br>
+  <h3>Dashboard View</h3>
+  <img src="screenshot.png" width="800" alt="Stash Dashboard">
+</div>
+
+---
+
 ## Features
 
 ⚡ **One-Click Save** — Save all tabs instantly  
