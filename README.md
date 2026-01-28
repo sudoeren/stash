@@ -4,62 +4,89 @@
 
 # Stash
 
-**Save your tabs. Free your mind.**
+**Efficient Tab Session Management for Chrome**
 
 [![Version](https://img.shields.io/badge/v1.0.0-blue?style=flat-square)](https://github.com/sudoeren/stash)
 [![Manifest V3](https://img.shields.io/badge/MV3-green?style=flat-square)](https://developer.chrome.com/docs/extensions/mv3/)
-[![MIT](https://img.shields.io/badge/MIT-purple?style=flat-square)](LICENSE)
+[![MIT](https://img.shields.io/badge/License-MIT-purple?style=flat-square)](LICENSE)
 
 </div>
 
 ---
 
-## Screenshots
+## Overview
+
+**Stash** is a lightweight Google Chrome extension designed to enhance productivity by streamlining tab management. It allows users to instantly archive active browsing sessions, organize them intelligently, and restore them with ease. By reducing browser clutter and memory usage, Stash helps maintain a focused and efficient workflow.
+
+---
+
+## Visual Preview
 
 <div align="center">
-  <h3>Popup View</h3>
-  <img src="screenshot_v2.png" width="350" alt="Stash Popup">
+  <h3>Popup Interface</h3>
+  <img src="screenshot_v2.png" width="350" alt="Stash Popup Interface">
   <br><br>
-  <h3>Dashboard View</h3>
-  <img src="screenshot.png" width="800" alt="Stash Dashboard">
+  <h3>Dashboard Interface</h3>
+  <img src="screenshot.png" width="800" alt="Stash Dashboard Interface">
 </div>
 
 ---
 
-## Features
+## Key Features
 
-⚡ **One-Click Save** — Save all tabs instantly  
-📂 **Smart Groups** — Auto date/time organization  
-🔍 **Quick Search** — Find any saved tab  
-⭐ **Favorites** — Mark important groups  
-🌓 **Themes** — Light & dark mode  
-💾 **Backup** — JSON import/export  
-⌨️ **Shortcut** — `Alt+Shift+S`
+- **Instant Session Archiving**  
+  Securely save all open tabs in the current window with a single interaction, preserving your workflow for later.
 
----
+- **Intelligent Organization**  
+  Saved sessions are automatically grouped by date and time, ensuring structured and easy retrieval of past research or tasks.
 
-## Install
+- **Advanced Search Capabilities**  
+  Quickly locate specific tabs, domains, or session groups using the integrated real-time search functionality.
 
-1. Go to `chrome://extensions`
-2. Enable **Developer mode**
-3. Click **Load unpacked** → Select folder
-4. Done 🎉
+- **Priority Management**  
+  Mark critical sessions as "Favorites" to keep frequently accessed tabs readily available at the top of your dashboard.
 
----
+- **Adaptive User Interface**  
+  Features a modern, responsive design with full support for both Light and Dark themes to match your system preferences.
 
-## Usage
+- **Data Persistence & Portability**  
+  Includes robust backup options, allowing users to export and import session data via JSON for safekeeping or transfer between devices.
 
-| Method | Action |
-|--------|--------|
-| **Popup** | Click icon → Save All |
-| **Keyboard** | `Alt + Shift + S` |
-| **Right Click** | Use Stash menu |
+- **Keyboard Accessibility**  
+  Optimized for power users with global keyboard shortcuts (default: `Alt+Shift+S`) for immediate session saving.
 
 ---
 
-## Tech
+## Installation Guide
 
-`Chrome Extension` `Manifest V3` `Vanilla JS` `Storage API`
+To install the extension manually in developer mode, please follow these steps:
+
+1.  Open Google Chrome and navigate to `chrome://extensions`.
+2.  Enable the **Developer mode** toggle switch located in the top-right corner of the page.
+3.  Click the **Load unpacked** button that appears in the top-left menu.
+4.  Select the root directory containing the Stash extension files.
+5.  The extension will be installed and appear in your toolbar.
+
+---
+
+## Usage Instructions
+
+| Interface | Action |
+| :--- | :--- |
+| **Extension Popup** | Click the Stash icon in the browser toolbar and select **Save All** to archive the current window's tabs. |
+| **Keyboard Shortcut** | Press `Alt + Shift + S` to instantly trigger the save action without leaving your keyboard. |
+| **Dashboard** | Open a new tab or click "My Stash" to view, search, restore, or manage your saved sessions. |
+
+---
+
+## Technical Stack
+
+Stash is built using modern web standards and follows the latest Chrome Extension architecture:
+
+-   **Core:** Chrome Extension Manifest V3
+-   **Language:** Vanilla JavaScript (ES6+)
+-   **Styling:** CSS3 (Variables, Flexbox, Grid)
+-   **Data Storage:** Chrome Storage API & LocalStorage
 
 ---
 
@@ -67,6 +94,6 @@
 
 **Eren Çakar** · [@sudoeren](https://github.com/sudoeren)
 
-MIT © 2025
+Distributed under the MIT License.
 
 </div>
