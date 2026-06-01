@@ -4,7 +4,7 @@
 
 # Stash
 
-**Efficient Tab Session Management for Chrome**
+**Your Tabs, Organized. Effortlessly.**
 
 [![Version](https://img.shields.io/badge/v1.0.0-blue?style=flat-square)](https://github.com/sudoeren/stash)
 [![Manifest V3](https://img.shields.io/badge/MV3-green?style=flat-square)](https://developer.chrome.com/docs/extensions/mv3/)
@@ -23,11 +23,7 @@
 ## Visual Preview
 
 <div align="center">
-  <h3>Popup Interface</h3>
-  <img src="screenshot_v2.png" width="350" alt="Stash Popup Interface">
-  <br><br>
-  <h3>Dashboard Interface</h3>
-  <img src="screenshot.png" width="800" alt="Stash Dashboard Interface">
+  <img src="screenshot.png" width="800" alt="Stash Interface">
 </div>
 
 ---
