@@ -28,26 +28,15 @@
 
 ## Key Features
 
-- **Instant Session Archiving**  
-  Securely save all open tabs in the current window with a single interaction, preserving your workflow for later.
-
-- **Intelligent Organization**  
-  Saved sessions are automatically grouped by date and time, ensuring structured and easy retrieval of past research or tasks.
-
-- **Advanced Search Capabilities**  
-  Quickly locate specific tabs, domains, or session groups using the integrated real-time search functionality.
-
-- **Priority Management**  
-  Mark critical sessions as "Favorites" to keep frequently accessed tabs readily available at the top of your dashboard.
-
-- **Adaptive User Interface**  
-  Features a modern, responsive design with full support for both Light and Dark themes to match your system preferences.
-
-- **Data Persistence & Portability**  
-  Includes robust backup options, allowing users to export and import session data via JSON for safekeeping or transfer between devices.
-
-- **Keyboard Accessibility**  
-  Optimized for power users with global keyboard shortcuts (default: `Alt+Shift+S`) for immediate session saving.
+| Feature | Description |
+| :--- | :--- |
+| **Instant Session Archiving** | Securely save all open tabs in the current window with a single interaction, preserving your workflow for later. |
+| **Intelligent Organization** | Saved sessions are automatically grouped by date and time, ensuring structured and easy retrieval of past research or tasks. |
+| **Advanced Search Capabilities** | Quickly locate specific tabs, domains, or session groups using the integrated real-time search functionality. |
+| **Priority Management** | Mark critical sessions as "Favorites" to keep frequently accessed tabs readily available at the top of your dashboard. |
+| **Adaptive User Interface** | Features a modern, responsive design with full support for both Light and Dark themes to match your system preferences. |
+| **Data Persistence & Portability** | Includes robust backup options, allowing users to export and import session data via JSON for safekeeping or transfer between devices. |
+| **Keyboard Accessibility** | Optimized for power users with global keyboard shortcuts (default: `Alt+Shift+S`) for immediate session saving. |
 
 ---
 
