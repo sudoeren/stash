@@ -6,8 +6,6 @@
 
 **Your Tabs, Organized. Effortlessly.**
 
-[![Version](https://img.shields.io/badge/v1.0.0-blue?style=flat-square)](https://github.com/sudoeren/stash)
-[![Manifest V3](https://img.shields.io/badge/MV3-green?style=flat-square)](https://developer.chrome.com/docs/extensions/mv3/)
 [![MIT](https://img.shields.io/badge/License-MIT-purple?style=flat-square)](LICENSE)
 
 </div>
@@ -73,22 +71,11 @@ To install the extension manually in developer mode, please follow these steps:
 | **Keyboard Shortcut** | Press `Alt + Shift + S` to instantly trigger the save action without leaving your keyboard. |
 | **Dashboard** | Open a new tab or click "My Stash" to view, search, restore, or manage your saved sessions. |
 
----
 
-## Technical Stack
-
-Stash is built using modern web standards and follows the latest Chrome Extension architecture:
-
--   **Core:** Chrome Extension Manifest V3
--   **Language:** Vanilla JavaScript (ES6+)
--   **Styling:** CSS3 (Variables, Flexbox, Grid)
--   **Data Storage:** Chrome Storage API & LocalStorage
 
 ---
 
 <div align="center">
-
-**Eren Çakar** · [@sudoeren](https://github.com/sudoeren)
 
 Distributed under the MIT License.
 
