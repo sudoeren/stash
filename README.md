@@ -16,10 +16,6 @@
 
 **Stash** is a lightweight Google Chrome extension designed to enhance productivity by streamlining tab management. It allows users to instantly archive active browsing sessions, organize them intelligently, and restore them with ease. By reducing browser clutter and memory usage, Stash helps maintain a focused and efficient workflow.
 
----
-
-## Visual Preview
-
 <div align="center">
   <img src="screenshot.png" width="800" alt="Stash Interface">
 </div>
