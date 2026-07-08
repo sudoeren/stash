@@ -77,6 +77,6 @@ To install the extension manually in developer mode, please follow these steps:
 
 <div align="center">
 
-Distributed under the MIT License.
+Distributed under the [MIT License](LICENSE).
 
 </div>
