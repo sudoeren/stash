@@ -12,13 +12,16 @@ Lightweight Chrome extension to archive open tabs and restore them later. Reduce
 
 **Features**
 
-- one-click save for all tabs in the current window
-- grouped by date, sorted automatically
-- instant search by tab, domain or group
+- one-click save for all tabs, or single tab via context menu
+- grouped by date, collapsible cards
+- drag and drop to reorder tabs and move between groups
+- instant search by title, domain or URL
 - favorites pinned to the top
-- light and dark theme
-- JSON backup export and import
-- shortcut `Alt+Shift+S`
+- trash with restore and auto cleanup after 30 days
+- auto save at custom interval
+- light, dark and system theme
+- JSON export and import for backup
+- keyboard shortcut `Alt+Shift+S`
 
 </td>
 <td width="42%" align="center" valign="top">
