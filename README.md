@@ -6,23 +6,53 @@ Save your tabs with one click. Minimal and fast.
 
 Lightweight Chrome extension to archive open tabs and restore them later. Reduces clutter and memory usage.
 
+<table>
+<tr>
+<td width="58%" valign="top">
+
+**Features**
+
+- one-click save for all tabs in the current window
+- grouped by date, sorted automatically
+- instant search by tab, domain or group
+- favorites pinned to the top
+- light and dark theme
+- JSON backup export and import
+- shortcut `Alt+Shift+S`
+
+</td>
+<td width="42%" align="center" valign="top">
+
+<img src="extension.png" width="270" alt="Popup" style="border:1px solid #e5e7eb; border-radius:16px; padding:8px; background:#fff; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
+
+<sub>Popup</sub>
+
+</td>
+</tr>
+</table>
+
+### Home
+
 <img src="dashboard.png" alt="Dashboard">
 
-**Features:** one-click save, grouped by date, instant search, favorites, light/dark theme, JSON backup, shortcut `Alt+Shift+S`.
+### Onboarding
 
-### Screenshots
+<table>
+<tr>
+<td><img src="onboarding-1.png" alt="Onboarding 1"><br><sub>Step 1</sub></td>
+<td><img src="onboarding-2.png" alt="Onboarding 2"><br><sub>Step 2</sub></td>
+</tr>
+<tr>
+<td><img src="onboarding-3.png" alt="Onboarding 3"><br><sub>Step 3</sub></td>
+<td><img src="onboarding-4.png" alt="Onboarding 4"><br><sub>Step 4</sub></td>
+</tr>
+</table>
 
-**Onboarding**
+### Settings
 
-<img src="onboarding-1.png" width="185" alt="Onboarding 1"> <img src="onboarding-2.png" width="185" alt="Onboarding 2"> <img src="onboarding-3.png" width="185" alt="Onboarding 3"> <img src="onboarding-4.png" width="185" alt="Onboarding 4">
-
-**Popup** | **Settings**
-
-<img src="extension.png" width="220" alt="Popup"> <img src="settings.png" width="520" alt="Settings">
+<img src="settings.png" alt="Settings">
 
 ### Installation
-
-Get the code first, then load it in Chrome:
 
 **1. Download**
 - Open https://github.com/sudoeren/stash, click Code > Download ZIP, then extract the ZIP
