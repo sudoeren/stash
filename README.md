@@ -1,4 +1,8 @@
-# <img src="icons/icon128.png" width="36" style="vertical-align: -6px; margin-right: 8px;" alt="Stash"> Stash
+<p align="left">
+  <img src="icons/icon128.png" width="48" alt="Stash">
+</p>
+
+# Stash
 
 Save your tabs with one click. Minimal and fast.
 
