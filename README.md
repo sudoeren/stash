@@ -1,67 +1,40 @@
-<div align="center">
+# Stash <img src="icons/icon128.png" width="28" align="top" alt="Stash">
 
-<img src="icons/icon128.png" alt="Stash" width="80">
+Save your tabs with one click. Minimal and fast.
 
-# Stash
+[![MIT](https://img.shields.io/badge/License-MIT-black?style=flat-square)](LICENSE)
 
-**Your Tabs, Organized. Effortlessly.**
+Lightweight Chrome extension to archive open tabs and restore them later. Reduces clutter and memory usage.
 
-[![MIT](https://img.shields.io/badge/License-MIT-purple?style=flat-square)](LICENSE)
+<img src="dashboard.png" alt="Dashboard">
 
-</div>
+**Features:** one-click save, grouped by date, instant search, favorites, light/dark theme, JSON backup, shortcut `Alt+Shift+S`.
 
----
+### Screenshots
 
-## Overview
+**Onboarding**
 
-**Stash** is a lightweight Google Chrome extension designed to enhance productivity by streamlining tab management. It allows users to instantly archive active browsing sessions, organize them intelligently, and restore them with ease. By reducing browser clutter and memory usage, Stash helps maintain a focused and efficient workflow.
+<img src="onboarding-1.png" width="185" alt="Onboarding 1"> <img src="onboarding-2.png" width="185" alt="Onboarding 2"> <img src="onboarding-3.png" width="185" alt="Onboarding 3"> <img src="onboarding-4.png" width="185" alt="Onboarding 4">
 
-<div align="center">
-  <img src="screenshot.png" width="800" alt="Stash Interface">
-</div>
+**Popup** | **Settings**
 
----
+<img src="extension.png" width="220" alt="Popup"> <img src="settings.png" width="520" alt="Settings">
 
-## Key Features
+### Installation
 
-| Feature | Description |
-| :--- | :--- |
-| **Instant Session Archiving** | Securely save all open tabs in the current window with a single interaction, preserving your workflow for later. |
-| **Intelligent Organization** | Saved sessions are automatically grouped by date and time, ensuring structured and easy retrieval of past research or tasks. |
-| **Advanced Search Capabilities** | Quickly locate specific tabs, domains, or session groups using the integrated real-time search functionality. |
-| **Priority Management** | Mark critical sessions as "Favorites" to keep frequently accessed tabs readily available at the top of your dashboard. |
-| **Adaptive User Interface** | Features a modern, responsive design with full support for both Light and Dark themes to match your system preferences. |
-| **Data Persistence & Portability** | Includes robust backup options, allowing users to export and import session data via JSON for safekeeping or transfer between devices. |
-| **Keyboard Accessibility** | Optimized for power users with global keyboard shortcuts (default: `Alt+Shift+S`) for immediate session saving. |
+Get the code first, then load it in Chrome:
 
----
+**1. Download**
+- Open https://github.com/sudoeren/stash, click Code > Download ZIP, then extract the ZIP
 
-## Installation Guide
+**2. Load in Chrome**
+1. Open `chrome://extensions`
+2. Enable **Developer mode** top right
+3. Click **Load unpacked** and select the `stash` folder you just downloaded
+4. Pin Stash to the toolbar
 
-To install the extension manually in developer mode, please follow these steps:
+### Usage
 
-1.  Open Google Chrome and navigate to `chrome://extensions`.
-2.  Enable the **Developer mode** toggle switch located in the top-right corner of the page.
-3.  Click the **Load unpacked** button that appears in the top-left menu.
-4.  Select the root directory containing the Stash extension files.
-5.  The extension will be installed and appear in your toolbar.
+Click the Stash icon and hit **Save All**, or press `Alt+Shift+S`. Open **My Stash** from the popup to view, search, restore or delete sessions.
 
----
-
-## Usage Instructions
-
-| Interface | Action |
-| :--- | :--- |
-| **Extension Popup** | Click the Stash icon in the browser toolbar and select **Save All** to archive the current window's tabs. |
-| **Keyboard Shortcut** | Press `Alt + Shift + S` to instantly trigger the save action without leaving your keyboard. |
-| **Dashboard** | Open a new tab or click "My Stash" to view, search, restore, or manage your saved sessions. |
-
-
-
----
-
-<div align="center">
-
-Distributed under the [MIT License](LICENSE).
-
-</div>
+MIT License - see [LICENSE](LICENSE).
