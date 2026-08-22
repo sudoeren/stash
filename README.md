@@ -35,23 +35,6 @@ Lightweight Chrome extension to archive open tabs and restore them later. Reduce
 
 <img src="dashboard.png" alt="Dashboard">
 
-### Onboarding
-
-<table>
-<tr>
-<td><img src="onboarding-1.png" alt="Onboarding 1"><br><sub>Step 1</sub></td>
-<td><img src="onboarding-2.png" alt="Onboarding 2"><br><sub>Step 2</sub></td>
-</tr>
-<tr>
-<td><img src="onboarding-3.png" alt="Onboarding 3"><br><sub>Step 3</sub></td>
-<td><img src="onboarding-4.png" alt="Onboarding 4"><br><sub>Step 4</sub></td>
-</tr>
-</table>
-
-### Settings
-
-<img src="settings.png" alt="Settings">
-
 ### Installation
 
 **1. Download**
@@ -66,5 +49,7 @@ Lightweight Chrome extension to archive open tabs and restore them later. Reduce
 ### Usage
 
 Click the Stash icon and hit **Save All**, or press `Alt+Shift+S`. Open **My Stash** from the popup to view, search, restore or delete sessions.
+
+### License
 
 MIT License - see [LICENSE](LICENSE).
